@@ -13,7 +13,7 @@ a {
     text-decoration: none;
 }
 
-h4 {
+h3 {
     display: contents;
     margin: 0;
 }
@@ -21,9 +21,9 @@ h4 {
 .options {
     position: absolute;
     right: 0;
-    top: 0.5em;
+    top: 0.33em;
     display: flex;
-    font-size: x-small;
+    font-size: small;
 }
 
 a:hover {
