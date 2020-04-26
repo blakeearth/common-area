@@ -24,8 +24,9 @@ export class MenuComponent implements OnInit {
     this.updateActivity(this.location.path(), this.location.getState());
   }
 
-  updateActivity(url: String, state: unknown): void {
+  updateActivity(url: string, state: unknown): void {
     // ALERT: REDUNDANCY
+    window.history.pushState(null, url, url);
     let activity: string = url.replace('/home', '');
     activity = activity.replace('/', '');
     if (activity == '') {

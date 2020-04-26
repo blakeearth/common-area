@@ -11,15 +11,20 @@ export class HomeComponent implements OnInit {
 
   constructor(location: Location) {
     this.location = location;
-    this.location.onUrlChange(this.updateActivity);
+    
   }
 
   ngOnInit(): void {
-    this.location.replaceState('/home/chat');
+    //this.location.replaceState(window.location.href.replace("xn--dk8hvr", "slumberparty"));
+    if (this.location.path() == '/home') {
+      this.location.replaceState('/home/chat');
+    }
     this.updateActivity(this.location.path(), this.location.getState());
+    this.location.onUrlChange(this.updateActivity);
   }
 
   updateActivity(url: string, state: unknown): void {
+    window.history.pushState(null, url, url);
     let activity: string = url.replace('/home', '');
     activity = activity.replace('/', '');
     if (activity == '') {
