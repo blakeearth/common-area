@@ -6,16 +6,33 @@
 
 a {
     color: #7B869A;
+    padding: 0 0.5em 0 0.5em;
+}
+
+.home {
     text-decoration: none;
 }
 
 h4 {
     display: contents;
-    text-decoration: none;
     margin: 0;
+}
+
+.options {
+    position: absolute;
+    right: 0;
+    top: 0.5em;
+    display: flex;
+    font-size: x-small;
 }
 
 a:hover {
     color: #F5F5FC;
 }
 
+@media only screen and (max-width: 600px) {
+    .header {
+        display: flex;
+        text-align: left;
+    }
+}
