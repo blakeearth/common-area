@@ -1,0 +1,53 @@
+nav {
+    height: 100%;
+    background-color: #011638;
+}
+
+a {
+    color: #7B869A;
+    display: block;
+    font-size: 32px;
+    text-decoration: none;
+    text-align: center;
+    border-left: solid;
+    border-color: #011638;
+    border-width: 0 0 0 0.1em;
+}
+
+a:hover {
+    cursor: pointer;
+    color: #F5F5FC;
+}
+
+.selected {
+    border-left: solid;
+    color: #F5F5FC;
+    border-width: 0 0 0 0.1em;
+}
+
+#room-nav {
+    display: none;
+}
+
+@media only screen and (max-width: 600px) {
+    nav {
+        margin-top: auto;
+        height: auto;
+        display: flex;
+    }
+
+    a {
+        flex-grow: 1;
+        border-left: none;
+        border-bottom: none;
+    }
+
+    .selected {
+        border-left: none;
+        border-bottom: solid;
+    }
+
+    #room-nav {
+        display: block;
+    }
+}
