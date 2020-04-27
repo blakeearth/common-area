@@ -11,16 +11,17 @@
     align-items: stretch;
 }
 
-#menu {
-    flex: 1 0 0;
+#activity-container {
+    resize: horizontal;
+    overflow: scroll;
+    overflow-x: hidden;
+    min-width: 50ch;
+    max-width: 100ch;
 }
 
-#activity-container {
-    flex: 5 0 0;
-}
 
 #room {
-    flex: 10 0 0;
+    flex: 5 0 0;
     background-color: #000000;
 }
 
@@ -30,23 +31,19 @@
 
 @media only screen and (max-width: 600px) {
     .app {
-        display: flex;
         flex-direction: column;
-        align-items: stretch;
     }
 
     #activity-container {
-        flex: 7 0 0;
+        height: 100%;
         border-right: none;
+        resize: none;
+        min-width: none;
+        max-width: none;
     }
 
     #menu {
-        flex: 1 0 0;
         order: 3;
-    }
-
-    #room {
-        flex: 7 0 0;
     }
 
     .invisible-mobile {
