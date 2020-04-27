@@ -12,11 +12,7 @@
 }
 
 #activity-container {
-    resize: horizontal;
-    overflow: scroll;
-    overflow-x: hidden;
-    min-width: 50ch;
-    max-width: 100ch;
+    flex: 5 0 0;
 }
 
 
@@ -37,9 +33,6 @@
     #activity-container {
         height: 100%;
         border-right: none;
-        resize: none;
-        min-width: none;
-        max-width: none;
     }
 
     #menu {

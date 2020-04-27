@@ -1,5 +1,5 @@
 .landing-page {
-    overflow: hidden;
+    overflow: scroll;
     display: flex;
     align-content: center;
     justify-content: center;
@@ -10,6 +10,7 @@
 
 .statement {
     display: flex;
+    margin: 0 25% 0 25%;
     flex-direction: column;
     align-content: center;
     justify-content: center;
@@ -33,17 +34,16 @@ a:hover {
 }
 
 h1 {
-    max-width: 20ch;
-    font-size: 5em;
+    font-size: 4em;
     margin: 0;
 }
 
 h2 {
     font-family: "Poppins Regular";
-    font-size: 3em;
+    font-size: 2em;
 }
 
-@media only screen and (max-width: 600px) {
+@media only screen and (max-width: 1280px) {
     h1 {
         font-size: 2em;
         margin: 0;
