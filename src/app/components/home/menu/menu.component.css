@@ -4,30 +4,25 @@ nav {
 }
 
 a {
-    color: #7B869A;
     display: block;
+    cursor: pointer;
     font-size: 32px;
     text-decoration: none;
     text-align: center;
-    border-left: solid;
-    border-color: #011638;
-    padding: 0.2em 0.2em 0.2em 0.2em;
+    border-left: 0.2em solid;
+    padding: 0.2em 0.2em 0.2em 0;
 }
 
 a:hover {
-    cursor: pointer;
-    border-left: solid;
-    border-width: 0 0 0 0.1em;
+    background-color: #7B869A;
 }
 
 a:hover:not(.selected) {
-    color: #7B869A;
+    border-color: #7B869A;
 }
 
 .selected {
-    border-left: solid;
-    color: #F5F5FC;
-    border-width: 0 0 0 0.1em;
+    border-color: #F5F5FC;
 }
 
 #room-nav {
@@ -44,12 +39,8 @@ a:hover:not(.selected) {
     a {
         flex-grow: 1;
         border-left: none;
-        border-bottom: none;
-    }
-
-    .selected {
-        border-left: none;
-        border-bottom: solid;
+        border-bottom: 0.2em solid;
+        padding: 0.2em 0.2em 0 0.2em;
     }
 
     #room-nav {

@@ -17,13 +17,11 @@
 
 #activity-container {
     flex: 5 0 0;
-    border-right: solid #011638;
 }
 
 #room {
     flex: 10 0 0;
-    color: #011638;
-    background-color: #F5F5FC;
+    background-color: #000000;
 }
 
 .invisible {
