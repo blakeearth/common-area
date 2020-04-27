@@ -1,6 +1,11 @@
 @font-face {
-    font-family: Poppins;
+    font-family: "Poppins Bold";
     src: url("./assets/fonts/Poppins-Bold.ttf") format("truetype");
+}
+
+@font-face {
+    font-family: "Poppins Mediun";
+    src: url("./assets/fonts/Poppins-Medium.ttf") format("truetype");
 }
 
 body, html {
@@ -10,5 +15,9 @@ body, html {
 }
 
 * {
-    font-family: Poppins;
+    font-family: "Poppins Mediun";
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: "Poppins Bold";
 }

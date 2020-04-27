@@ -11,12 +11,17 @@ a {
     text-align: center;
     border-left: solid;
     border-color: #011638;
-    border-width: 0 0 0 0.1em;
+    padding: 0.2em 0.2em 0.2em 0.2em;
 }
 
 a:hover {
     cursor: pointer;
-    color: #F5F5FC;
+    border-left: solid;
+    border-width: 0 0 0 0.1em;
+}
+
+a:hover:not(.selected) {
+    color: #7B869A;
 }
 
 .selected {

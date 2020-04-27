@@ -1,6 +1,8 @@
 .header {
-    display: block;
-    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1em 0 1em 0;
     background-color: #011638;
 }
 
@@ -9,19 +11,25 @@ a {
     padding: 0 0.5em 0 0.5em;
 }
 
+img {
+    padding: 0 0.2em 0 0.2em;
+    height: 2em;
+}
+
 .home {
     text-decoration: none;
 }
 
-h3 {
+h1 {
     display: contents;
+    color: #F5F5FC;
     margin: 0;
 }
 
 .options {
     position: absolute;
     right: 0;
-    top: 0.33em;
+    top: 2.33em;
     display: flex;
     font-size: small;
 }
