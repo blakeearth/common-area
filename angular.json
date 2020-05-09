@@ -90,7 +90,10 @@
             "styles": [
               "src/styles.css"
             ],
-            "scripts": []
+            "scripts": [
+              "./assets/room/slumber-party-room.js",
+              "./assets/room/slumber-party-room-init.js"
+            ]
           }
         },
         "lint": {

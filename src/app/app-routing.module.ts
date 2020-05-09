@@ -1,8 +1,9 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { HomeComponent } from './components/home/home.component';
+import { HomeComponent } from './home/home.component';
 import { AppComponent } from './app.component';
-import { LandingPageComponent } from './components/landing-page/landing-page/landing-page.component';
+import { LandingPageComponent } from './landing-page/landing-page/landing-page.component';
+import { SignInComponent } from './sign-in/sign-in.component';
 
 
 const routes: Routes = [
@@ -37,6 +38,10 @@ const routes: Routes = [
     path: 'home/calendar',
     component: HomeComponent
   },
+  {
+    path: 'sign-in',
+    component: SignInComponent
+  }
 ];
 
 @NgModule({

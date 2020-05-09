@@ -1,0 +1,50 @@
+nav {
+    height: 100%;
+    background-color: #011638;
+    color: #011638;
+}
+
+a {
+    display: block;
+    cursor: pointer;
+    font-size: 32px;
+    text-decoration: none;
+    text-align: center;
+    border-left: 0.1em solid;
+    padding: 0.2em 0.2em 0.2em 0.1em;
+}
+
+a:hover {
+    background-color: #505969;
+}
+
+a:hover:not(.selected) {
+    border-color: #505969;
+}
+
+.selected {
+    border-color: #F5F5FC;
+}
+
+#room-nav {
+    display: none;
+}
+
+@media only screen and (max-width: 600px) {
+    nav {
+        margin-top: auto;
+        height: auto;
+        display: flex;
+    }
+
+    a {
+        flex-grow: 1;
+        border-left: none;
+        border-bottom: 0.1em solid;
+        padding: 0.2em 0.2em 0.1em 0.2em;
+    }
+
+    #room-nav {
+        display: block;
+    }
+}
