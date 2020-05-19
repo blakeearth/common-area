@@ -7,7 +7,7 @@ import { HomeComponent } from './home/home.component';
 import { MenuComponent } from './home/menu/menu.component';
 import { HeaderComponent } from './home/header/header.component';
 import { ActivityContainerComponent } from './home/activity-container.component';
-import { ActivityHeaderComponent } from './home/activities/activity-header/activity-header.component';
+import { PanelHeaderComponent } from './panel-header/panel-header.component';
 import { StoreComponent } from './home/activities/store/store.component';
 import { ChatComponent } from './home/activities/chat/chat.component';
 import { TimerComponent } from './home/activities/timer/timer.component';
@@ -24,7 +24,7 @@ import { SignInComponent } from './sign-in/sign-in.component';
     MenuComponent,
     HeaderComponent,
     ActivityContainerComponent,
-    ActivityHeaderComponent,
+    PanelHeaderComponent,
     StoreComponent,
     ChatComponent,
     TimerComponent,
