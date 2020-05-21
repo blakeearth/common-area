@@ -2,7 +2,7 @@ import { Component, OnInit, Input } from '@angular/core';
 import { NgForm, FormsModule } from '@angular/forms';
 import { Location } from '@angular/common';
 import { Goal } from '../goal';
-import { AuthService } from '../../auth.service';
+import { SocketService } from '../../../socket/socket.service';
 
 
 @Component({
@@ -14,20 +14,21 @@ export class SignUpComponent implements OnInit, Goal {
 
   header: string = "Sign up for an account"
   location: Location;
-  authService: AuthService;
+  ngForm: NgForm;
+  socketService: SocketService;
 
-  constructor(location: Location, authService: AuthService) {
+  constructor(location: Location, socketService: SocketService) {
     this.location = location;
-    this.authService = authService;
+    this.socketService = socketService;
   }
 
   ngOnInit(): void {
-    this.authService.reply.subscribe(msg => this.onResponseReceived(msg));
+    this.socketService.reply.subscribe(msg => this.onResponseReceived(msg));
   }
 
   onSubmit(f: NgForm) {
-    let submission = {type: "sign_up", username: <string> f.value["username"], password: <string> f.value["password"]};
-    this.authService.sendMessage(submission);
+    let submission = {channel: "auth", type: "sign_up", username: <string> f.value["username"], password: <string> f.value["password"]};
+    this.socketService.sendMessage(submission);
   }
 
   navigate(s: string) {
