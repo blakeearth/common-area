@@ -23,6 +23,9 @@ export class SignInComponent implements OnInit, Goal {
 
   ngOnInit(): void {
     this.socketService.reply.subscribe(msg => this.onResponseReceived(msg));
+    if (this.socketService.token != null) {
+      this.socketService.sendMessage({channel: "auth", type: "validate_session", token: this.socketService.token});
+    }
   }
 
   onSubmit(f: NgForm) {
@@ -38,7 +41,7 @@ export class SignInComponent implements OnInit, Goal {
     if (msg["password_correct"]) {
       if (msg["password_correct"] == true) {
         if (msg["token"]) {
-          document.cookie = "token=" + msg["token"] + ";Domain=.slumberparty.io";
+          sessionStorage.setItem("token", msg["token"]);
           document.location.href = "/home";
         }
       }
