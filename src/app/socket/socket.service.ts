@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { webSocket, WebSocketSubject } from 'rxjs/webSocket';
 import { Observable, BehaviorSubject } from 'rxjs';
 
-const socket: WebSocketSubject<any> = webSocket('ws://websocket.slumberparty.io:25614');
+const socket: WebSocketSubject<any> = webSocket('wss://websocket.slumberparty.io:25614');
 
 @Injectable({
   providedIn: 'root'
