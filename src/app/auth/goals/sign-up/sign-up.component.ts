@@ -40,7 +40,7 @@ export class SignUpComponent implements OnInit, Goal {
     if (msg["account_creation_success"]) {
       if (msg["account_creation_success"] == true) {
         if (msg["token"]) {
-          document.cookie = "token=" + msg["token"] + ";";
+          document.cookie = "token=" + msg["token"] + ";Domain=.slumberparty.io";
           document.location.href = "/home";
         }
       }

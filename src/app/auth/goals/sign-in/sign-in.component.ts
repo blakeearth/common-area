@@ -38,7 +38,7 @@ export class SignInComponent implements OnInit, Goal {
     if (msg["password_correct"]) {
       if (msg["password_correct"] == true) {
         if (msg["token"]) {
-          document.cookie = "token=" + msg["token"] + ";";
+          document.cookie = "token=" + msg["token"] + ";Domain=.slumberparty.io";
           document.location.href = "/home";
         }
       }
