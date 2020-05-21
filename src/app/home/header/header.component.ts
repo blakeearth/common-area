@@ -28,7 +28,7 @@ export class HeaderComponent implements OnInit {
   }
 
   signOut(): void {
-    //document.cookie = "token= ; expires=Wed, 09 Feb 2000 12:00:00 UTC";
+    document.cookie = "token= ; expires=Wed, 09 Feb 2000 12:00:00 UTC";
     let signOutMessage = {channel: "auth", type: "sign_out", token: this.socketService.token}
     this.socketService.sendMessage(signOutMessage)
     document.location.href = "/";
