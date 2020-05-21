@@ -15,7 +15,11 @@ import { TasksComponent } from './home/activities/tasks/tasks.component';
 import { CalendarComponent } from './home/activities/calendar/calendar.component';
 import { LandingPageComponent } from './landing-page/landing-page/landing-page.component';
 import { RoomComponent } from './home/room/room.component';
-import { SignInComponent } from './sign-in/sign-in.component';
+import { SignInComponent } from './auth/goals/sign-in/sign-in.component';
+import { SignUpComponent } from './auth/goals/sign-up/sign-up.component';
+import { AuthComponent } from './auth/auth.component';
+import { GoalContainerComponent } from './auth/goal-container/goal-container.component';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -32,10 +36,14 @@ import { SignInComponent } from './sign-in/sign-in.component';
     CalendarComponent,
     LandingPageComponent,
     RoomComponent,
-    SignInComponent
+    GoalContainerComponent,
+    SignInComponent,
+    SignUpComponent,
+    AuthComponent
   ],
   imports: [
     BrowserModule,
+    FormsModule,
     AppRoutingModule
   ],
   providers: [],

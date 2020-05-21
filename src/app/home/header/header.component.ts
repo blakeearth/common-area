@@ -12,4 +12,9 @@ export class HeaderComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  signOut(): void {
+    document.cookie = "token= ; expires=Wed, 09 Feb 2000 12:00:00 UTC";
+    document.location.href = "/";
+  }
+
 }

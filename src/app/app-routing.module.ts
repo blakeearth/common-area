@@ -3,7 +3,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { HomeComponent } from './home/home.component';
 import { AppComponent } from './app.component';
 import { LandingPageComponent } from './landing-page/landing-page/landing-page.component';
-import { SignInComponent } from './sign-in/sign-in.component';
+import { AuthComponent } from './auth/auth.component';
 
 
 const routes: Routes = [
@@ -11,6 +11,18 @@ const routes: Routes = [
     path: '',
     component: LandingPageComponent
 
+  },
+  {
+    path: 'auth',
+    component: AuthComponent
+  },
+  {
+    path: 'auth/sign-in',
+    component: AuthComponent
+  },
+  {
+    path: 'auth/sign-up',
+    component: AuthComponent
   },
   {
     path: 'home',
@@ -38,10 +50,6 @@ const routes: Routes = [
     path: 'home/calendar',
     component: HomeComponent
   },
-  {
-    path: 'sign-in',
-    component: SignInComponent
-  }
 ];
 
 @NgModule({
