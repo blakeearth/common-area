@@ -30,7 +30,6 @@ export class HeaderComponent implements OnInit {
         document.location.href = "/auth/sign-in";
       }
     }
-    console.log(msg);
   }
 
   signOut(): void {
