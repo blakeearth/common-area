@@ -29,7 +29,6 @@ export class SocketService {
   }
 
   sendMessage(msg: any): void {
-    console.log(msg);
     socket.next(msg);
   }
 }

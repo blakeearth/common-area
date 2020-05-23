@@ -41,3 +41,12 @@ button:hover {
 h2 {
     margin: 0.2em 0 0.2em 0;
 }
+
+#error {
+    display: none;
+}
+
+#visible-error {
+    color: #D64045;
+    display: inline;
+}

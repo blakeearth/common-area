@@ -38,17 +38,20 @@ export class SignInComponent implements OnInit, Goal {
   }
 
   onResponseReceived(msg: any): void {
-    if (msg["password_correct"]) {
-      if (msg["password_correct"] == true) {
-        if (msg["token"]) {
-          sessionStorage.setItem("token", msg["token"]);
-          document.location.href = "/home";
+    if (msg["type"] == "sign_in") {
+      if (msg["password_correct"]) {
+        if (msg["password_correct"] == true) {
+          if (msg["token"]) {
+            sessionStorage.setItem("token", msg["token"]);
+            document.location.href = "/home";
+          }
         }
       }
-      else {
-
+      else if (msg["error"]) {
+        let error: HTMLElement = document.getElementById("error");
+        error.innerHTML = msg["error"];
+        error.id = "visible-error";
       }
     }
   }
-
 }
