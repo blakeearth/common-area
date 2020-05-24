@@ -40,8 +40,8 @@ export class SignUpComponent implements OnInit, Goal {
 
   onResponseReceived(msg: any): void {
     if (msg["type"] == "sign_up") {
-      if (msg["password_correct"]) {
-        if (msg["password_correct"] == true) {
+      if (msg["password_correct"] || msg["account_creation_success"]) {
+        if (msg["password_correct"] == true || msg["account_creation_success"] == true) {
           if (msg["token"]) {
             sessionStorage.setItem("token", msg["token"]);
             document.location.href = "/home";

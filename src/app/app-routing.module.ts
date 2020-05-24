@@ -50,6 +50,10 @@ const routes: Routes = [
     path: 'home/calendar',
     component: HomeComponent
   },
+  {
+    path: 'home/settings',
+    component: HomeComponent
+  }
 ];
 
 @NgModule({

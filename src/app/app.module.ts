@@ -20,6 +20,9 @@ import { SignUpComponent } from './auth/goals/sign-up/sign-up.component';
 import { AuthComponent } from './auth/auth.component';
 import { GoalContainerComponent } from './auth/goal-container/goal-container.component';
 import { FormsModule } from '@angular/forms';
+import { SettingsComponent } from './home/activities/settings/settings.component';
+import { RoomLinkDirective } from './home/activities/settings/room-link.directive';
+import { RoomLinkComponent } from './home/activities/settings/room-link/room-link.component';
 
 @NgModule({
   declarations: [
@@ -39,13 +42,17 @@ import { FormsModule } from '@angular/forms';
     GoalContainerComponent,
     SignInComponent,
     SignUpComponent,
-    AuthComponent
+    AuthComponent,
+    SettingsComponent,
+    RoomLinkDirective,
+    RoomLinkComponent
   ],
   imports: [
     BrowserModule,
     FormsModule,
     AppRoutingModule
   ],
+  entryComponents: [RoomLinkComponent],
   providers: [],
   bootstrap: [AppComponent]
 })
