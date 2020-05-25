@@ -1,0 +1,49 @@
+.scroll-container {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.list {
+    flex: 1 1 auto;
+    overflow-y: auto;
+    height: 70vh;
+}
+
+.margin {
+    margin: 0.2em 2ch 0.2em 2ch;
+}
+
+form {
+    display: flex;
+    justify-content: space-between;
+}
+
+.form-element {
+    max-width: fit-content;
+    flex: 1 0 0;
+}
+
+button {
+    width: 10ch;
+    margin-right: 2ch;
+    padding: 0.2em 2ch 0.2em 2ch;
+}
+
+input {
+    margin-left: 2ch;
+}
+
+.hidden {
+    display: none;
+}
+
+.form-label {
+    margin: 0 4ch 0 2ch;
+}
+
+@media only screen and (max-width: 600px) {
+    .list {
+        height: 70vh;
+    }
+}

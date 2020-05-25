@@ -15,22 +15,6 @@ input {
     font-size: 1.5em;
 }
 
-button {
-    cursor: pointer;
-    display: block;
-    align-self: center;
-    border: 0;
-    background: none;
-    box-shadow: none;
-    background-color: #FFF07C;
-    border-radius: 0px;
-    font-weight: bold;
-}
-
-button:hover {
-    background-color: #FFF6B6;
-}
-
 .form-element {
     display: flex;
     flex-direction: column;

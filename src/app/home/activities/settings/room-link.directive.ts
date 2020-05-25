@@ -5,6 +5,9 @@ import { Directive, ViewContainerRef } from '@angular/core';
 })
 export class RoomLinkDirective {
 
-  constructor(public viewContainerRef: ViewContainerRef) { }
+  public viewContainerRef: ViewContainerRef
 
+  constructor(viewContainerRef: ViewContainerRef) {
+    this.viewContainerRef = viewContainerRef
+  }
 }

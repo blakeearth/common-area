@@ -28,15 +28,15 @@ export class HomeComponent implements OnInit {
     activity = activity.replace('/', '');
     if (activity == '') {
       let activityContainer: Element = document.getElementById("activity-container");
-      let room: Element = document.getElementById("room");
+      let room: Element = document.getElementsByClassName("room")[0];
       activityContainer.classList.add("invisible");
-      room.classList.remove("invisible-mobile");
+      room.classList.toggle("visible-mobile");
     }
     else {
       let activityContainer: Element = document.getElementById("activity-container");
-      let room: Element = document.getElementById("room");
       activityContainer.classList.remove("invisible");
-      room.classList.add("invisible-mobile");
+      let room: Element = document.getElementsByClassName("room")[0];
+      room.classList.remove("visible-mobile");
     }
   }
 

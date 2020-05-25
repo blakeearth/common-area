@@ -1,6 +1,8 @@
 <div class="landing-page">
-    <nav class="options">
-        <a href="/auth/sign-in">Have an alpha account? Sign in</a>
+    <nav id="options">
+        <div *ngIf="loggedIn; then thenBlock else elseBlock"></div>
+        <ng-template #thenBlock><a href="/home">Continue to Slumber Party</a></ng-template>
+        <ng-template #elseBlock><a href="/auth/sign-in" id="entry-link">Have an alpha account? Sign in</a></ng-template>
     </nav>
     <div class="statement">
         <h1>💤🎉 Slumber Party is coming soon.</h1>

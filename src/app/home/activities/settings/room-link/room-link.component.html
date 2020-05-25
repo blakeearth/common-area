@@ -1,1 +1,3 @@
-<a (click)="joinRoom(data.roomId)">{{ data.roomName }} (<div class="people">{{ data.roomMembers }})</div></a>
+<div class="room-link">
+    <div class="item"><p class="room-label">{{ data.title }}</p><button (click)="enterRoom(data.room_id, data.title)"><div class="button-label">Enter</div></button></div>
+</div>

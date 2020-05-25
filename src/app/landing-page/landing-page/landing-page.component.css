@@ -23,7 +23,7 @@ a:hover {
     color: #F5F5FC;
 }
 
-.options {
+#options {
     position: absolute;
     right: 1em;
     top: 1em;

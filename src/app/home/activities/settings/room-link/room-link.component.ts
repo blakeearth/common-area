@@ -1,5 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { SocketService } from 'src/app/socket/socket.service';
+import { NgForm } from '@angular/forms'
 
 @Component({
   selector: 'app-room-link',
@@ -19,8 +20,10 @@ export class RoomLinkComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  joinRoom(roomId: string): void {
-    this.socketService.sendMessage({channel: "settings", type: "join_room", token: this.socketService.token, room_id: roomId});
+  enterRoom(roomId: string, title: string): void {
+    this.socketService.sendMessage({channel: "settings", type: "enter_room", token: this.socketService.token, room_id: roomId});
+    sessionStorage.setItem("room_id", roomId);
+    sessionStorage.setItem("room_title", title);
   }
 
 }
