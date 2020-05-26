@@ -38,6 +38,8 @@ export class SettingsComponent implements OnInit, Activity {
       this.socketService.sendMessage({channel: "settings", type: "request_rooms", token: this.socketService.token});
     }
     if (sessionStorage.getItem("room_id") != null) {
+      let roomId = sessionStorage.getItem("room_id");
+      this.socketService.sendMessage({channel: "settings", type: "enter_room", token: this.socketService.token, room_id: roomId});
       this.socketService.sendMessage({channel: "settings", type: "request_room_privacy", token: this.socketService.token, room_id: sessionStorage.getItem("room_id")});
     }
     this.roomLinks = [];
@@ -54,7 +56,6 @@ export class SettingsComponent implements OnInit, Activity {
             let roomId = msg["rooms"][name];
             sessionStorage.setItem("room_id", roomId);
             sessionStorage.setItem("room_title", name);
-            this.socketService.sendMessage({channel: "settings", type: "enter_room", token: this.socketService.token, room_id: roomId});
             this.roomTitle = name;
             document.getElementById("room-title").innerHTML = this.roomTitle;
           }
@@ -86,8 +87,15 @@ export class SettingsComponent implements OnInit, Activity {
         }
       }
       else if (msg["type"] == "enter_room") {
-        let roomId = sessionStorage.getItem("room_id");
-        this.roomChangeService.setRoom(roomId);
+        if (msg["success"] == true) {
+          console.log("Entered a room.");
+          let roomId = msg["room_id"];
+          sessionStorage.setItem("room_id", roomId);
+          this.roomChangeService.setRoom(roomId);
+        }
+        else {
+          console.error("Failed to enter the room.");
+        }
       }
       else if (msg["type"] == "join_room") {
         this.reloadRooms();
@@ -109,7 +117,7 @@ export class SettingsComponent implements OnInit, Activity {
     this.socketService.sendMessage({channel: "settings", type: "request_rooms", token: this.socketService.token});
   }
 
-  onRoomChange(roomId): void {
+  onRoomChange(roomId: string): void {
     this.socketService.sendMessage({channel: "settings", type: "request_room_privacy", token: this.socketService.token, room_id: roomId});
     this.roomTitle = sessionStorage.getItem("room_title");
     document.getElementById("room-title").innerHTML = this.roomTitle;

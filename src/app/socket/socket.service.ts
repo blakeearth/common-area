@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { webSocket, WebSocketSubject } from 'rxjs/webSocket';
-import { Observable, BehaviorSubject } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 
 const socket: WebSocketSubject<any> = webSocket('wss://websocket.slumberparty.io');
 
@@ -9,7 +9,7 @@ const socket: WebSocketSubject<any> = webSocket('wss://websocket.slumberparty.io
 })
 export class SocketService {
 
-  replySource: BehaviorSubject<any> = new BehaviorSubject<any>({"initialized": true});
+  replySource: Subject<any> = new Subject<any>();
   public reply: Observable<any> = this.replySource.asObservable();
   public token: string = sessionStorage.getItem("token");
 

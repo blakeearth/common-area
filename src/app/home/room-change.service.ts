@@ -1,13 +1,13 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class RoomChangeService {
 
-  changeSource: BehaviorSubject<any> = new BehaviorSubject<any>({"initialized": true});
-  public roomId: Observable<any> = this.changeSource.asObservable();
+  changeSource: Subject<string> = new Subject<any>();
+  public roomId: Observable<string> = this.changeSource.asObservable();
 
   constructor() { }
 

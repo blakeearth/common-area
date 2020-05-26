@@ -1,0 +1,20 @@
+.chat-message:hover {
+    background-color: #D5D5DB;
+}
+
+.chat-message {
+    padding: 0.5em 2ch 0.5em 2ch;
+}
+
+.author {
+    font-weight: bold;
+}
+
+.meta {
+    display: flex;
+    justify-content: space-between;
+}
+
+p {
+    margin: 0 0 0 0;
+}

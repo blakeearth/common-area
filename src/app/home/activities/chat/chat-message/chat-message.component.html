@@ -1,0 +1,9 @@
+<div class="chat-message">
+    <div class="item">
+        <div class="meta">
+            <p class="author">{{ data.username }}</p>
+            <p class="sent-date" value="MM/dd/yyyy h:mm a">{{ data.sent_date | date:'MM/dd/yyyy h:mm a'}}</p>
+        </div>
+        <p class="chat-contents">{{ data.contents }}</p>
+    </div>
+</div>

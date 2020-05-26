@@ -1,2 +1,14 @@
-<app-panel-header [header]="header"></app-panel-header>
-<p>chat works!</p>
+<div class="scroll-container">
+    <app-panel-header [header]="header"></app-panel-header>
+    <div class="list">
+        <ng-template appChatMessage></ng-template>
+    </div>
+    <form #c="ngForm" (ngSubmit)="onSendChat()" id="chat-box" novalidate>
+        <div class="form-element">
+            <div class="input" id="chat-field" contenteditable="plaintext-only">Message the room</div>
+        </div>
+        <div class="form-element">
+            <button type="submit">Send</button>
+        </div>
+    </form>
+</div>

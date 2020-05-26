@@ -1,0 +1,68 @@
+.scroll-container {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.list {
+    flex: 1 1 auto;
+    overflow-y: auto;
+    height: 70vh;
+    display: flex;
+    flex-direction: column-reverse;
+}
+
+.margin {
+    margin: 0.2em 2ch 0.2em 2ch;
+}
+
+form {
+    display: flex;
+    justify-content: space-between;
+}
+
+.form-element {
+    max-width: fit-content;
+    flex: 1 0 0;
+}
+
+button {
+    width: 10ch;
+    margin-right: 2ch;
+    padding: 0.2em 2ch 0.2em 2ch;
+    font-size: large;
+}
+
+.form-label {
+    margin: 0 4ch 0 2ch;
+}
+
+#chat-box {
+    padding: 1em 0 1em 0;
+    border-color: #011638;
+    border-top: solid;
+}
+
+#chat-field {
+    width: 20ch;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    background-color: white;
+    -webkit-appearance: textfield;
+    color: grey;
+    border-color: grey;
+    border: solid;
+    border-width: 1px;
+    margin-left: 2ch;
+}
+
+@media only screen and (max-width: 600px) {
+    .list {
+        height: 70vh;
+    }
+
+    #chat {
+        width: 70vh;
+        max-width: 70vw;
+    }
+}
