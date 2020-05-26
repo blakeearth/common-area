@@ -1,6 +1,5 @@
 import { Component, OnInit, ViewChild, ComponentFactoryResolver } from '@angular/core';
 import { Activity } from '../activity';
-import { NgForm } from '@angular/forms';
 import { ChatMessageDirective } from './chat-message.directive';
 import { RoomChangeService } from '../../room-change.service';
 import { ChatMessageComponent } from './chat-message/chat-message.component';
@@ -21,6 +20,10 @@ export class ChatComponent implements OnInit, Activity {
   componentFactoryResolver: ComponentFactoryResolver;
   socketService: SocketService;
 
+  earliestChatId: string;
+  roomId: string;
+  allChatsLoaded: boolean;
+
   constructor(socketService: SocketService, roomChangeService: RoomChangeService, componentFactoryResolver: ComponentFactoryResolver) {
     this.socketService = socketService;
     this.roomChangeService = roomChangeService;
@@ -33,7 +36,7 @@ export class ChatComponent implements OnInit, Activity {
   }
 
   onRoomChange(roomId: string): void {
-    console.log("room: " + roomId);
+    this.roomId = roomId;
     const viewContainerRef = this.chatMessageHost.viewContainerRef;
     viewContainerRef.clear();
     if (roomId != null) this.socketService.sendMessage({channel: "chat", type: "request_initial_messages", token: this.socketService.token, room_id: roomId});
@@ -42,6 +45,10 @@ export class ChatComponent implements OnInit, Activity {
   onResponseReceived(msg: any): void {
     if (msg["type"] == "request_messages") {
       console.log(msg["messages"]);
+      if (msg["messages"].length < 10) {
+        document.getElementById("retrieving").remove();
+        this.allChatsLoaded = true;
+      }
       msg["messages"].forEach(data => {
         this.loadChat(data, false);
       });
@@ -58,6 +65,13 @@ export class ChatComponent implements OnInit, Activity {
     chatBox.innerHTML = "";
   }
 
+  onListScroll(): void {
+    let list: Element = document.getElementById("list");
+    if (list.scrollTop == 0 && !this.allChatsLoaded) {
+      this.socketService.sendMessage({channel: "chat", type: "request_messages", token: this.socketService.token, room_id: this.roomId, before_chat_id: this.earliestChatId});
+    }
+  }
+
   loadChat(data: any, recent: boolean): void {
     const componentFactory = this.componentFactoryResolver.resolveComponentFactory(ChatMessageComponent);
 
@@ -69,6 +83,7 @@ export class ChatComponent implements OnInit, Activity {
     }
     else {
       componentRef = viewContainerRef.createComponent(componentFactory);
+      this.earliestChatId = data["chat_id"];
     }
     (<ChatMessageComponent>componentRef.instance).data = data;
   }

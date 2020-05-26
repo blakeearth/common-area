@@ -1,7 +1,8 @@
 <div class="scroll-container">
     <app-panel-header [header]="header"></app-panel-header>
-    <div class="list">
+    <div id="list" (scroll)="onListScroll()">
         <ng-template appChatMessage></ng-template>
+        <p id="retrieving">Retrieving more messages...</p>
     </div>
     <form #c="ngForm" (ngSubmit)="onSendChat()" id="chat-box" novalidate>
         <div class="form-element">

@@ -11,7 +11,7 @@ export class RoomChangeService {
 
   constructor() { }
 
-  setRoom(roomId: string) {
+  setRoom(roomId: string): void {
     this.changeSource.next(roomId);
   }
 }

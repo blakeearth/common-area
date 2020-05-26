@@ -15,6 +15,11 @@
     justify-content: space-between;
 }
 
+.sent-date {
+    padding-top: 0.25em;
+    font-size: smaller;
+}
+
 p {
     margin: 0 0 0 0;
 }
