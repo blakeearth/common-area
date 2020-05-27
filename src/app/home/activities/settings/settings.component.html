@@ -30,12 +30,22 @@
                         <button type="submit">Invite</button>
                     </div>
                 </form>
+                <h3>Leave {{ roomTitle }}</h3>
+                <form novalidate>
+                    <div class="form-element">
+                        <div class="form-label">Leave {{ roomTitle }}?</div>
+                    </div>
+                    <div class="form-element">
+                        <button (click)="onSubmitLeave()">Leave</button>
+                    </div>
+                </form>
             </div>
             <div id="enter-room" class="hidden">
                 <h2>Enter Another Room</h2>
                 <ng-template appRoomLink></ng-template>
             </div>
             <h2>Join a Room</h2>
+            <p>Any incoming invitations appear here. You can also join a public room!</p>
             <div id="invitations" class="hidden">
                 <h3>Pending Invitations</h3>
                 <ng-template appRoomInvitation></ng-template>
