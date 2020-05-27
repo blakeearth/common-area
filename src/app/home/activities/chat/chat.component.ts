@@ -37,6 +37,8 @@ export class ChatComponent implements OnInit, Activity {
 
   onRoomChange(roomId: string): void {
     this.roomId = roomId;
+    document.getElementById("retrieving").classList.remove("hidden");
+    this.allChatsLoaded = false;
     const viewContainerRef = this.chatMessageHost.viewContainerRef;
     viewContainerRef.clear();
     if (roomId != null) this.socketService.sendMessage({channel: "chat", type: "request_initial_messages", token: this.socketService.token, room_id: roomId});
@@ -46,8 +48,7 @@ export class ChatComponent implements OnInit, Activity {
     if (msg["type"] == "request_messages") {
       console.log(msg["messages"]);
       if (msg["messages"].length < 10) {
-        document.getElementById("retrieving").remove();
-        console.log("all_chats");
+        document.getElementById("retrieving").classList.add("hidden");
         this.allChatsLoaded = true;
       }
       msg["messages"].forEach(data => {

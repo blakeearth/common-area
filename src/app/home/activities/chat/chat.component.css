@@ -43,6 +43,10 @@ button {
     margin: 0 4ch 0 2ch;
 }
 
+.hidden {
+    display: none;
+}
+
 #chat-box {
     padding: 1em 0 1em 0;
     border-color: #011638;
