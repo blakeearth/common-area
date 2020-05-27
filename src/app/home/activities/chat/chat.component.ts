@@ -47,6 +47,7 @@ export class ChatComponent implements OnInit, Activity {
       console.log(msg["messages"]);
       if (msg["messages"].length < 10) {
         document.getElementById("retrieving").remove();
+        console.log("all_chats");
         this.allChatsLoaded = true;
       }
       msg["messages"].forEach(data => {

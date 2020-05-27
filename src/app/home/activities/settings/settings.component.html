@@ -2,27 +2,45 @@
     <app-panel-header [header]="header"></app-panel-header>
     <div class="list">
         <div class="margin">
-            <h2 id="room-title">{{ roomTitle }}</h2>
-            <form class="privacy-form hidden">
-                <div class="form-element">
-                    <p class="form-label">{{ roomTitle }} is currently public. Anyone with the link or room code (and a Slumber Party account)
-                    can join this room.</p>
-                </div>
-                <div class="form-element">
-                    <button (click)="onToggleRoomPrivacy()" type="submit">Make private</button>
-                </div>
-            </form>
-            <form class="privacy-form">
-                <div class="form-element">
-                <p class="form-label">{{ roomTitle }} is currently private. No one can join this room without an invitation.</p>
-                </div>
-                <div class="form-element">
-                    <button (click)="onToggleRoomPrivacy()" type="submit">Make public</button>
-                </div>
-            </form>
-            <h2>Enter Another Room</h2>
-            <ng-template appRoomLink></ng-template>
+            <div id="room-settings" class="hidden">
+                <h2 id="room-title">{{ roomTitle }}</h2>
+                <form class="privacy-form hidden">
+                    <div class="form-element">
+                        <p class="form-label">{{ roomTitle }} is currently public. Anyone with the link or room code (and a Slumber Party account)
+                        can join this room.</p>
+                    </div>
+                    <div class="form-element">
+                        <button (click)="onToggleRoomPrivacy()" type="submit">Make private</button>
+                    </div>
+                </form>
+                <form class="privacy-form">
+                    <div class="form-element">
+                        <p class="form-label">{{ roomTitle }} is currently private. No one can join this room without an invitation.</p>
+                    </div>
+                    <div class="form-element">
+                        <button (click)="onToggleRoomPrivacy()" type="submit">Make public</button>
+                    </div>
+                </form>
+                <h3>Invite Another User to {{ roomTitle }}</h3>
+                <form #i="ngForm" (ngSubmit)="onSubmitInvite(i)" novalidate>
+                    <div class="form-element">
+                        <input type="text" placeholder="Username" name="username" ngModel required>
+                    </div>
+                    <div class="form-element">
+                        <button type="submit">Invite</button>
+                    </div>
+                </form>
+            </div>
+            <div id="enter-room" class="hidden">
+                <h2>Enter Another Room</h2>
+                <ng-template appRoomLink></ng-template>
+            </div>
             <h2>Join a Room</h2>
+            <div id="invitations" class="hidden">
+                <h3>Pending Invitations</h3>
+                <ng-template appRoomInvitation></ng-template>
+            </div>
+            <h3>Join a Public Room</h3>
             <form #j="ngForm" (ngSubmit)="onSubmitJoin(j)" novalidate>
                 <div class="form-element">
                     <input type="text" placeholder="Room code" name="joinCode" ngModel required>

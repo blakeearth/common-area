@@ -1,9 +1,9 @@
 import { Directive, ViewContainerRef } from '@angular/core';
 
 @Directive({
-  selector: '[appRoomLink]'
+  selector: '[appRoomInvitation]'
 })
-export class RoomLinkDirective {
+export class RoomInvitationDirective {
 
   public viewContainerRef: ViewContainerRef;
 

@@ -25,6 +25,8 @@ import { RoomLinkDirective } from './home/activities/settings/room-link.directiv
 import { RoomLinkComponent } from './home/activities/settings/room-link/room-link.component';
 import { ChatMessageDirective } from './home/activities/chat/chat-message.directive';
 import { ChatMessageComponent } from './home/activities/chat/chat-message/chat-message.component';
+import { RoomInvitationDirective } from './home/activities/settings/room-invitation.directive';
+import { RoomInvitationComponent } from './home/activities/settings/room-invitation/room-invitation.component';
 
 @NgModule({
   declarations: [
@@ -49,7 +51,9 @@ import { ChatMessageComponent } from './home/activities/chat/chat-message/chat-m
     RoomLinkDirective,
     RoomLinkComponent,
     ChatMessageDirective,
-    ChatMessageComponent
+    ChatMessageComponent,
+    RoomInvitationDirective,
+    RoomInvitationComponent
   ],
   imports: [
     BrowserModule,
