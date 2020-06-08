@@ -11,7 +11,6 @@ export class SocketService {
 
   replySource: Subject<any> = new Subject<any>();
   public reply: Observable<any> = this.replySource.asObservable();
-  public token: string = sessionStorage.getItem("token");
 
   constructor() {
     socket.subscribe(
@@ -22,9 +21,6 @@ export class SocketService {
   }
 
   setResponse(msg: any) {
-    if (msg["token"] != null) {
-      this.token = msg["token"];
-    }
     this.replySource.next(msg);
   }
 

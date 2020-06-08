@@ -21,7 +21,7 @@ export class RoomLinkComponent implements OnInit {
   }
 
   enterRoom(roomId: string, title: string): void {
-    this.socketService.sendMessage({channel: "settings", type: "enter_room", token: this.socketService.token, room_id: roomId});
+    this.socketService.sendMessage({channel: "settings", type: "enter_room", room_id: roomId});
     sessionStorage.setItem("room_id", roomId);
     sessionStorage.setItem("room_title", title);
   }

@@ -18,12 +18,12 @@ export class RoomInvitationComponent implements OnInit {
   }
 
   joinRoom(roomId: string): void {
-    let submission = {channel: "settings", type: "join_room", token: this.socketService.token, room_id: roomId};
+    let submission = {channel: "settings", type: "join_room", room_id: roomId};
     this.socketService.sendMessage(submission);
   }
 
   declineInvitation(invitationId: string): void {
-    let submission = {channel: "settings", type: "decline_invitation", token: this.socketService.token, invitation_id: invitationId};
+    let submission = {channel: "settings", type: "decline_invitation", invitation_id: invitationId};
     this.socketService.sendMessage(submission);
   }
 

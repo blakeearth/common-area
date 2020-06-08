@@ -41,7 +41,7 @@ export class ChatComponent implements OnInit, Activity {
     this.allChatsLoaded = false;
     const viewContainerRef = this.chatMessageHost.viewContainerRef;
     viewContainerRef.clear();
-    if (roomId != null) this.socketService.sendMessage({channel: "chat", type: "request_initial_messages", token: this.socketService.token, room_id: roomId});
+    if (roomId != null) this.socketService.sendMessage({channel: "chat", type: "request_initial_messages", room_id: roomId});
   }
 
   onResponseReceived(msg: any): void {
@@ -63,14 +63,14 @@ export class ChatComponent implements OnInit, Activity {
   onSendChat(): void {
     let chatBox: Element = document.getElementById("chat-field");
     let contents: string = chatBox.innerHTML;
-    this.socketService.sendMessage({channel: "chat", type: "send_message", token: this.socketService.token, room_id: sessionStorage.getItem("room_id"), message: contents});
+    this.socketService.sendMessage({channel: "chat", type: "send_message", room_id: sessionStorage.getItem("room_id"), message: contents});
     chatBox.innerHTML = "";
   }
 
   onListScroll(): void {
     let list: Element = document.getElementById("list");
     if (list.scrollTop == 0 && !this.allChatsLoaded) {
-      this.socketService.sendMessage({channel: "chat", type: "request_messages", token: this.socketService.token, room_id: this.roomId, before_chat_id: this.earliestChatId});
+      this.socketService.sendMessage({channel: "chat", type: "request_messages", room_id: this.roomId, before_chat_id: this.earliestChatId});
     }
   }
 

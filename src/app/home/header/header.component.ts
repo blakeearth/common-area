@@ -16,12 +16,6 @@ export class HeaderComponent implements OnInit {
 
   ngOnInit(): void {
     this.socketService.reply.subscribe(msg => this.onResponseReceived(msg));
-    if (this.socketService.token != null) {
-      this.socketService.sendMessage({channel: "auth", type: "validate_session", token: this.socketService.token});
-    }
-    else {
-      document.location.href = "/auth/sign-in";
-    }
   }
 
   onResponseReceived(msg: any): void {
@@ -33,7 +27,7 @@ export class HeaderComponent implements OnInit {
   }
 
   signOut(): void {
-    let signOutMessage = {channel: "auth", type: "sign_out", token: this.socketService.token}
+    let signOutMessage = {channel: "auth", type: "sign_out"}
     this.socketService.sendMessage(signOutMessage)
     sessionStorage.clear();
     document.location.href = "/";

@@ -24,9 +24,6 @@ export class SignUpComponent implements OnInit, Goal {
 
   ngOnInit(): void {
     this.socketService.reply.subscribe(msg => this.onResponseReceived(msg));
-    if (this.socketService.token != null) {
-      this.socketService.sendMessage({channel: "auth", type: "validate_session", token: this.socketService.token});
-    }
   }
 
   onSubmit(f: NgForm) {
@@ -42,10 +39,7 @@ export class SignUpComponent implements OnInit, Goal {
     if (msg["type"] == "sign_up") {
       if (msg["password_correct"] || msg["account_creation_success"]) {
         if (msg["password_correct"] == true || msg["account_creation_success"] == true) {
-          if (msg["token"]) {
-            sessionStorage.setItem("token", msg["token"]);
-            document.location.href = "/home";
-          }
+          document.location.href = "/home";
         }
       }
       else if (msg["error"]) {
