@@ -1,4 +1,6 @@
-import { Injectable } from '@angular/core';
+import { Injectable, OnInit } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+
 import { webSocket, WebSocketSubject } from 'rxjs/webSocket';
 import { Observable, Subject } from 'rxjs';
 
@@ -8,16 +10,23 @@ const socket: WebSocketSubject<any> = webSocket('wss://websocket.slumberparty.io
   providedIn: 'root'
 })
 export class SocketService {
+  http: HttpClient;
 
-  replySource: Subject<any> = new Subject<any>();
-  public reply: Observable<any> = this.replySource.asObservable();
+  replySource: Subject<any>;
+  public reply: Observable<any>;
 
-  constructor() {
+  constructor(http: HttpClient) {
+    this.http = http;
+    this.http.get("/get-token").subscribe((data: any) => console.log(data));
+
     socket.subscribe(
       msg => this.setResponse(msg),
       err => console.log(err),
       () => console.log('complete')
     );
+
+    this.replySource = new Subject<any>();
+    this.reply = this.replySource.asObservable();
   }
 
   setResponse(msg: any) {
