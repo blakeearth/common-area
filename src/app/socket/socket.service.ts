@@ -17,7 +17,7 @@ export class SocketService {
 
   constructor(http: HttpClient) {
     this.http = http;
-    this.http.get("/get-token").subscribe((data: any) => console.log(data));
+    this.http.get("https://websocket.slumberparty.io/get-token").subscribe((data: any) => console.log(data));
 
     socket.subscribe(
       msg => this.setResponse(msg),
