@@ -3,7 +3,6 @@ import { Injectable } from '@angular/core';
 import { webSocket, WebSocketSubject } from 'rxjs/webSocket';
 import { Observable, Subject } from 'rxjs';
 
-const tokenRequest: WebSocketSubject<any> = webSocket('wss://websocket.slumberparty.io/create-token');
 const socket: WebSocketSubject<any> = webSocket('wss://websocket.slumberparty.io');
 
 @Injectable({
@@ -15,12 +14,6 @@ export class SocketService {
   public reply: Observable<any>;
 
   constructor() {
-
-    tokenRequest.subscribe(
-      msg => this.setResponse(msg),
-      err => console.log(err),
-      () => console.log('complete')
-    );
 
     socket.subscribe(
       msg => this.setResponse(msg),
