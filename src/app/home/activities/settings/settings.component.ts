@@ -40,10 +40,9 @@ export class SettingsComponent implements OnInit, Activity {
   }
 
   onResponseReceived(msg: any): void {
-    console.log(msg["type"]);
+    console.log("Incoming message of type: " + msg["type"]);
     if (msg["channel"] == "settings") {
       if (msg["type"] == "request_rooms") {
-        console.log("got some rooooms");
         const viewContainerRef = this.roomLinkHost.viewContainerRef;
         viewContainerRef.clear();
         let numRooms = Object.keys(msg["rooms"]).length;
@@ -61,8 +60,11 @@ export class SettingsComponent implements OnInit, Activity {
         }
         for (let name in msg["rooms"]) {
           if (sessionStorage.getItem("room_id") == null || sessionStorage.getItem("room_title") == null) {
-            sessionStorage.setItem("room_id", msg["room_id"]);
+            sessionStorage.setItem("room_id", msg["rooms"][name]);
             sessionStorage.setItem("room_title", name);
+            this.socketService.sendMessage({channel: "settings", type: "enter_room", room_id: msg["rooms"][name]});
+          }
+          else if (msg["rooms"][name] == sessionStorage.getItem("room_id")) {
             this.socketService.sendMessage({channel: "settings", type: "enter_room", room_id: msg["rooms"][name]});
           }
           if (!(msg["rooms"][name] == sessionStorage.getItem("room_id"))) {
