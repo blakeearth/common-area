@@ -56,7 +56,7 @@ export class ChatComponent implements OnInit, Activity {
       });
     }
     else if (msg["type"] == "send_message") {
-      this.loadChat({username: msg["username"], date_time: msg["time"], contents: msg["message"], chat_id: msg["chat_id"]}, true);
+      this.loadChat({username: msg["username"], sent_date: msg["time"], contents: msg["message"], chat_id: msg["chat_id"]}, true);
     }
   }
 
