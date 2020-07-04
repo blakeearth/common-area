@@ -56,7 +56,7 @@ export class ChatComponent implements OnInit, Activity {
       });
     }
     else if (msg["type"] == "send_message") {
-      let data: any = {username: msg["username"], sent_date: msg["time"], contents: msg["message"], chat_id: msg["chat_id"]};
+      let data: any = {username: msg["username"], sent_date: msg["sent_date"], contents: msg["contents"], chat_id: msg["chat_id"]};
       console.log(data);
       this.loadChat(data, true);
     }
@@ -65,7 +65,7 @@ export class ChatComponent implements OnInit, Activity {
   onSendChat(): void {
     let chatBox: Element = document.getElementById("chat-field");
     let contents: string = chatBox.innerHTML;
-    this.socketService.sendMessage({channel: "chat", type: "send_message", room_id: sessionStorage.getItem("room_id"), message: contents});
+    this.socketService.sendMessage({channel: "chat", type: "send_message", room_id: sessionStorage.getItem("room_id"), contents: contents});
     chatBox.innerHTML = "";
   }
 
