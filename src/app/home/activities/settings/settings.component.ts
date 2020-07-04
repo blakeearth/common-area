@@ -37,6 +37,10 @@ export class SettingsComponent implements OnInit, Activity {
     this.roomChangeService.roomId.subscribe(msg => this.onRoomChange(msg));
     this.socketService.sendMessage({channel: "settings", type: "request_rooms"});
     this.socketService.sendMessage({channel: "settings", type: "request_invitations"});
+    console.log(sessionStorage.getItem("room_id"));
+    if (sessionStorage.getItem("room_id") != undefined) {
+      this.socketService.sendMessage({channel: "settings", type: "enter_room", room_id: sessionStorage.getItem("room_id")});
+    }
   }
 
   onResponseReceived(msg: any): void {
@@ -62,9 +66,6 @@ export class SettingsComponent implements OnInit, Activity {
           if (sessionStorage.getItem("room_id") == null || sessionStorage.getItem("room_title") == null) {
             sessionStorage.setItem("room_id", msg["rooms"][name]);
             sessionStorage.setItem("room_title", name);
-            this.socketService.sendMessage({channel: "settings", type: "enter_room", room_id: msg["rooms"][name]});
-          }
-          else if (msg["rooms"][name] == sessionStorage.getItem("room_id")) {
             this.socketService.sendMessage({channel: "settings", type: "enter_room", room_id: msg["rooms"][name]});
           }
           if (!(msg["rooms"][name] == sessionStorage.getItem("room_id"))) {
