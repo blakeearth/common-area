@@ -39,7 +39,7 @@ export class SettingsComponent implements OnInit, Activity {
     this.socketService.sendMessage({channel: "settings", type: "request_invitations"});
     console.log(sessionStorage.getItem("room_id"));
     if (sessionStorage.getItem("room_id") != undefined) {
-      this.socketService.sendMessage({channel: "settings", type: "enter_room", room_id: sessionStorage.getItem("room_id")});
+      this.socketService.sendMessage({channel: "settings", type: "enter_room", room_id: sessionStorage.getItem("room_id"), as_player: false});
     }
   }
 
@@ -66,7 +66,7 @@ export class SettingsComponent implements OnInit, Activity {
           if (sessionStorage.getItem("room_id") == null || sessionStorage.getItem("room_title") == null) {
             sessionStorage.setItem("room_id", msg["rooms"][name]);
             sessionStorage.setItem("room_title", name);
-            this.socketService.sendMessage({channel: "settings", type: "enter_room", room_id: msg["rooms"][name]});
+            this.socketService.sendMessage({channel: "settings", type: "enter_room", room_id: msg["rooms"][name], as_player: false});
           }
           if (!(msg["rooms"][name] == sessionStorage.getItem("room_id"))) {
             let data: any = {title: name, room_id: msg["rooms"][name]};
@@ -129,7 +129,7 @@ export class SettingsComponent implements OnInit, Activity {
         this.reloadInvitations();
       }
       else if (msg["type"] == "create_room") {
-        this.socketService.sendMessage({channel: "settings", type: "enter_room", room_id: msg["room_id"]});
+        this.socketService.sendMessage({channel: "settings", type: "enter_room", room_id: msg["room_id"], as_player: false});
       }
       else if (msg["type"] == "leave_room") {
         if (msg["success"] == true) {
