@@ -171,7 +171,7 @@ export class SettingsComponent implements OnInit, Activity {
 
   onRoomChange(roomId: string): void {
     this.socketService.sendMessage({channel: "settings", type: "request_room_privacy", room_id: roomId});
-    document.getElementById("room-title").innerHTML = sessionStorage.getItem("room_title");;
+    document.getElementById("room-title").innerHTML = sessionStorage.getItem("room_title");
     this.reloadRooms();
   }
 
