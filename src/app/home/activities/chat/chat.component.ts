@@ -49,18 +49,18 @@ export class ChatComponent implements OnInit, Activity {
 
   onResponseReceived(msg: any): void {
     if (msg["type"] == "request_messages") {
-      console.log(msg["messages"]);
       if (msg["messages"].length < 10) {
         document.getElementById("retrieving").classList.add("hidden");
         this.allChatsLoaded = true;
       }
+      document.getElementById("retrieving-now").classList.add("hidden");
+      document.getElementById("load-more").classList.remove("hidden");
       msg["messages"].forEach(data => {
         this.loadChat(data, false);
       });
     }
     else if (msg["type"] == "send_message") {
       let data: any = {username: msg["username"], sent_date: msg["sent_date"], contents: msg["contents"], chat_id: msg["chat_id"]};
-      console.log(data);
       this.loadChat(data, true);
     }
   }
@@ -75,6 +75,8 @@ export class ChatComponent implements OnInit, Activity {
 
   onListScroll(): void {
     let list: Element = document.getElementById("list");
+    document.getElementById("retrieving-now").classList.remove("hidden");
+    document.getElementById("load-more").classList.add("hidden");
     if (list.scrollTop == 0 && !this.allChatsLoaded) {
       this.socketService.sendMessage({channel: "chat", type: "request_messages", room_id: this.roomId, before_chat_id: this.earliestChatId});
     }

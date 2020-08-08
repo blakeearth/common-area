@@ -2,7 +2,10 @@
     <app-panel-header [header]="header"></app-panel-header>
     <div id="list" (scroll)="onListScroll()">
         <ng-template appChatMessage></ng-template>
-        <a (click)="onListScroll()" id="retrieving">Load more messages</a>
+        <p id="retrieving">
+            <a href="#" id="load-more" (click)="onListScroll()">Load more messages</a>
+            <a class="hidden" id="retrieving-now">Retrieving more messages...</a>
+        </p>
     </div>
     <form #c="ngForm" (ngSubmit)="onSendChat()" id="chat-box" novalidate>
         <div class="form-element">
