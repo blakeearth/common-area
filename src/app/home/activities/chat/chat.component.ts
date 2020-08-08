@@ -24,6 +24,8 @@ export class ChatComponent implements OnInit, Activity {
   roomId: string;
   allChatsLoaded: boolean;
 
+  textInChatField: boolean;
+
   constructor(socketService: SocketService, roomChangeService: RoomChangeService, componentFactoryResolver: ComponentFactoryResolver) {
     this.socketService = socketService;
     this.roomChangeService = roomChangeService;
@@ -33,6 +35,7 @@ export class ChatComponent implements OnInit, Activity {
   ngOnInit(): void {
     this.socketService.reply.subscribe(msg => this.onResponseReceived(msg));
     this.roomChangeService.roomId.subscribe(msg => this.onRoomChange(msg));
+    this.textInChatField = false;
   }
 
   onRoomChange(roomId: string): void {
@@ -66,7 +69,8 @@ export class ChatComponent implements OnInit, Activity {
     let chatBox: Element = document.getElementById("chat-field");
     let contents: string = chatBox.innerHTML;
     this.socketService.sendMessage({channel: "chat", type: "send_message", room_id: sessionStorage.getItem("room_id"), contents: contents});
-    chatBox.innerHTML = "";
+    chatBox.innerHTML = "Message the room";
+    this.textInChatField = false;
   }
 
   onListScroll(): void {
@@ -90,6 +94,14 @@ export class ChatComponent implements OnInit, Activity {
       this.earliestChatId = data["chat_id"];
     }
     (<ChatMessageComponent>componentRef.instance).data = data;
+  }
+
+  checkChatField(): void {
+    if (!this.textInChatField) {
+      let chatField: Element = document.getElementById("chat-field");
+      chatField.innerHTML = "";
+      this.textInChatField = true;
+    }
   }
 
 }
