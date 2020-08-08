@@ -18,6 +18,12 @@
     padding: 1em 0 1em 0;
 }
 
+#load-more {
+    color: #011638;
+    cursor: pointer;
+    text-decoration: underline;
+}
+
 .margin {
     margin: 0.2em 2ch 0.2em 2ch;
 }
