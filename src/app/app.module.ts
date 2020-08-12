@@ -29,6 +29,10 @@ import { ChatMessageComponent } from './home/activities/chat/chat-message/chat-m
 import { RoomInvitationDirective } from './home/activities/settings/room-invitation.directive';
 import { RoomInvitationComponent } from './home/activities/settings/room-invitation/room-invitation.component';
 import { JoinRoomComponent } from './join-room/join-room.component';
+import { ListDirective } from './home/activities/tasks/list.directive';
+import { ListComponent } from './home/activities/tasks/list/list.component';
+import { TaskComponent } from './home/activities/tasks/list/task/task.component';
+import { TaskDirective } from './home/activities/tasks/list/task.directive';
 
 @NgModule({
   declarations: [
@@ -56,7 +60,11 @@ import { JoinRoomComponent } from './join-room/join-room.component';
     ChatMessageComponent,
     RoomInvitationDirective,
     RoomInvitationComponent,
-    JoinRoomComponent
+    JoinRoomComponent,
+    ListDirective,
+    ListComponent,
+    TaskComponent,
+    TaskDirective
   ],
   imports: [
     BrowserModule,
