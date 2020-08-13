@@ -1,7 +1,6 @@
 .task {
     display: flex;
     cursor: grab;
-    justify-content: space-between;
     background-color: #F5F5FC;
     padding: 0.2em 1ch 0.2em 1ch;
     margin: 0.5em 0 0.5em 0;
@@ -20,6 +19,7 @@
 .center {
     display: flex;
     height: auto;
+    flex: 1;
     flex-direction: column;
     justify-content: space-between;
   }
@@ -32,23 +32,21 @@
 
   .full {
     overflow: hidden;
+    display: flex;
     transition: height 0.2s ease-out;
     height: 0;
+  }
+
+  .contents {
+    overflow: hidden;
+    resize: none;
+    flex: 1;
+    background-color: #D5D5DB;
   }
 
   .open {
     cursor: auto;
     background-color: #D5D5DB;
-  }
-  
-  .edit {
-    align-self: center;
-    font-size:2em;
-    cursor: pointer;
-  }
-
-  .hidden {
-    visibility: hidden;
   }
 
   .not-displayed {

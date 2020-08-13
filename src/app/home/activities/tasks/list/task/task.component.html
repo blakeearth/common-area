@@ -1,4 +1,4 @@
-<div class="task" id="{{ data.task_id }}" [cdkDragDisabled]="disabled" (cdkDragStarted)="startDragging($event)" (mouseover)="toggleEditButton()" (mouseout)="toggleEditButton()" cdkDrag>
+<div class="task" id="{{ data.task_id }}" [cdkDragDisabled]="disabled" (cdkDragStarted)="startDragging($event)" (click)="openTask()" cdkDrag>
     <div class="center">
       <div class="tags">
         tags
@@ -7,15 +7,12 @@
         {{ data.title }}
       </div>
       <div id="{{ data.task_id }}-full" class="full">
-        <div id="{{ data.task_id }}-contents" class="contents">
+        <div id="{{ data.task_id }}-contents" class="contents" contenteditable="plaintext-only">
           Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
         </div>
       </div>
       <div class="extras">
         extras
       </div>
-    </div>
-    <div id="{{ data.task_id }}-edit" class="edit hidden" (click)="toggleTask()">
-      ✎
     </div>
 </div>
