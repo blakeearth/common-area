@@ -1,16 +1,21 @@
-<div class="task">
+<div class="task" id="{{ data.task_id }}" [cdkDragDisabled]="disabled" (cdkDragStarted)="startDragging($event)" (mouseover)="toggleEditButton()" (mouseout)="toggleEditButton()" cdkDrag>
     <div class="center">
       <div class="tags">
         tags
       </div>
       <div class="title">
-        TITLE CARD. Titles can sometimes be very long, so try to be wary of thissssssssssssssssssssssssssssssssss. Even when you think it's all okay, it's almost definitely not okay.
+        {{ data.title }}
+      </div>
+      <div id="{{ data.task_id }}-full" class="full">
+        <div id="{{ data.task_id }}-contents" class="contents">
+          Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
+        </div>
       </div>
       <div class="extras">
         extras
       </div>
     </div>
-    <div class="radio">
-      <input type="radio" id="task-id" name="active"/>
+    <div id="{{ data.task_id }}-edit" class="edit hidden" (click)="toggleTask()">
+      ✎
     </div>
 </div>

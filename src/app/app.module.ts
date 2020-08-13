@@ -33,6 +33,7 @@ import { ListDirective } from './home/activities/tasks/list.directive';
 import { ListComponent } from './home/activities/tasks/list/list.component';
 import { TaskComponent } from './home/activities/tasks/list/task/task.component';
 import { TaskDirective } from './home/activities/tasks/list/task.directive';
+import { DragDropModule } from '@angular/cdk/drag-drop';
 
 @NgModule({
   declarations: [
@@ -70,7 +71,8 @@ import { TaskDirective } from './home/activities/tasks/list/task.directive';
     BrowserModule,
     FormsModule,
     AppRoutingModule,
-    HttpClientModule
+    HttpClientModule,
+    DragDropModule
   ],
   entryComponents: [RoomLinkComponent],
   providers: [],

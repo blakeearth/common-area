@@ -1,10 +1,22 @@
-<div class="list">
-    <input id="id" type="checkbox"/>
+<div class="list" [cdkDragDisabled]="disabled" (cdkDragStarted)="startDragging($event)" cdkDrag>
+    <input id="{{ data.list_id }}-checkbox" type="checkbox"/>
      <div class="list-header">
-        <input class="title-field" type="text" value="List header"/>
-        <label class="dropdown-arrow" for="id"></label>
+        <input id="{{ data.list_id }}-title-field" class="title-field" type="text" value="{{ data.title }}" (keydown.enter)="editTitle()" (focusout)="editTitle()"/>
+        <label (click)="toggleArrow()" id="{{ data.list_id }}-label" class="dropdown-arrow" for="{{ data.list_id }}-checkbox">▲</label>
      </div>
     <div class="tasks">
-        <ng-template appTask></ng-template>
+        <div class="new-task">
+            <input id="{{ data.list_id }}-new-task-checkbox" type="checkbox"/>
+            <div class="center">
+                <input class="title" id="{{ data.list_id }}-new-task-title-field" type="text" placeholder="Add a new task..." (keydown.enter)="addTask()"/>
+            </div>
+            <label (click)="addTask()" class="submit-button" for="{{ data.list_id }}-new-list-checkbox">✓</label>
+        </div>
+        <div class="drop-area" id="{{ data.list_id }}" cdkDropList [cdkDropListConnectedTo]="lists" (cdkDropListDropped)="dropTask($event)">
+            <ng-template appTask></ng-template>
+        </div>
+        <div class="delete-row">
+            <a class="delete-list" (click)="deleteList()">Delete</a>
+        </div>
     </div>
 </div>

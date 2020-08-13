@@ -2,19 +2,58 @@
     display: flex;
     flex-direction: column;
     height: 100%;
+    position: relative;
 }
 
-.margin {
-    margin: 0.2em 2ch 0.2em 2ch;
+#list {
+    flex: 1 1 auto;
+    overflow-y: auto;
+    height: 70vh;
+    display: flex;
+    flex-direction: column;
 }
 
-@media only screen and (max-width: 600px) {
-    .list {
-        height: 70vh;
-    }
-
-    #chat {
-        width: 70vh;
-        max-width: 70vw;
-    }
+.new-list {
+    background-color: #C2BBDD;
+    padding: 0.4em 1ch 0.2em 1ch;
+    margin: 0 0 1em 0;
+}
+  
+input[type=checkbox],
+.tasks {
+    display: none;
+}
+  
+.list-header {
+    display: flex;
+}
+  
+input:checked~.tasks {
+    display: block;
+}
+  
+.list-header::after {
+    font-size: 1.5em;
+    content: '✓';
+}
+  
+input:checked~.list-header::after {
+    content: '✓';
+}
+  
+.submit-button {
+    display: hidden;
+    cursor: pointer;
+    width: 2ch;
+    height: 1.5em;
+    position: absolute;
+    right: 1ch;
+}
+  
+#new-list-title-field {
+    font-size: 1.5em;
+    background-color: #C2BBDD;
+    cursor: pointer;
+    border: none;
+    flex: 1;
 }
