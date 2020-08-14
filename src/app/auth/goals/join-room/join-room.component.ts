@@ -74,7 +74,7 @@ export class JoinRoomComponent implements OnInit, Goal {
   joinRoom() {
     sessionStorage.setItem("joinRoomId", this.roomId);
     sessionStorage.setItem("joinRoomTitle", this.roomTitle);
-    this.socketService.sendMessage({channel: "settings", type: "request_invitatitons"});
+    this.socketService.sendMessage({channel: "settings", type: "request_invitations"});
   }
 
   goHome() {
