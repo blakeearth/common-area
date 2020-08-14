@@ -1,11 +1,11 @@
 <app-panel-header [header]="header"></app-panel-header>
 <form #f="ngForm" (ngSubmit)="onSubmit(f)" novalidate>
     <div class="form-element">
-        <input type="text" placeholder="Email address" name="username" ngModel required>
+        <input type="text" placeholder="Email address" autocomplete="email" name="username" ngModel required>
     </div>
 
     <div class="form-element">
-        <input type="password" placeholder="Password" name="password" ngModel required>
+        <input type="password" placeholder="Password" autocomplete="new-password" name="password" ngModel required>
     </div>
 
     <div id="error" class="form-element">

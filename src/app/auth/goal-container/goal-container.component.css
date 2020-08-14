@@ -2,6 +2,7 @@
     min-width: 80ch;
     min-height: 16em;
     display: flex;
+    flex-direction: column;
     flex: 1 0 0;
 }
 
@@ -12,7 +13,8 @@
 .visible {
     flex: 1 0 0;
     background-color: #F5F5FC;
-    display: block;
+    display: flex;
+    flex-direction: column;
 }
 
 .header {

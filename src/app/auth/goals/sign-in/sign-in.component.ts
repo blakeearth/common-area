@@ -37,7 +37,7 @@ export class SignInComponent implements OnInit, Goal {
   onResponseReceived(msg: any): void {
     if (msg["type"] == "sign_in") {
       if (msg["password_correct"]) {
-        if (msg["password_correct"] == true) {
+        if (msg["password_correct"] == true && !this.location.path().includes('/j/')) {
           document.location.href = "/home";
         }
       }
@@ -45,6 +45,11 @@ export class SignInComponent implements OnInit, Goal {
         let error: HTMLElement = document.getElementById("error");
         error.innerHTML = msg["error"];
         error.id = "visible-error";
+      }
+    }
+    else if (msg["type"] == "request_room") {
+      if (msg["title"] != null) {
+        this.header = "Sign in to continue to " + msg["title"];
       }
     }
   }

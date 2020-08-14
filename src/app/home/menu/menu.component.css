@@ -1,7 +1,6 @@
 nav {
     height: 100%;
     background-color: #011638;
-    color: #011638;
 }
 
 a {
@@ -12,6 +11,10 @@ a {
     text-align: center;
     border-left: 0.1em solid;
     padding: 0.2em 0.2em 0.2em 0.1em;
+}
+
+fa-icon {
+    color: #F5F5FC;
 }
 
 a:hover {

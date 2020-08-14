@@ -1,0 +1,59 @@
+form {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    padding: 0 4em 0 4em;
+}
+
+a {
+    color: #011638;
+    cursor: pointer;
+    text-decoration: underline;
+}
+
+input {
+    font-size: 1.5em;
+}
+
+.join-form-element {
+    align-self: center;
+    text-align: center;
+    flex: 1;
+    flex-direction: column;
+    justify-content: center;
+    display: flex;
+    margin: 0.5em 0 0.5em 0;
+}
+
+.users {
+    font-size: 1.5em;
+    margin-bottom: 0.25em;
+    align-self: flex-end;
+}
+
+button {
+    font-size: 1.5em;
+    margin-top: 0.25em;
+}
+
+h2 {
+    margin: 0.2em 0 0.2em 0;
+}
+
+a {
+    text-decoration: none;
+}
+
+.hidden-form {
+    display: none;
+}
+
+@media only screen and (max-width: 600px) {
+    form {
+        padding: 0 0.5em 0 0.5em;
+    }
+
+    input {
+        font-size: 1em;
+    }
+}

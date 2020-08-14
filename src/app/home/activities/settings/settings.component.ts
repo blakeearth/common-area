@@ -21,6 +21,8 @@ export class SettingsComponent implements OnInit, Activity {
   header: string = "Settings";
   roomPrivate: boolean = true;
   roomTitle: string = sessionStorage.getItem("room_title");
+  roomId: string = sessionStorage.getItem("room_id");
+  roomLink: string = "https://💤🎉.ws/j/" + this.roomId;
 
   socketService: SocketService;
   roomChangeService: RoomChangeService;
@@ -40,6 +42,11 @@ export class SettingsComponent implements OnInit, Activity {
     console.log(sessionStorage.getItem("room_id"));
     if (sessionStorage.getItem("room_id") != undefined) {
       this.socketService.sendMessage({channel: "settings", type: "enter_room", room_id: sessionStorage.getItem("room_id"), as_player: false});
+    }
+    if (sessionStorage.getItem("joinRoomId") != undefined) {
+      this.socketService.sendMessage({channel: "settings", type: "join_room", room_id: sessionStorage.getItem("joinRoomId")});
+      sessionStorage.removeItem("joinRoomId");
+      sessionStorage.removeItem("joinRoomTitle");
     }
   }
 
@@ -172,6 +179,8 @@ export class SettingsComponent implements OnInit, Activity {
   onRoomChange(roomId: string): void {
     this.socketService.sendMessage({channel: "settings", type: "request_room_privacy", room_id: roomId});
     document.getElementById("room-title").innerHTML = sessionStorage.getItem("room_title");
+    this.roomId = roomId;
+    this.roomLink = "https://💤🎉.ws/j/" + this.roomId;
     this.reloadRooms();
   }
 

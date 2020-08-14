@@ -44,7 +44,7 @@ export class TasksComponent implements OnInit, Activity {
         this.loadList({title: msg["title"], index: msg["index"], list_id: msg["list_id"]})
       }
       else if (msg["type"] == "delete_list") {
-        this.deleteList(msg["list_id"]);
+        this.onDeleteList(msg["list_id"]);
       }
     }
   }
@@ -71,7 +71,8 @@ export class TasksComponent implements OnInit, Activity {
     let instance: ListComponent = <ListComponent>componentRef.instance
     instance.data = data;
     instance.lists = this.lists;
-    this.listViewRefs.set(data.list_id, componentRef.hostView)
+    this.listsService.lists.set(data.list_id, instance);
+    this.listViewRefs.set(data.list_id, componentRef.hostView);
   }
 
   addList(): void {
@@ -81,7 +82,7 @@ export class TasksComponent implements OnInit, Activity {
     newListTitleField.value = "";
   }
 
-  deleteList(listId: string) {
+  onDeleteList(listId: string) {
     let index: number = this.listHost.viewContainerRef.indexOf(this.listViewRefs.get(listId));
     this.listHost.viewContainerRef.remove(index);
     // TODO: the below line is not working

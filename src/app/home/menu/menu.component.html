@@ -1,9 +1,10 @@
 <nav>
-    <a (click)="navigate('/home')" id="room-nav">🏠</a>
-    <a (click)="navigate('/home/store')" id="store-nav">🛍</a>
-    <a (click)="navigate('/home/chat')" id="chat-nav">💬</a>
-    <a (click)="navigate('/home/timer')" id="timer-nav">⏲️</a>
-    <a (click)="navigate('/home/tasks')" id="tasks-nav">✅</a>
-    <a (click)="navigate('/home/calendar')" id="calendar-nav">🗓️</a>
-    <a (click)="navigate('/home/settings')" id="settings-nav">⚙️</a>
+    <a (click)="navigate('/home')" id="room-nav"><fa-icon [icon]="faHome"></fa-icon></a>
+    <a (click)="navigate('/home/store')" id="store-nav"><fa-icon [icon]="faStore"></fa-icon></a>
+    <a (click)="navigate('/home/chat')" id="chat-nav"><fa-icon [icon]="faComments"></fa-icon></a>
+    <a (click)="navigate('/home/timer')" id="timer-nav"><fa-icon [icon]="faHourglass"></fa-icon></a>
+    <a (click)="navigate('/home/analytics')" id="analytics-nav"><fa-icon [icon]="faChartPie"></fa-icon></a>
+    <a (click)="navigate('/home/tasks')" id="tasks-nav"><fa-icon [icon]="faTasks"></fa-icon></a>
+    <a (click)="navigate('/home/calendar')" id="calendar-nav"><fa-icon [icon]="faCalendar"></fa-icon></a>
+    <a (click)="navigate('/home/settings')" id="settings-nav"><fa-icon [icon]="faCog"></fa-icon></a>
 </nav>

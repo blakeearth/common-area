@@ -6,7 +6,7 @@
                 <h2 id="room-title">{{ roomTitle }}</h2>
                 <form class="privacy-form hidden">
                     <div class="form-element">
-                        <p class="form-label">{{ roomTitle }} is currently public. Anyone with the link or room code (and a Slumber Party account)
+                        <p class="form-label">{{ roomTitle }} is currently public. Anyone with the link or room code
                         can join this room.</p>
                     </div>
                     <div class="form-element">
@@ -21,10 +21,19 @@
                         <button (click)="onToggleRoomPrivacy()" type="submit">Make public</button>
                     </div>
                 </form>
+                <h3 class="privacy-form hidden">Share an invite link for {{ roomTitle }}</h3>
+                <form class="privacy-form hidden">
+                    <div class="form-element">
+                        <input readonly value="💤🎉.ws/j/{{ roomId }}"/>
+                    </div>
+                    <div class="form-element">
+                        <button [cdkCopyToClipboard]="roomLink" type="submit">Copy</button>
+                    </div>
+                </form>
                 <h3>Invite Another User to {{ roomTitle }}</h3>
                 <form #i="ngForm" (ngSubmit)="onSubmitInvite(i)" novalidate>
                     <div class="form-element">
-                        <input type="text" placeholder="Username" name="username" ngModel required>
+                        <input type="text" placeholder="Email address" name="username" ngModel required>
                     </div>
                     <div class="form-element">
                         <button type="submit">Invite</button>
@@ -45,9 +54,9 @@
                 <ng-template appRoomLink></ng-template>
             </div>
             <h2>Join a Room</h2>
-            <p>Any incoming invitations appear here. You can also join a public room!</p>
+            <h3>Pending Invitations</h3>
+            <p>You don't have any invitations.</p>
             <div id="invitations" class="hidden">
-                <h3>Pending Invitations</h3>
                 <ng-template appRoomInvitation></ng-template>
             </div>
             <h3>Join a Public Room</h3>

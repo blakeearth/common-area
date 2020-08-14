@@ -3,16 +3,13 @@
       <div class="tags">
         tags
       </div>
-      <div class="title">
-        {{ data.title }}
-      </div>
+      <div id="{{ data.task_id }}-title" class="title" (click)="openTask()" (keydown.enter)="saveTitle()" (focusout)="saveTitle()" [attr.contentEditable]="open ? 'plaintext-only' : false">{{ data.title }}</div>
       <div id="{{ data.task_id }}-full" class="full">
-        <div id="{{ data.task_id }}-contents" class="contents" contenteditable="plaintext-only">
-          Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
-        </div>
+        <div id="{{ data.task_id }}-contents" class="contents"  tabindex="0" data-ph="Add a description..." contenteditable="plaintext-only" (focusout)="saveDescription()">{{ data.contents }}</div>
+        <button>Close</button>
       </div>
       <div class="extras">
-        extras
+        <div class="info">extras</div><a id="{{ data.task_id }}-remove-task" class="remove-task not-displayed" (click)="removeTask()"><fa-icon [icon]="faTrash"></fa-icon></a>
       </div>
     </div>
 </div>

@@ -20,7 +20,10 @@ export class ListComponent implements OnInit {
 
   public disabled = false;
 
+  // string problems. passing by reference. should be passing by value. might need two arrays.
   public tasks: Map<string, TaskComponent> = new Map<string, TaskComponent>();
+
+  taskViewRefs: Map<string, ViewRef> = new Map<string, ViewRef>();
 
   socketService: SocketService;
   listsService: ListsService;
@@ -35,7 +38,6 @@ export class ListComponent implements OnInit {
   ngOnInit(): void {
     this.socketService.reply.subscribe(msg => this.onResponseReceived(msg));
     this.socketService.sendMessage({channel: "tasks", type: "request_tasks_for_list", "list_id": this.data.list_id});
-    this.listsService.disabledListId.subscribe(listId => this.disableIfThisIs(listId))
     this.listsService.lists[this.data.list_id] = this;
   }
 
@@ -44,18 +46,22 @@ export class ListComponent implements OnInit {
       if (!(event.currentIndex == event.previousIndex)) {
         this.taskHost.viewContainerRef.move(this.taskHost.viewContainerRef.get(event.previousIndex), event.currentIndex);
         let taskId: string = event.item.data.task_id;
-        let data: any = this.listsService.lists[event.previousContainer.id].tasks[taskId].data;
+        console.log(taskId);
+        console.log(event.previousContainer.id);
+        let data: any = this.listsService.lists.get(event.previousContainer.id).tasks.get(taskId).data;
         this.socketService.sendMessage({channel: "tasks", type: "edit_listing", listing_id: data.listing_id, list_id: event.container.id, index: event.currentIndex});
         return
       }
     } else {
       event.previousContainer.removeItem(event.item);
       let taskId: string = event.item.data.task_id;
-      let data: any = this.listsService.lists[event.previousContainer.id].tasks[taskId].data;
+      let data: any = this.listsService.lists.get(event.previousContainer.id).tasks.get(taskId).data;
+      this.tasks.set(taskId, this.listsService.lists.get(event.previousContainer.id).tasks.get(taskId));
+      this.listsService.lists.get(event.previousContainer.id).tasks.delete(taskId);
       data.index = event.currentIndex;
-      let previousViewContainerRef: ViewContainerRef = this.listsService.lists[event.previousContainer.id].taskHost.viewContainerRef;
+      let previousViewContainerRef: ViewContainerRef = this.listsService.lists.get(event.previousContainer.id).taskHost.viewContainerRef;
       previousViewContainerRef.remove(event.previousIndex);
-      this.listsService.lists[event.container.id].loadTask(data);
+      this.loadTask(data);
       this.socketService.sendMessage({channel: "tasks", type: "edit_listing", listing_id: data.listing_id, list_id: event.container.id, index: event.currentIndex});
     }
   }
@@ -68,12 +74,17 @@ export class ListComponent implements OnInit {
       else if (msg["type"] == "add_task") {
         this.onAddTask(msg);
       }
+      else if (msg["type"] == "request_task") {
+        this.checkDisable();
+      }
+      else if (msg["type"] == "delete_task") {
+        this.onDeleteTask(msg["task_id"]);
+      }
     }
   }
 
-  disableIfThisIs(listId: string) {
-    console.log((listId == this.data.list_id))
-    this.disabled = (listId == this.data.list_id);
+  checkDisable() {
+    this.disabled = this.listsService.disabledLists.has(this.data.list_id);
   }
 
   toggleArrow(): void {
@@ -92,7 +103,6 @@ export class ListComponent implements OnInit {
     });
     msg["tasks"].forEach(data => {
       if (data["list_id"] == this.data.list_id) {
-        console.log(data);
         this.loadTask(data);
       }
     });
@@ -101,6 +111,13 @@ export class ListComponent implements OnInit {
   onAddTask(msg: any): void {
     if (msg["list_id"] == this.data.list_id) {
       this.loadTask(msg);
+    }
+  }
+
+  onDeleteTask(taskId: string) {
+    if (this.tasks.has(taskId)) {
+      let index: number = this.taskHost.viewContainerRef.indexOf(this.taskViewRefs.get(taskId));
+      this.taskHost.viewContainerRef.remove(index);
     }
   }
 
@@ -115,7 +132,9 @@ export class ListComponent implements OnInit {
 
     let instance: TaskComponent = <TaskComponent>componentRef.instance;
     instance.data = data;
-    this.tasks[data.task_id] = instance;
+    this.tasks.set(data.task_id, instance);
+    console.log(this.tasks);
+    this.taskViewRefs.set(data.task_id, componentRef.hostView);
   }
 
   addTask(): void {

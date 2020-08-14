@@ -7,7 +7,7 @@
 
 #list {
     flex: 1 1 auto;
-    overflow-y: auto;
+    overflow-y: scroll;
     height: 70vh;
     display: flex;
     flex-direction: column;
@@ -32,15 +32,6 @@ input:checked~.tasks {
     display: block;
 }
   
-.list-header::after {
-    font-size: 1.5em;
-    content: '✓';
-}
-  
-input:checked~.list-header::after {
-    content: '✓';
-}
-  
 .submit-button {
     display: hidden;
     cursor: pointer;
@@ -56,4 +47,8 @@ input:checked~.list-header::after {
     cursor: pointer;
     border: none;
     flex: 1;
+}
+
+#new-list-title-field:focus {
+    background-color: #F5F5FC;
 }

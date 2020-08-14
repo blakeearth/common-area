@@ -48,5 +48,10 @@ export class SignUpComponent implements OnInit, Goal {
         error.id = "visible-error";
       }
     }
+    else if (msg["type"] == "request_room") {
+      if (msg["title"] != null) {
+        this.header = "Sign up to continue to " + msg["title"];
+      }
+    }
   }
 }

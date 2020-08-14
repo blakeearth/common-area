@@ -23,6 +23,7 @@ export class SocketService {
 
     this.replySource = new Subject<any>();
     this.reply = this.replySource.asObservable();
+    //this.sendMessage({channel: "auth", type: "sign_in", username: "isaac@blake.earth", password: "derweh"});
   }
 
   setResponse(msg: any) {

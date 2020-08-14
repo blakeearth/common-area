@@ -32,6 +32,10 @@
     border: none;
     flex: 1;
   }
+
+  .title-field:focus {
+    background-color: #F5F5FC;
+  }
   
 .new-task {
     display: flex;

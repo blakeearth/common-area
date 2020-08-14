@@ -28,14 +28,17 @@ export class GoalContainerComponent implements OnInit {
     if (msg.has("error")) {
       console.log(msg["error"]);
     }
-    else {
-
-    }
   }
 
   updateGoal(url: string, state: unknown): void {
-    let goal: string = url.replace('/auth', '');
-    goal = goal.replace('/', '');
+    let goal: string = "";
+    if (url.includes('/auth')) {
+      goal = url.replace('/auth', '');
+      goal = goal.replace('/', '');
+    }
+    else {
+      goal = "join-room";
+    }
     let visibleGoals: HTMLCollection = document.getElementsByClassName("visible");
     let i: number = 0;
     for (let i: number = 0; i < visibleGoals.length; i++) {

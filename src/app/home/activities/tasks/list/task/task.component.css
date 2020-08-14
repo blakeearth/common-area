@@ -1,57 +1,108 @@
 .task {
-    display: flex;
-    cursor: grab;
-    background-color: #F5F5FC;
-    padding: 0.2em 1ch 0.2em 1ch;
-    margin: 0.5em 0 0.5em 0;
-    box-sizing: border-box;
-    border-radius: 4px;
-  }
-  
-  .task:hover {
-    background-color: #D5D5DB;
-  }
+  display: flex;
+  cursor: grab;
+  background-color: #F5F5FC;
+  padding: 0.2em 1ch 0.2em 1ch;
+  margin: 0.5em 0 0.5em 0;
+  box-sizing: border-box;
+  border-radius: 4px;
+}
 
-  .task:focus {
-    outline: none;
-  }
+.task:hover {
+  background-color: #D5D5DB;
+}
+
+.task:focus {
+  outline: none;
+}
+
+.title {
+  outline: none;
+  border: none;
+  background: none;
+  padding: 0;
+}
+
+.title:focus {
+  outline: auto;
+  border-color: #011638;
+  border-width: 2px;
+  background: #F5F5FC;
+  box-sizing: border-box;
+  border-radius: 4px;
+}
 
 .center {
-    display: flex;
-    height: auto;
-    flex: 1;
-    flex-direction: column;
-    justify-content: space-between;
-  }
-  
-  .title {
-    flex: 1;
-    font-size: 1.2em;
-    overflow-wrap: break-word;
-  }
+  display: flex;
+  height: auto;
+  flex: 1;
+  flex-direction: column;
+  justify-content: space-between;
+}
 
-  .full {
-    overflow: hidden;
-    display: flex;
-    transition: height 0.2s ease-out;
-    height: 0;
-  }
+.title {
+  flex: 1;
+  font-size: 1.2em;
+  overflow-wrap: break-all;
+}
 
-  .contents {
-    overflow: hidden;
-    resize: none;
-    flex: 1;
-    background-color: #D5D5DB;
-  }
+.full {
+  overflow: hidden;
+  display: none;
+}
 
-  .open {
-    cursor: auto;
-    background-color: #D5D5DB;
-  }
+.full-shown {
+  display: flex;
+  flex-direction: column;
+}
 
-  .not-displayed {
-    display: none;
-  }
+.contents {
+  flex: 1;
+  min-height: fit-content;
+  overflow-wrap: break-word;
+  box-sizing: border-box;
+  border-radius: 4px;
+}
+
+[contentEditable=plaintext-only]:empty:not(:focus):before{
+  content: attr(data-ph);
+  color:grey;
+}
+
+.contents:focus {
+  outline: auto;
+  border-color: #011638;
+  border-width: 2px;
+  background: #F5F5FC;
+}
+
+.contents:focus ~ button {
+  display: block;
+}
+
+button {
+  margin-top: 0.5em;
+  align-self: flex-start;
+  display: none;
+}
+
+.open {
+  cursor: auto;
+  background-color: #D5D5DB;
+}
+
+.not-displayed {
+  display: none;
+}
+
+.extras {
+  display: flex;
+  justify-content: space-between;
+}
+
+.remove-task {
+  cursor: pointer;
+}
 
 .cdk-drag-preview {
     box-sizing: border-box;

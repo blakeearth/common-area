@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Location } from '@angular/common';
 import { activities } from '../activities/activities';
+import { faHome, faStore, faComments, faHourglass, faChartPie, faTasks, faCalendar, faCog } from '@fortawesome/free-solid-svg-icons';
+
 
 @Component({
   selector: 'app-menu',
@@ -9,6 +11,14 @@ import { activities } from '../activities/activities';
 })
 export class MenuComponent implements OnInit {
   location: Location;
+  faHome = faHome;
+  faStore = faStore;
+  faComments = faComments;
+  faHourglass = faHourglass;
+  faChartPie = faChartPie;
+  faTasks = faTasks;
+  faCalendar = faCalendar;
+  faCog = faCog;
 
   constructor(location: Location) {
     this.location = location;

@@ -4,6 +4,8 @@ import { HomeComponent } from './home/home.component';
 import { AppComponent } from './app.component';
 import { LandingPageComponent } from './landing-page/landing-page/landing-page.component';
 import { AuthComponent } from './auth/auth.component';
+import { JoinRoomComponent } from './auth/goals/join-room/join-room.component';
+import { GoalContainerComponent } from './auth/goal-container/goal-container.component';
 
 
 const routes: Routes = [
@@ -43,6 +45,10 @@ const routes: Routes = [
     component: HomeComponent
   },
   {
+    path: 'home/analytics',
+    component: HomeComponent
+  },
+  {
     path: 'home/tasks',
     component: HomeComponent
   },
@@ -53,7 +59,11 @@ const routes: Routes = [
   {
     path: 'home/settings',
     component: HomeComponent
-  }
+  },
+  {
+    path: 'j/:roomId',
+    component: AuthComponent,
+  },
 ];
 
 @NgModule({

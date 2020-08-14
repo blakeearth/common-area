@@ -1,7 +1,9 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, HostListener } from '@angular/core';
 import { CdkDragStart } from '@angular/cdk/drag-drop';
 import { SocketService } from 'src/app/socket/socket.service';
 import { ListsService } from '../../lists.service';
+import { faTrash } from '@fortawesome/free-solid-svg-icons';
+
 
 @Component({
   selector: 'app-task',
@@ -12,12 +14,21 @@ export class TaskComponent implements OnInit {
 
   @Input() data: any;
 
+  faTrash = faTrash;
+
   disabled: boolean;
   open: boolean = false;
   editVisible: boolean = false;
 
   socketService: SocketService;
   listsService: ListsService;
+
+  @HostListener('document:click', ['$event'])
+  clickout(event) {
+    if(!document.getElementById(this.data.task_id).contains(event.target) && this.open) {
+      this.closeTask();
+    }
+  }
 
   constructor(socketService: SocketService, listsService: ListsService) {
     this.socketService = socketService;
@@ -44,67 +55,74 @@ export class TaskComponent implements OnInit {
     if (!this.open) {
       let task: HTMLElement = document.getElementById(this.data.task_id);
       task.classList.add("open");
+
+      let full: HTMLElement = document.getElementById(this.data.task_id + "-full");
+      full.classList.add("full-shown");
+
+      let removeTask: HTMLElement = document.getElementById(this.data.task_id + "-remove-task");
+      removeTask.classList.remove("not-displayed");
   
       this.disabled = true;
-      this.listsService.setDisabledList(this.data.list_id);
-  
-      let contents: HTMLElement = document.getElementById(this.data.task_id + "-contents");
-      contents.innerHTML = "Inner HTMML";
-  
-      let element: HTMLElement = document.getElementById(this.data.task_id  + "-full");
-      let sectionHeight: number = element.scrollHeight;
-        
-      element.style.height = sectionHeight + 'px';
+      
+      if (this.listsService.disabledLists.has(this.data.list_id)) {
+        let num = this.listsService.disabledLists.get(this.data.list_id);
+        this.listsService.disabledLists.set(this.data.list_id, num + 1);
+      }
+      else {
+        this.listsService.disabledLists.set(this.data.list_id, 1);
+      }
+
       this.socketService.sendMessage({channel: "tasks", type: "request_task", "task_id": this.data.task_id});
       this.open = true;
     }
   }
 
-  closeTask(save: boolean): void {
+  saveTitle(): void {
+    let titleField: HTMLElement = document.getElementById(this.data.task_id + "-title");
+    titleField.blur();
+    let title: string = titleField.innerHTML;
+    this.socketService.sendMessage({channel: "tasks", type: "edit_task_title", task_id: this.data.task_id, title: title});
+  }
+
+  saveDescription(): void {
+    let contents: HTMLElement = document.getElementById(this.data.task_id + "-contents");
+    let description: string = contents.innerHTML;
+    this.socketService.sendMessage({channel: "tasks", type: "edit_task_contents", task_id: this.data.task_id, contents: description});
+  }
+
+  closeTask(): void {
     let task: HTMLElement = document.getElementById(this.data.task_id);
     task.classList.remove("open");
 
-    this.disabled = false;
-    this.listsService.setDisabledList(null);
+    let full: HTMLElement = document.getElementById(this.data.task_id + "-full");
+    full.classList.remove("full-shown");
 
-    let element: HTMLElement = document.getElementById(this.data.task_id  + "-full");
-    var sectionHeight = element.scrollHeight;
-  
-    // temporarily disable all css transitions
-    var elementTransition = element.style.transition;
-    element.style.transition = '';
-    
-    // on the next frame (as soon as the previous style change has taken effect),
-    // explicitly set the element's height to its current pixel height, so we 
-    // aren't transitioning out of 'auto'
-    requestAnimationFrame(function() {
-      element.style.height = sectionHeight + 'px';
-      element.style.transition = elementTransition;
-      
-      // on the next frame (as soon as the previous style change has taken effect),
-      // have the element transition to height: 0
-      requestAnimationFrame(function() {
-        element.style.height = 0 + 'px';
-      });
-    });
+    let removeTask: HTMLElement = document.getElementById(this.data.task_id + "-remove-task");
+    removeTask.classList.add("not-displayed");
+
+    this.disabled = false;
+
+    let num = this.listsService.disabledLists.get(this.data.list_id);
+    console.log(num);
+    if (num == 1) {
+      this.listsService.disabledLists.delete(this.data.list_id);
+    }
+    else {
+      this.listsService.disabledLists.set(this.data.list_id, num - 1);
+    }
+
     this.open = false;
+    this.socketService.sendMessage({channel: "tasks", type: "request_task", "task_id": this.data.task_id});
+  }
+
+  removeTask() {
+    this.socketService.sendMessage({channel: "tasks", type: "delete_task", "task_id": this.data.task_id});
   }
 
   onRequestTask(msg: any) {
     if (msg["task_id"] == this.data.task_id) {
-      let task: HTMLElement = document.getElementById(this.data.task_id);
-      task.classList.add("open");
-
-      this.disabled = true;
-      this.listsService.setDisabledList(this.data.list_id);
-
       let contents: HTMLElement = document.getElementById(this.data.task_id + "-contents");
-      contents.innerHTML = msg["contents"];
-
-      let element: HTMLElement = document.getElementById(this.data.task_id  + "-full");
-      let sectionHeight: number = element.scrollHeight;
-      
-      element.style.height = sectionHeight + 'px';
+      contents.innerHTML = msg["contents"]; 
     }
   }
 }

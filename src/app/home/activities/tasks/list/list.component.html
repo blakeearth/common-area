@@ -6,11 +6,7 @@
      </div>
     <div class="tasks">
         <div class="new-task">
-            <input id="{{ data.list_id }}-new-task-checkbox" type="checkbox"/>
-            <div class="center">
-                <input class="title" id="{{ data.list_id }}-new-task-title-field" type="text" placeholder="Add a new task..." (keydown.enter)="addTask()"/>
-            </div>
-            <label (click)="addTask()" class="submit-button" for="{{ data.list_id }}-new-list-checkbox">✓</label>
+            <input class="title" id="{{ data.list_id }}-new-task-title-field" type="text" placeholder="Add a new task..." (keydown.enter)="addTask()"/>
         </div>
         <div class="drop-area" id="{{ data.list_id }}" cdkDropList [cdkDropListConnectedTo]="lists" (cdkDropListDropped)="dropTask($event)">
             <ng-template appTask></ng-template>
