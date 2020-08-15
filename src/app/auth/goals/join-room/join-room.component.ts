@@ -64,7 +64,7 @@ export class JoinRoomComponent implements OnInit, Goal {
       }
     }
     else if (msg["type"] == "request_invitations") {
-      this.navigate('/home');
+      window.location.href = '/home';
     }
     else if (msg["type"] == "sign_in" && !msg["password_correct"]) {
       this.navigate('/auth/sign-up');
