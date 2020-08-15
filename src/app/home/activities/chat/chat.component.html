@@ -7,12 +7,7 @@
             <a class="hidden" id="retrieving-now">Retrieving more messages...</a>
         </p>
     </div>
-    <form #c="ngForm" (ngSubmit)="onSendChat()" id="chat-box" novalidate>
-        <div class="form-element">
-            <div (click)="checkChatField()" class="input" id="chat-field" contenteditable="plaintext-only">Message the room</div>
-        </div>
-        <div class="form-element">
-            <button type="submit">Send</button>
-        </div>
+    <form id="chat-box" novalidate>
+        <div id="chat-field" class="contents" tabindex="0" data-ph="Message the room..." contenteditable="plaintext-only" (keydown.enter)="onSendChat($event)"></div>
     </form>
 </div>

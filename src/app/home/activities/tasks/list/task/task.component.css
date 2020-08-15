@@ -64,7 +64,7 @@
   border-radius: 4px;
 }
 
-[contentEditable=plaintext-only]:empty:not(:focus):before{
+[contentEditable=plaintext-only]:empty:not(:focus):not(:hover):before{
   content: attr(data-ph);
   color:grey;
 }

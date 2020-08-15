@@ -5,7 +5,7 @@
       </div>
       <div id="{{ data.task_id }}-title" class="title" (click)="openTask()" (keydown.enter)="saveTitle()" (focusout)="saveTitle()" [attr.contentEditable]="open ? 'plaintext-only' : false">{{ data.title }}</div>
       <div id="{{ data.task_id }}-full" class="full">
-        <div id="{{ data.task_id }}-contents" class="contents"  tabindex="0" data-ph="Add a description..." contenteditable="plaintext-only" (focusout)="saveDescription()">{{ data.contents }}</div>
+        <div id="{{ data.task_id }}-contents" class="contents" tabindex="0" data-ph="Add a description..." contenteditable="plaintext-only" (focusout)="saveDescription()">{{ data.contents }}</div>
         <button>Close</button>
       </div>
       <div class="extras">

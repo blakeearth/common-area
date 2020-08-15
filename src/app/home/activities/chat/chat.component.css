@@ -33,18 +33,6 @@ form {
     justify-content: space-between;
 }
 
-.form-element {
-    max-width: fit-content;
-    flex: 1 0 0;
-}
-
-button {
-    width: 10ch;
-    margin-right: 2ch;
-    padding: 0.2em 2ch 0.2em 2ch;
-    font-size: large;
-}
-
 .form-label {
     margin: 0 4ch 0 2ch;
 }
@@ -54,22 +42,33 @@ button {
 }
 
 #chat-box {
+    display: flex;
+    background-color: #C2BBDD;
     padding: 1em 0 1em 0;
-    border-color: #011638;
-    border-top: solid;
 }
 
 #chat-field {
-    width: 20ch;
+    flex: 1;
+    padding: 0.2em 1ch 0.2em 1ch;
+    margin: 0 2ch 0 2ch;
     word-wrap: break-word;
     overflow-wrap: break-word;
+    background-color: #F5F5FC;
+    box-sizing: border-box;
+    border-radius: 4px;
+}
+  
+[contentEditable=plaintext-only]:empty:not(:focus):not(:hover):before{
+    content: attr(data-ph);
+    color:grey;
+}
+
+#chat-field:hover {
     background-color: white;
-    -webkit-appearance: textfield;
-    color: grey;
-    border-color: grey;
-    border: solid;
-    border-width: 1px;
-    margin-left: 2ch;
+}
+
+#chat-field:focus {
+    background-color: white;
 }
 
 @media only screen and (max-width: 600px) {
