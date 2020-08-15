@@ -7,7 +7,7 @@ import { HttpClient } from '@angular/common/http';
 @Injectable({
   providedIn: 'root'
 })
-export class SocketService implements OnInit {
+export class SocketService {
 
   socket: WebSocketSubject<any>;
 
@@ -18,26 +18,24 @@ export class SocketService implements OnInit {
   
   constructor(httpClient: HttpClient) {
     this.httpClient = httpClient;
+    this.replySource = new Subject<any>();
+    this.reply = this.replySource.asObservable();
     this.httpClient.get("https://websocket.slumberparty.io/session").subscribe(
       msg => console.log(msg),
       err => console.log(err),
-      () => {
-        this.socket = webSocket('wss://websocket.slumberparty.io');
-
-        this.socket.subscribe(
-          msg => this.setResponse(msg),
-          err => console.log(err),
-          () => console.log('complete')
-        );
-
-        this.replySource = new Subject<any>();
-        this.reply = this.replySource.asObservable();
-      }
+      () => this.establishWebsocket()
     );
 
   }
 
-  ngOnInit() {
+  establishWebsocket() {
+    this.socket = webSocket('wss://websocket.slumberparty.io');
+
+    this.socket.subscribe(
+      msg => this.setResponse(msg),
+      err => console.log(err),
+      () => console.log('complete')
+    );
   }
 
   setResponse(msg: any) {
