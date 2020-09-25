@@ -1,3 +1,4 @@
+import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 
 @Component({
@@ -7,9 +8,14 @@ import { Component, OnInit } from '@angular/core';
 })
 export class AuthComponent implements OnInit {
 
-  constructor() { }
+  http: HttpClient;
+
+  constructor(http: HttpClient) { 
+    this.http = http;
+  }
 
   ngOnInit(): void {
+    this.http.get<any>('https://websocket.tasklodge.com:8443/').subscribe(data => {console.log(data)})
   }
 
 }

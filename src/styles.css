@@ -4,11 +4,6 @@
 }
 
 @font-face {
-    font-family: "Poppins Mediun";
-    src: url("./assets/fonts/Poppins-Medium.ttf") format("truetype");
-}
-
-@font-face {
     font-family: "Poppins Regular";
     src: url("./assets/fonts/Poppins-Regular.ttf") format("truetype");
 }
