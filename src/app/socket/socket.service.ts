@@ -20,16 +20,11 @@ export class SocketService {
     this.httpClient = httpClient;
     this.replySource = new Subject<any>();
     this.reply = this.replySource.asObservable();
-    this.httpClient.get("https://websocket.slumberparty.io/session").subscribe(
-      msg => console.log(msg),
-      err => console.log(err),
-      () => this.establishWebsocket()
-    );
-
+    this.establishWebsocket();
   }
 
   establishWebsocket() {
-    this.socket = webSocket('wss://websocket.slumberparty.io');
+    this.socket = webSocket('wss://websocket.tasklodge.com');
 
     this.socket.subscribe(
       msg => this.setResponse(msg),
