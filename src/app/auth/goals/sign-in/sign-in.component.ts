@@ -38,8 +38,6 @@ export class SignInComponent implements OnInit, Goal {
     if (msg["type"] == "sign_in") {
       if (msg["password_correct"]) {
         if (msg["password_correct"] == true && !this.location.path().includes('/j/')) {
-          sessionStorage.setItem("token", msg["token"]);
-          console.log(sessionStorage.getItem("token"));
           document.location.href = "/home";
         }
       }
