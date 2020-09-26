@@ -37,6 +37,8 @@ import { TaskDirective } from './home/activities/tasks/list/task.directive';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { AnalyticsComponent } from './home/activities/analytics/analytics.component';
+import { ServiceWorkerModule } from '@angular/service-worker';
+import { environment } from '../environments/environment';
 
 @NgModule({
   declarations: [
@@ -78,7 +80,8 @@ import { AnalyticsComponent } from './home/activities/analytics/analytics.compon
     HttpClientModule,
     DragDropModule,
     FontAwesomeModule,
-    ClipboardModule
+    ClipboardModule,
+    ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production })
   ],
   entryComponents: [RoomLinkComponent],
   providers: [],
