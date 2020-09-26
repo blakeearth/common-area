@@ -15,6 +15,8 @@ export class SocketService {
   public reply: Observable<any>;
 
   httpClient: HttpClient;
+
+  unsentMessages: Array<any> = [];
   
   constructor(httpClient: HttpClient) {
     this.httpClient = httpClient;
@@ -32,6 +34,10 @@ export class SocketService {
         err => console.log(err),
         () => console.log('complete')
       );
+
+      for (let msg in this.unsentMessages) {
+        this.sendMessage(msg);
+      }
     });
   }
 
@@ -40,6 +46,11 @@ export class SocketService {
   }
 
   sendMessage(msg: any): void {
-    this.socket.next(msg);
+    if (this.socket === undefined) {
+      this.unsentMessages.push(msg);
+    }
+    else {
+      this.socket.next(msg);
+    }
   }
 }
