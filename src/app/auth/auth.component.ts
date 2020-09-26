@@ -15,7 +15,7 @@ export class AuthComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.http.get<any>('https://websocket.tasklodge.com:8443/').subscribe(data => {console.log(data)})
+    this.http.get('https://websocket.tasklodge.com:8443/', {responseType: 'text'}).subscribe(data => {});
   }
 
 }
