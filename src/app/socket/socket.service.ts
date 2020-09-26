@@ -35,8 +35,8 @@ export class SocketService {
         () => console.log('complete')
       );
 
-      for (let msg in this.unsentMessages) {
-        this.sendMessage(msg);
+      while (this.unsentMessages.length > 0) {
+        this.sendMessage(this.unsentMessages.pop());
       }
     });
   }
