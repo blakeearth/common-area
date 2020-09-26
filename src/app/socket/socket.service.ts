@@ -24,13 +24,15 @@ export class SocketService {
   }
 
   establishWebsocket() {
-    this.socket = webSocket('wss://websocket.tasklodge.com');
+    this.httpClient.get('https://websocket.tasklodge.com:8443', {responseType: 'text'}).subscribe(data => {
+      this.socket = webSocket('wss://websocket.tasklodge.com');
 
-    this.socket.subscribe(
-      msg => this.setResponse(msg),
-      err => console.log(err),
-      () => console.log('complete')
-    );
+      this.socket.subscribe(
+        msg => this.setResponse(msg),
+        err => console.log(err),
+        () => console.log('complete')
+      );
+    });
   }
 
   setResponse(msg: any) {

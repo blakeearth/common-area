@@ -8,14 +8,8 @@ import { Component, OnInit } from '@angular/core';
 })
 export class AuthComponent implements OnInit {
 
-  http: HttpClient;
+  constructor() { }
 
-  constructor(http: HttpClient) { 
-    this.http = http;
-  }
-
-  ngOnInit(): void {
-    this.http.get('https://websocket.tasklodge.com:8443/', {responseType: 'text'}).subscribe(data => {});
-  }
+  ngOnInit(): void { }
 
 }
