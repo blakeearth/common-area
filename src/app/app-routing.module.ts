@@ -53,10 +53,6 @@ const routes: Routes = [
     component: HomeComponent
   },
   {
-    path: 'home/calendar',
-    component: HomeComponent
-  },
-  {
     path: 'home/settings',
     component: HomeComponent
   },

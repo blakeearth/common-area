@@ -14,7 +14,6 @@ import { StoreComponent } from './home/activities/store/store.component';
 import { ChatComponent } from './home/activities/chat/chat.component';
 import { TimerComponent } from './home/activities/timer/timer.component';
 import { TasksComponent } from './home/activities/tasks/tasks.component';
-import { CalendarComponent } from './home/activities/calendar/calendar.component';
 import { LandingPageComponent } from './landing-page/landing-page/landing-page.component';
 import { RoomComponent } from './home/room/room.component';
 import { SignInComponent } from './auth/goals/sign-in/sign-in.component';
@@ -53,7 +52,6 @@ import { environment } from '../environments/environment';
     TimerComponent,
     TasksComponent,
     AnalyticsComponent,
-    CalendarComponent,
     LandingPageComponent,
     RoomComponent,
     GoalContainerComponent,
