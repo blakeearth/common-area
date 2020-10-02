@@ -17,7 +17,7 @@ fa-icon {
     color: #F5F5FC;
 }
 
-a:hover {
+a:hover, a:focus {
     background-color: #505969;
 }
 

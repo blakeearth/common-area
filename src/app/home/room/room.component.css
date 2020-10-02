@@ -1,11 +1,9 @@
 .room {
     display: flex;
     flex-direction: column;
-    align-items: stretch;
     flex: 1;
 }
 
-iframe {
-    flex: 1;
-    border: none;
+canvas {
+    height: 100%;
 }

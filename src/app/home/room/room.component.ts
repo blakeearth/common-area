@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { init, Sprite, GameLoop } from 'kontra';
+import { init, Sprite, Text, GameLoop } from 'kontra';
 
 @Component({
   selector: 'app-room',
@@ -15,18 +15,31 @@ export class RoomComponent implements OnInit {
 
   // ...
   ngOnInit(): void {
-    let { canvas } = init();
+    let { canvas, context } = init();
+    canvas.width = canvas.clientWidth;
+    canvas.height = canvas.clientHeight;
 
-    let sprite = Sprite({
+    let sprite: Sprite = Sprite({
       x: 100,        // starting x,y position of the sprite
       y: 80,
       color: 'red',  // fill color of the sprite rectangle
-      width: 20,     // width and height of the sprite rectangle
-      height: 40,
+      width: 0.1 * canvas.width,     // width and height of the sprite rectangle
+      height: 0.1 * canvas.width,
       dx: 2          // move the sprite 2px to the right every frame
     });
 
-    let loop = GameLoop({  // create the main game loop
+    let text = Text({
+      text: '🕯️',
+      font: '128px Arial',
+      color: 'white',
+      x: canvas.width / 2,
+      y: canvas.height / 2,
+      dx: 3,
+      anchor: {x: 0.5, y: 0.5},
+      textAlign: 'center'
+    });
+
+    let loop: GameLoop = GameLoop({  // create the main game loop
       update: function() { // update the game state
         sprite.update();
 
@@ -38,6 +51,7 @@ export class RoomComponent implements OnInit {
       },
       render: function() { // render the game state
         sprite.render();
+        text.render();
       }
     });
 

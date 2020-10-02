@@ -38,6 +38,7 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { AnalyticsComponent } from './home/activities/analytics/analytics.component';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
+import { JoinModuleComponent } from './home/activities/timer/join-module/join-module.component';
 
 @NgModule({
   declarations: [
@@ -69,7 +70,8 @@ import { environment } from '../environments/environment';
     ListDirective,
     ListComponent,
     TaskComponent,
-    TaskDirective
+    TaskDirective,
+    JoinModuleComponent
   ],
   imports: [
     BrowserModule,

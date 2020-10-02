@@ -1,2 +1,32 @@
 <app-panel-header [header]="header"></app-panel-header>
-<p>timer works!</p>
+
+<div id="not-in-session">
+    <div id="tabs">
+        <a tabindex="0" (keydown.enter)="openTab('host')" (click)="openTab('host')" class="tab active">Host</a>
+        <a tabindex="0" (keydown.enter)="openTab('join')" (click)="openTab('join')" class="tab">Join</a>
+    </div>
+
+    <div id="host">
+        <div id="consumable">🕯️</div>
+        <div id="time">
+            <input id="time-input" placeholder="Minutes">
+        </div>
+        <div id="active-task">TASK</div>
+        <div id="start">
+            <button (click)="host()">Start</button>
+        </div>
+    </div>
+
+    <div id="join" style="display: none;">
+        <app-join-module class="panel"></app-join-module>
+        <app-join-module class="panel"></app-join-module>
+        <app-join-module class="panel"></app-join-module>
+        <app-join-module class="panel"></app-join-module>
+        <app-join-module class="panel"></app-join-module>
+        <app-join-module class="panel"></app-join-module>
+    </div>
+</div>
+
+<div id="in-session">
+
+</div>
