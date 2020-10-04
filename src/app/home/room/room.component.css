@@ -1,9 +1,13 @@
+canvas {
+    height: 100%;
+    image-rendering: -moz-crisp-edges;
+    image-rendering: -webkit-crisp-edges;
+    image-rendering: pixelated;
+    image-rendering: crisp-edges;
+}
+
 .room {
     display: flex;
     flex-direction: column;
-    flex: 1;
-}
-
-canvas {
-    height: 100%;
+    flex: 1 0 0;
 }
