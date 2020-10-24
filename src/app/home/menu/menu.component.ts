@@ -26,7 +26,10 @@ export class MenuComponent implements OnInit {
     this.location.onUrlChange(this.updateActivity);
   }
 
-  navigate(s: string) {
+  navigate(s: string, event: Event): void {
+    let activity: string = MenuComponent.getActivity(s);
+    event.preventDefault();
+    document.getElementById(activity + "-nav").blur();
     this.location.replaceState(s);
   }
 
@@ -36,11 +39,7 @@ export class MenuComponent implements OnInit {
 
   updateActivity(url: string, state: unknown): void {
     // ALERT: REDUNDANCY
-    let activity: string = url.replace('/home', '');
-    activity = activity.replace('/', '');
-    if (activity == '') {
-      activity = 'room';
-    }
+    let activity: string = MenuComponent.getActivity(url);
     let selectedElements: HTMLCollection = document.getElementsByClassName("selected");
     let i: number = 0;
     for (let i: number = 0; i < selectedElements.length; i++) {
@@ -49,6 +48,15 @@ export class MenuComponent implements OnInit {
     }
     let newVisibleActivity: Element = document.getElementById(activity + "-nav");
     newVisibleActivity.classList.add("selected");
+  }
+
+  static getActivity(path: string): string {
+    let activity: string = path.replace('/home', '');
+    activity = activity.replace('/', '');
+    if (activity == '') {
+      activity = 'room';
+    }
+    return activity;
   }
 
 }

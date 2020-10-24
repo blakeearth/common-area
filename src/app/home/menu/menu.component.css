@@ -4,34 +4,26 @@ nav {
 }
 
 a {
+    color: #bcc7da;
     display: block;
     cursor: pointer;
     font-size: 32px;
     text-decoration: none;
     text-align: center;
     border-left: 0.1em solid;
+    border-color: #011638;
     padding: 0.2em 0.2em 0.2em 0.1em;
 }
 
-fa-icon {
-    color: #F5F5FC;
-}
-
-a:hover, a:focus {
-    background-color: #505969;
-}
-
-a:hover:not(.selected) {
-    border-color: #505969;
+a:hover:not(.selected), a:focus {
+    color: white;
+    outline: none;
 }
 
 .selected {
-    border-color: #F5F5FC;
-}
-
-#settings-nav {
-    position: absolute;
-    bottom: 0;
+    border-color: white;
+    color: white;
+    outline: none;
 }
 
 #room-nav {

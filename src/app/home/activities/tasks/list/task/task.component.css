@@ -1,11 +1,15 @@
 .task {
   display: flex;
   cursor: grab;
-  background-color: #F5F5FC;
+  background-color: white;
   padding: 0.2em 1ch 0.2em 1ch;
   margin: 0.5em 0 0.5em 0;
   box-sizing: border-box;
   border-radius: 4px;
+}
+
+.tags, .extras {
+  font-size: smaller;
 }
 
 .task:hover {
@@ -21,13 +25,16 @@
   border: none;
   background: none;
   padding: 0;
+  flex: 1;
+  font-size: 1.2em;
+  overflow-wrap: break-all;
 }
 
 .title:focus {
   outline: auto;
   border-color: #011638;
   border-width: 2px;
-  background: #F5F5FC;
+  background: white;
   box-sizing: border-box;
   border-radius: 4px;
 }
@@ -38,12 +45,6 @@
   flex: 1;
   flex-direction: column;
   justify-content: space-between;
-}
-
-.title {
-  flex: 1;
-  font-size: 1.2em;
-  overflow-wrap: break-all;
 }
 
 .full {
@@ -58,6 +59,7 @@
 
 .contents {
   flex: 1;
+  font-size: small;
   min-height: fit-content;
   overflow-wrap: break-word;
   box-sizing: border-box;
@@ -73,7 +75,7 @@
   outline: auto;
   border-color: #011638;
   border-width: 2px;
-  background: #F5F5FC;
+  background: white;
 }
 
 .contents:focus ~ button {

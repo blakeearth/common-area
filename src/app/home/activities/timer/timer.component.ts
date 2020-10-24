@@ -17,7 +17,8 @@ export class TimerComponent implements OnInit, Activity {
   ngOnInit(): void {
   }
 
-  openTab(tab: string): void {
+  openTab(tab: string, event: Event): void {
+    (event.target as HTMLElement).blur();
     let tabToOpen: Element = document.getElementById(tab);
     tabToOpen.setAttribute("style", "display: flex;");
     let index: number = (this.tabs.indexOf(tab) + 1) % 2;

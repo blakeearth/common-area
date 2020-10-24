@@ -2,8 +2,8 @@
 
 <div id="not-in-session">
     <div id="tabs">
-        <a tabindex="0" (keydown.enter)="openTab('host')" (click)="openTab('host')" class="tab active">Host</a>
-        <a tabindex="0" (keydown.enter)="openTab('join')" (click)="openTab('join')" class="tab">Join</a>
+        <a tabindex="0" (keydown.enter)="openTab('host', $event)" (click)="openTab('host', $event)" class="tab active">Host</a>
+        <a tabindex="0" (keydown.enter)="openTab('join', $event)" (click)="openTab('join', $event)" class="tab">Join</a>
     </div>
 
     <div id="host">
