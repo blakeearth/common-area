@@ -14,6 +14,9 @@ export class SocketService {
   replySource: Subject<any>;
   public reply: Observable<any>;
 
+  replySources: Map<string, Subject<any>>;
+  public channelReply: Map<string, Observable<any>>;
+
   httpClient: HttpClient;
 
   unsentMessages: Array<any> = [];
@@ -21,6 +24,8 @@ export class SocketService {
   constructor(httpClient: HttpClient) {
     this.httpClient = httpClient;
     this.replySource = new Subject<any>();
+    this.replySources = new Map<string, Subject<any>>();
+    this.channelReply = new Map<string, Observable<any>>();
     this.reply = this.replySource.asObservable();
     this.establishWebsocket();
   }
@@ -30,7 +35,16 @@ export class SocketService {
       this.socket = webSocket('wss://websocket.slumberparty.io:4433');
 
       this.socket.subscribe(
-        msg => this.setResponse(msg),
+        msg => {
+          this.setResponse(msg);
+
+          // in the future, the below should be the only to get messages.
+          // classes should subscribe to individual channels.
+          let channel: string = msg["channel"];
+          if (this.channelIsRegistered(channel)) {
+            this.replySources.get(channel).next(msg);
+          }
+        },
         err => console.log(err),
         () => console.log('complete')
       );
@@ -52,5 +66,14 @@ export class SocketService {
     else {
       this.socket.next(msg);
     }
+  }
+
+  channelIsRegistered(channel: string) {
+    return this.replySources.has(channel);
+  }
+
+  register(channel: string) {
+    this.replySources.set(channel, new Subject<any>());
+    this.channelReply.set(channel, this.replySources.get(channel).asObservable())
   }
 }

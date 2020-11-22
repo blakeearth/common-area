@@ -1,11 +1,6 @@
 <app-panel-header [header]="header"></app-panel-header>
 
 <div id="not-in-session">
-    <div id="tabs">
-        <a tabindex="0" (keydown.enter)="openTab('host', $event)" (click)="openTab('host', $event)" class="tab active">Host</a>
-        <a tabindex="0" (keydown.enter)="openTab('join', $event)" (click)="openTab('join', $event)" class="tab">Join</a>
-    </div>
-
     <div id="host">
         <div id="consumable">🕯️</div>
         <div id="time">
@@ -15,15 +10,6 @@
         <div id="start">
             <button (click)="host()">Start</button>
         </div>
-    </div>
-
-    <div id="join" style="display: none;">
-        <app-join-module class="panel"></app-join-module>
-        <app-join-module class="panel"></app-join-module>
-        <app-join-module class="panel"></app-join-module>
-        <app-join-module class="panel"></app-join-module>
-        <app-join-module class="panel"></app-join-module>
-        <app-join-module class="panel"></app-join-module>
     </div>
 </div>
 

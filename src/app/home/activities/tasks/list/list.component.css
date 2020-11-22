@@ -26,7 +26,6 @@
   }
   
   .title-field {
-    font-size: 1.5em;
     background-color: #C2BBDD;
     cursor: pointer;
     border: none;
@@ -34,7 +33,7 @@
   }
 
   .title-field:focus {
-    background-color: #F5F5FC;
+    background-color: white;
   }
   
 .new-task {
@@ -57,7 +56,7 @@
     flex: 1;
     font-size: 1.2em;
     overflow-wrap: break-word;
-    background-color: #F5F5FC;
+    background-color: white;
     border: none;
 }
 

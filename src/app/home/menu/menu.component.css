@@ -45,8 +45,7 @@ a:hover:not(.selected), a:focus {
 
     a {
         flex-grow: 1;
-        border-left: none;
-        border-bottom: 0.1em solid;
+        border: none;
         padding: 0.2em 0.2em 0.1em 0.2em;
     }
 

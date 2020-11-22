@@ -35,10 +35,9 @@ import { TaskComponent } from './home/activities/tasks/list/task/task.component'
 import { TaskDirective } from './home/activities/tasks/list/task.directive';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { AnalyticsComponent } from './home/activities/analytics/analytics.component';
+import { StatsComponent } from './home/activities/stats/stats.component';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
-import { JoinModuleComponent } from './home/activities/timer/join-module/join-module.component';
 
 @NgModule({
   declarations: [
@@ -52,7 +51,7 @@ import { JoinModuleComponent } from './home/activities/timer/join-module/join-mo
     ChatComponent,
     TimerComponent,
     TasksComponent,
-    AnalyticsComponent,
+    StatsComponent,
     LandingPageComponent,
     RoomComponent,
     GoalContainerComponent,
@@ -71,7 +70,6 @@ import { JoinModuleComponent } from './home/activities/timer/join-module/join-mo
     ListComponent,
     TaskComponent,
     TaskDirective,
-    JoinModuleComponent
   ],
   imports: [
     BrowserModule,
