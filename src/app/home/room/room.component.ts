@@ -30,7 +30,10 @@ export class RoomComponent extends Handler implements OnInit {
   ngOnInit(): void {
     // register and observe socket channels
     if (!this.socketService.channelIsRegistered("room")) this.socketService.register("room");
-    this.socketService.channelReply.get("room").subscribe(msg => this[this.snakeToCamel(msg["type"])](msg));
+    this.socketService.channelReply.get("room").subscribe(msg => {
+      console.log(this.snakeToCamel(msg["type"]));
+      this[this.snakeToCamel(msg["type"])](msg);
+    });
 
 
     this.roomChangeService.roomId.subscribe(msg => this.onRoomChange(msg));
