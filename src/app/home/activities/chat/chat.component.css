@@ -54,12 +54,10 @@ form {
     overflow-wrap: break-word;
     background-color: #F5F5FC;
     box-sizing: border-box;
+    border: none !important;
+    box-shadow: none !important;
+    outline: none !important;
     border-radius: 4px;
-}
-  
-[contentEditable=plaintext-only]:empty:not(:focus):not(:hover):before{
-    content: attr(data-ph);
-    color:grey;
 }
 
 #chat-field:hover {

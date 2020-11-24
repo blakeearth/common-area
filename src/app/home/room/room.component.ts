@@ -6,7 +6,9 @@ import { RoomChangeService } from '../room-change.service';
 
 import { images } from "./images";
 import { Knode } from './knode';
-import { Root } from './root';
+import { Root } from './root/root';
+
+import { KnodeFactory } from './knode-factory'
 
 @Component({
   selector: 'app-room',
@@ -18,6 +20,8 @@ export class RoomComponent extends Handler implements OnInit {
 
   objects: Map<string, Knode>;
 
+  knodeFactory: KnodeFactory;
+
   roomChangeService: RoomChangeService;
   socketService: SocketService;
 
@@ -25,6 +29,8 @@ export class RoomComponent extends Handler implements OnInit {
     super();
     this.socketService = socketService;
     this.roomChangeService = roomChangeService;
+    this.objects = new Map<string, Knode>();
+    this.knodeFactory = new KnodeFactory(socketService);
   }
 
   ngOnInit(): void {
@@ -42,9 +48,7 @@ export class RoomComponent extends Handler implements OnInit {
     canvas.width = canvas.clientWidth;
     canvas.height = canvas.clientHeight;
 
-    context.scale(4, 4);
-
-    context.imageSmoothingEnabled = false;
+    //context.imageSmoothingEnabled = false;
 
     setImagePath('/assets/room/');
     load.apply(
@@ -52,9 +56,13 @@ export class RoomComponent extends Handler implements OnInit {
     ).then(() => {
       // root has a null parent
       let root: Root = new Root(null);
+      this.objects.set("root", root);
     
       let loop: GameLoop = GameLoop({
-        render() {
+        update: function() {
+          root.update();
+        },
+        render: function() {
           root.render();
         }
       });
@@ -67,6 +75,20 @@ export class RoomComponent extends Handler implements OnInit {
   addPersistObject(msg: any): void {
     console.log("ADDING A PERSIST OBJECT TO THE TREE");
     console.log(msg);
+    let object: Knode = this.knodeFactory.makeKnode(this.objects, msg["data"]);
+    console.log(msg["data"]["parent_id"]);
+    this.objects.get(msg["data"]["parent_id"]).addChild(object);
+    this.objects.set(msg["data"]["id"], object);
+  }
+  
+  modifyPersistObject(msg: any): void {
+    console.log(this.objects);
+    console.log(msg);
+    console.log(this.objects.has(msg["id"]));
+	  if (this.objects.has(msg["id"])) {
+      let knode: Knode = this.objects.get(msg["id"]);
+      knode[this.snakeToCamel(msg["method"])](msg);
+    }
   }
 
   onRoomChange(roomId: string): void {

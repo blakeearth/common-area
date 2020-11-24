@@ -3,9 +3,9 @@
 
 export abstract class Handler {
     snakeToCamel(s: string): string {
-        return s.replace(
-          /([-_][a-z])/g,
-          (group) => group.toUpperCase().replace('-', '').replace('_', '')
-        );
+      return s.replace(
+        /([-_][a-z])/g,
+        (group) => group.toUpperCase().replace('-', '').replace('_', '')
+      );
     }
 }

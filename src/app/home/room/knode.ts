@@ -1,15 +1,14 @@
-export abstract class Knode {
-    [key: string]: any; // type for unknown keys.
-    public parent: Knode;
-    public children: Set<Knode>;
+import { GameObject, Vector } from 'kontra';
+import { SocketService } from 'src/app/socket/socket.service';
 
-    constructor(parent: Knode) {
-        this.parent = parent;
-        this.children = new Set<Knode>();
-    }
+export abstract class Knode extends GameObject.class {
+    [key: string]: any; // type for unknown keys.
 
     free() {
-        this.parent.children.delete(this);
+        this.parent.removeChild(this);
+        for (let child of this.children) {
+            child.free();
+        }
         // remove object from memory?
     }
 

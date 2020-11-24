@@ -8,6 +8,6 @@
         </p>
     </div>
     <form id="chat-box" novalidate>
-        <div id="chat-field" class="contents" tabindex="0" data-ph="Message the room..." contenteditable="plaintext-only" (keydown.enter)="onSendChat($event)"></div>
+        <textarea id="chat-field" class="contents" tabindex="0" (keydown.enter)="onSendChat($event)" placeholder="Message the room"></textarea>
     </form>
 </div>

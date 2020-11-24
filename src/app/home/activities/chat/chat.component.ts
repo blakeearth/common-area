@@ -63,10 +63,11 @@ export class ChatComponent implements OnInit, Activity {
   }
 
   onSendChat(event: any): void {
-    let chatField: Element = document.getElementById("chat-field");
-    let contents: string = chatField.innerHTML;
+    console.log("mrh");
+    let chatField: HTMLTextAreaElement = document.getElementById("chat-field") as HTMLTextAreaElement;
+    let contents: string = chatField.value;
     this.socketService.sendMessage({channel: "chat", type: "send_message", room_id: sessionStorage.getItem("room_id"), contents: contents});
-    chatField.innerHTML = "";
+    chatField.value = "";
     event.preventDefault();
   }
 
