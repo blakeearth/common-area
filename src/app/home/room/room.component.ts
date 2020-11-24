@@ -52,6 +52,11 @@ export class RoomComponent extends Handler implements OnInit {
     load.apply(
       null, images
     );
+
+    document.onresize = function() {
+      canvas.width = canvas.clientWidth;
+      canvas.height = canvas.clientHeight;
+    };
   }
 
   addPersistObject(msg: any): void {
