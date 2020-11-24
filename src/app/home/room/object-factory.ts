@@ -1,37 +1,35 @@
 // this might not be the best way to create these objects!
-// simply exists to return Knode that matches server's id
+// simply exists to return object that matches server's id
 // variant on factory pattern. May result in duplicate code; beware!
 
-import { Knode } from './knode';
 import { Player } from './root/player';
 import { TileMap } from './root/tile-map'
-import { Root } from './root/root'
 import { SocketService } from 'src/app/socket/socket.service';
+import { GameObject } from 'kontra';
 
-
-export class KnodeFactory {
+export class ObjectFactory {
     socketService: SocketService;
 
     constructor(socketService: SocketService) {
         this.socketService = socketService;
     }
 
-    makeKnode(objects: any, data: any): Knode {
+    makeObject(objects: any, data: any): GameObject {
         let sceneId: number = data["scene_id"];
-        let knode: Knode;
+        let object: GameObject;
         switch(sceneId) { 
             case 0: { 
                 // tile map
-                knode = new TileMap(objects[data["parent_id"]], data["width"],
+                object = new TileMap(data["width"],
                     data["height"], data["layers"], this.socketService);
                 break;
             } 
             case 1: { 
                 // player
-                knode = new Player(objects[data["parent_id"]]);
+                object = new Player();
                 break; 
             }
         }
-        return knode;
+        return object;
     }
 }

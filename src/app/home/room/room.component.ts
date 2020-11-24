@@ -1,14 +1,13 @@
 import { Component, OnInit } from '@angular/core';
-import { init, TileEngine, load, setImagePath, imageAssets, GameLoop } from 'kontra';
+import { init, TileEngine, load, setImagePath, imageAssets, GameLoop, GameObject } from 'kontra';
 import { Handler } from 'src/app/handler';
 import { SocketService } from 'src/app/socket/socket.service';
 import { RoomChangeService } from '../room-change.service';
 
 import { images } from "./images";
-import { Knode } from './knode';
-import { Root } from './root/root';
 
-import { KnodeFactory } from './knode-factory'
+import { ObjectFactory } from './object-factory'
+import { TileMap } from './root/tile-map';
 
 @Component({
   selector: 'app-room',
@@ -18,9 +17,9 @@ import { KnodeFactory } from './knode-factory'
 
 export class RoomComponent extends Handler implements OnInit {
 
-  objects: Map<string, Knode>;
+  objects: Map<string, any>;
 
-  knodeFactory: KnodeFactory;
+  objectFactory: ObjectFactory;
 
   roomChangeService: RoomChangeService;
   socketService: SocketService;
@@ -29,15 +28,14 @@ export class RoomComponent extends Handler implements OnInit {
     super();
     this.socketService = socketService;
     this.roomChangeService = roomChangeService;
-    this.objects = new Map<string, Knode>();
-    this.knodeFactory = new KnodeFactory(socketService);
+    this.objects = new Map<string, any>();
+    this.objectFactory = new ObjectFactory(socketService);
   }
 
   ngOnInit(): void {
     // register and observe socket channels
     if (!this.socketService.channelIsRegistered("room")) this.socketService.register("room");
     this.socketService.channelReply.get("room").subscribe(msg => {
-      console.log(this.snakeToCamel(msg["type"]));
       this[this.snakeToCamel(msg["type"])](msg);
     });
 
@@ -53,41 +51,37 @@ export class RoomComponent extends Handler implements OnInit {
     setImagePath('/assets/room/');
     load.apply(
       null, images
-    ).then(() => {
-      // root has a null parent
-      let root: Root = new Root(null);
-      this.objects.set("root", root);
-    
+    );
+  }
+
+  addPersistObject(msg: any): void {
+    console.log(msg);
+    let object: any = this.objectFactory.makeObject(this.objects, msg["data"]);
+    if (msg["data"]["parent_id"] != null) {
+      this.objects.get(msg["data"]["parent_id"]).addChild(object);
+    }
+    else {
       let loop: GameLoop = GameLoop({
         update: function() {
-          root.update();
+          object.update();
         },
         render: function() {
-          root.render();
+          object.render();
         }
       });
     
       // start the loop
       loop.start();
-      })
-  }
-
-  addPersistObject(msg: any): void {
-    console.log("ADDING A PERSIST OBJECT TO THE TREE");
-    console.log(msg);
-    let object: Knode = this.knodeFactory.makeKnode(this.objects, msg["data"]);
-    console.log(msg["data"]["parent_id"]);
-    this.objects.get(msg["data"]["parent_id"]).addChild(object);
+    }
     this.objects.set(msg["data"]["id"], object);
   }
   
   modifyPersistObject(msg: any): void {
-    console.log(this.objects);
-    console.log(msg);
-    console.log(this.objects.has(msg["id"]));
 	  if (this.objects.has(msg["id"])) {
-      let knode: Knode = this.objects.get(msg["id"]);
-      knode[this.snakeToCamel(msg["method"])](msg);
+      let object: any = this.objects.get(msg["id"]);
+      console.log(object);
+      console.log(msg["method"]);
+      object[this.snakeToCamel(msg["method"])](msg);
     }
   }
 

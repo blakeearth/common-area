@@ -1,22 +1,14 @@
 import { Socket } from 'dgram';
-import { TileEngine, imageAssets, initPointer, onPointerDown, track, getPointer, Sprite } from 'kontra';
+import { TileEngine, imageAssets, initPointer, onPointerDown, track, getPointer, Sprite, GameObject } from 'kontra';
 import { SocketService } from 'src/app/socket/socket.service';
 
-import { Knode } from '../knode';
-
-export class TileMap extends Knode {
+export class TileMap extends GameObject.class {
     socketService: SocketService;
-
     tileEngine: TileEngine;
   
-    constructor(parent: Knode, width: number, height: number, layers: object[], socketService: SocketService) {
-      super(parent);
-      this.socketService = socketService;
-
+    constructor(width: number, height: number, layers: object[], socketService: SocketService) {
+      super();
       let img: HTMLImageElement = imageAssets['floor'];
-
-      initPointer();
-
       this.tileEngine = TileEngine({
         // tile size
         tilewidth: 128,
@@ -35,22 +27,37 @@ export class TileMap extends Knode {
         // layer object
         layers: layers
       });
-
+      
+      this.socketService = socketService;
+      initPointer();
+      track(this);
       track(this.tileEngine);
-
-      //onPointerDown(this.move.bind(this));
-
       console.log(this.tileEngine.layers);
+
+      console.log(this);
+    
+      console.log(this.move);
+      onPointerDown(this.move.bind(this));
     }
 
-    move() {
+    move(): void {
       let pointer: any = getPointer();
-      pointer
       this.socketService.sendMessage({channel: "room", type: "set_target", position_x: pointer.x, "position_y": pointer.y})
     }
-  
-    render() {
+
+    render(): void {
       this.tileEngine.render();
       super.render();
+    }
+
+    addChild(object: GameObject): void {
+      this.tileEngine.addObject(object);
+      super.addChild(object);
+      console.log(this.children);
+    }
+
+    removeChild(object: GameObject): void {
+      this.tileEngine.removeObject(object);
+      super.removeChild(object);
     }
   }
