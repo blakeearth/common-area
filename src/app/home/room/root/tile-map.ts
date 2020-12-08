@@ -1,6 +1,7 @@
-import { Socket } from 'dgram';
 import { TileEngine, imageAssets, initPointer, onPointerDown, track, getPointer, Sprite, GameObject } from 'kontra';
 import { SocketService } from 'src/app/socket/socket.service';
+
+const epsilon = 0.0000000000001;
 
 export class TileMap extends GameObject.class {
     socketService: SocketService;
@@ -32,17 +33,14 @@ export class TileMap extends GameObject.class {
       initPointer();
       track(this);
       track(this.tileEngine);
-      console.log(this.tileEngine.layers);
-
-      console.log(this);
-    
-      console.log(this.move);
       onPointerDown(this.move.bind(this));
     }
 
     move(): void {
+      console.log("move");
       let pointer: any = getPointer();
-      this.socketService.sendMessage({channel: "room", type: "set_target", position_x: pointer.x, "position_y": pointer.y})
+      // this is pretty gross, but the server typechecks for floats
+      this.socketService.sendMessage({channel: "room", type: "set_target", position_x: (pointer.x + epsilon), "position_y": (pointer.y + epsilon)})
     }
 
     render(): void {

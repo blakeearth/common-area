@@ -7,7 +7,6 @@ import { RoomChangeService } from '../room-change.service';
 import { images } from "./images";
 
 import { ObjectFactory } from './object-factory'
-import { TileMap } from './root/tile-map';
 
 @Component({
   selector: 'app-room',
@@ -57,6 +56,8 @@ export class RoomComponent extends Handler implements OnInit {
       canvas.width = canvas.clientWidth;
       canvas.height = canvas.clientHeight;
     };
+
+    console.log("testing");
   }
 
   addPersistObject(msg: any): void {
@@ -88,6 +89,17 @@ export class RoomComponent extends Handler implements OnInit {
       console.log(msg["method"]);
       object[this.snakeToCamel(msg["method"])](msg);
     }
+  }
+
+  peerChangedActiveListing(msg: any): void {
+    let player: any = this.objects.get(msg["persist_object_id"]);
+    if (msg["public"] == true) {
+      let player: any = this.objects.get(msg["persist_object_id"]);
+    }
+  }
+
+  removePersistObject(msg: any): void {
+    
   }
 
   onRoomChange(roomId: string): void {

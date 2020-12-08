@@ -1,8 +1,9 @@
-import { Component, OnInit, Input, HostListener } from '@angular/core';
+import { Component, OnInit, Input, HostListener, AfterViewInit } from '@angular/core';
 import { CdkDragStart } from '@angular/cdk/drag-drop';
 import { SocketService } from 'src/app/socket/socket.service';
 import { ListsService } from '../../lists.service';
 import { faTrash } from '@fortawesome/free-solid-svg-icons';
+import { TasksService } from '../../../tasks.service';
 
 
 @Component({
@@ -10,7 +11,7 @@ import { faTrash } from '@fortawesome/free-solid-svg-icons';
   templateUrl: './task.component.html',
   styleUrls: ['./task.component.css']
 })
-export class TaskComponent implements OnInit {
+export class TaskComponent implements OnInit, AfterViewInit {
 
   @Input() data: any;
 
@@ -22,6 +23,7 @@ export class TaskComponent implements OnInit {
 
   socketService: SocketService;
   listsService: ListsService;
+  tasksService: TasksService;
 
   @HostListener('document:click', ['$event'])
   clickout(event) {
@@ -30,13 +32,21 @@ export class TaskComponent implements OnInit {
     }
   }
 
-  constructor(socketService: SocketService, listsService: ListsService) {
+  constructor(socketService: SocketService, listsService: ListsService, tasksService: TasksService) {
     this.socketService = socketService;
     this.listsService = listsService;
+    this.tasksService = tasksService;
   }
 
   ngOnInit(): void {
     this.socketService.reply.subscribe(msg => this.onResponseReceived(msg));
+  }
+
+  ngAfterViewInit(): void {
+    if (this.data.active == true) {
+      this.tasksService.setActiveTask(this.data);
+      (document.getElementById(this.data.task_id + "-active-radio-button") as HTMLInputElement).checked = true;
+    }
   }
 
   onResponseReceived(msg: any): void {
@@ -125,4 +135,10 @@ export class TaskComponent implements OnInit {
       contents.innerHTML = msg["contents"]; 
     }
   }
+
+  setActive() {
+    this.tasksService.setActiveTask(this.data);
+    this.socketService.sendMessage({channel: "tasks", type: "set_listing_active", listing_id: this.data.listing_id});
+  }
+
 }

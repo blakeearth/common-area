@@ -3,12 +3,19 @@
 <div id="not-in-session">
     <div id="host">
         <div id="consumable">🕯️</div>
+        <h2 [ngStyle]="{ 'display': this.participantsDisplay }">Participants:</h2>
+        <p id="participants" *ngFor="let participant of participants; let isLast=last" [ngStyle]="{ 'display': this.participantsDisplay }">{{ participant }}{{ isLast ? '' : ', ' }}</p>
+        <h2>Active task:</h2>
+        <app-task-preview [activeTaskData]="this.activeTaskData"></app-task-preview>
         <div id="time">
-            <input id="time-input" placeholder="Minutes">
+            <a tabindex="0" id="left-arrow" class="arrow" [ngStyle]="{ 'visibility': this.leftVisibility }" (click)="addTime($event, -5)" (keydown.enter)="addTime($event, -5)"><</a>
+            <div id="time-display">{{ this.timeRemaining | date:'mm:ss'}}</div>
+            <a tabindex="0" id="right-arrow" class="arrow" [ngStyle]="{ 'visibility': this.rightVisibility }" (click)="addTime($event, 5)" (keydown.enter)="addTime($event, 5)">></a>
         </div>
-        <div id="active-task">TASK</div>
         <div id="start">
-            <button (click)="host()">Start</button>
+            <button id="start-button" [ngStyle]="{ 'display': this.startButtonDisplay }" (click)="start()">Start</button>
+            <button id="join-button" [ngStyle]="{ 'display': this.joinButtonDisplay }" (click)="join()">Join</button>
+            <button id="leave-button" [ngStyle]="{ 'display': this.leaveButtonDisplay }" (click)="leave()">Leave</button>
         </div>
     </div>
 </div>

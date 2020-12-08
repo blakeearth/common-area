@@ -38,6 +38,9 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { StatsComponent } from './home/activities/stats/stats.component';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
+import { TaskPreviewComponent } from './home/activities/timer/task-preview/task-preview.component';
+import { TaskPopupDirective } from './home/room/root/task-popup.directive';
+import { TaskPopupComponent } from './home/room/root/task-popup/task-popup.component';
 
 @NgModule({
   declarations: [
@@ -70,6 +73,9 @@ import { environment } from '../environments/environment';
     ListComponent,
     TaskComponent,
     TaskDirective,
+    TaskPreviewComponent,
+    TaskPopupDirective,
+    TaskPopupComponent,
   ],
   imports: [
     BrowserModule,

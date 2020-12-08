@@ -9,9 +9,12 @@ export class RoomChangeService {
   changeSource: Subject<string> = new Subject<any>();
   public roomId: Observable<string> = this.changeSource.asObservable();
 
+  currentRoomId: string;
+
   constructor() { }
 
   setRoom(roomId: string): void {
     this.changeSource.next(roomId);
+    this.currentRoomId = roomId;
   }
 }

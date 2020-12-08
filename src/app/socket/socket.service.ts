@@ -24,9 +24,9 @@ export class SocketService {
   constructor(httpClient: HttpClient) {
     this.httpClient = httpClient;
     this.replySource = new Subject<any>();
+    this.reply = this.replySource.asObservable();
     this.replySources = new Map<string, Subject<any>>();
     this.channelReply = new Map<string, Observable<any>>();
-    this.reply = this.replySource.asObservable();
     this.establishWebsocket();
   }
 
@@ -36,6 +36,11 @@ export class SocketService {
 
       this.socket.subscribe(
         msg => {
+
+          if (msg["password_correct"] == true) {
+            sessionStorage.setItem("username", msg["username"]);
+          }
+
           this.setResponse(msg);
 
           // in the future, the below should be the only to get messages.
@@ -74,6 +79,6 @@ export class SocketService {
 
   register(channel: string) {
     this.replySources.set(channel, new Subject<any>());
-    this.channelReply.set(channel, this.replySources.get(channel).asObservable())
+    this.channelReply.set(channel, this.replySources.get(channel).asObservable());
   }
 }

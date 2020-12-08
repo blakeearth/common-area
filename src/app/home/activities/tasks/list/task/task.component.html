@@ -1,4 +1,4 @@
-<div class="task" id="{{ data.task_id }}" [cdkDragDisabled]="disabled" (cdkDragStarted)="startDragging($event)" (click)="openTask()" cdkDrag>
+<div class="task" id="{{ data.task_id }}" [cdkDragDisabled]="disabled" (cdkDragStarted)="startDragging($event)" cdkDrag>
     <div class="center">
       <div class="tags">
         tags
@@ -12,4 +12,5 @@
         <div class="info">extras</div><a id="{{ data.task_id }}-remove-task" class="remove-task not-displayed" (click)="removeTask()"><fa-icon [icon]="faTrash"></fa-icon></a>
       </div>
     </div>
+    <input id="{{ data.task_id }}-active-radio-button" class="active-radio-button" name="active" (click)="setActive()" type="radio">
 </div>

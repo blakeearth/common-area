@@ -1,12 +1,13 @@
-import { Sprite, Vector } from 'kontra';
+import { Sprite, track, Vector } from 'kontra';
 
 const speed: number = 5;
 
 export class Player extends Sprite.class {
+    id: string;
     target: Vector;
     direction: Vector;
 
-    constructor() {
+    constructor(id: string) {
         super({
             type: 'player',
             x: 100,
@@ -20,8 +21,13 @@ export class Player extends Sprite.class {
               this.context.arc(0, 0, this.radius, 0, Math.PI*2);
               this.context.stroke();     // outline the circle
             },
+            onDown: function() {
+                // display active task information
+            }
         });
+        this.id = id;
         this.target = Vector(this.x, this.y);
+        track(this);
     }
 
     update(): void {
@@ -41,6 +47,10 @@ export class Player extends Sprite.class {
     setTarget(msg: any): void {
         this.target = Vector(msg["position_x"], msg["position_y"]);
         this.direction = Vector(this.target.x - this.x, this.target.y - this.y).normalize();
+    }
+
+    setActiveTask(msg: any): void {
+        
     }
 
 }

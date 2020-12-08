@@ -7,7 +7,17 @@
 #not-in-session {
     flex: 1 0 0;
     display: flex;
+    padding: 0.2em 0 0.2em 0;
     flex-direction: column;
+}
+
+h2, #participants {
+    padding: 0 18px 0 18px;
+    margin: 0.2em 0 0.2em 0;
+}
+
+#participants {
+    text-align: center;
 }
 
 #host {
@@ -24,12 +34,34 @@
 }
 
 #time {
+    display: flex;
+    flex-direction: row;
     text-align: center;
-    margin: 0.5em 0 0.5em 0;
+    margin: 0.5em 2ch 0.5em 2ch;
 }
 
-input {
+#time-display {
+    flex-grow: 1;
+    font-size: 4em;
     text-align: center;
+}
+
+.arrow {
+    font-size: 4em;
+    cursor: pointer;
+    color: #adbbd3;
+}
+
+.arrow::selection {
+    background: white;
+}
+
+.arrow:hover, .arrow:focus {
+    color: #011638;
+}
+
+button {
+    font-size: 2em;
 }
 
 #active-task {

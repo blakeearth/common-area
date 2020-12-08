@@ -133,7 +133,6 @@ export class ListComponent implements OnInit {
     let instance: TaskComponent = <TaskComponent>componentRef.instance;
     instance.data = data;
     this.tasks.set(data.task_id, instance);
-    console.log(this.tasks);
     this.taskViewRefs.set(data.task_id, componentRef.hostView);
   }
 
