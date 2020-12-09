@@ -1,4 +1,4 @@
-import { Sprite, track, Vector } from 'kontra';
+import { imageAssets, Sprite, track, Vector } from 'kontra';
 
 const speed: number = 5;
 
@@ -15,12 +15,7 @@ export class Player extends Sprite.class {
             dx: 0,
             dy: 0,
             radius: 64,
-            render() {
-              this.context.strokeStyle = 'white';
-              this.context.beginPath();  // start drawing a shape
-              this.context.arc(0, 0, this.radius, 0, Math.PI*2);
-              this.context.stroke();     // outline the circle
-            },
+            image: imageAssets["alien"],
             onDown: function() {
                 // display active task information
             }
@@ -50,7 +45,7 @@ export class Player extends Sprite.class {
     }
 
     setActiveTask(msg: any): void {
-        
+
     }
 
 }
