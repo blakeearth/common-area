@@ -1,7 +1,9 @@
 .list {
-  background-color: #C2BBDD;
-  padding: 0.4em 1ch 0.2em 1ch;
-  margin: 0 0 1em 0;
+  background-color: white;
+  padding: 0.4rem 1ch 0.4rem 1ch;
+  margin: 1rem 2ch 0.5rem 2ch;
+  box-shadow: 0 0 1rem #cfcfcf;
+  border-radius: 1rem;
 }
 
 input[type=checkbox] {
@@ -26,14 +28,9 @@ input:checked~.tasks {
 }
 
 .title-field {
-  background-color: #C2BBDD;
   cursor: pointer;
   border: none;
   flex: 1;
-}
-
-.title-field:focus {
-  background-color: white;
 }
   
 .new-task {
@@ -48,30 +45,30 @@ input:checked~.tasks {
 }
 
 .center {
-    display: flex;
-    justify-content: space-between;
+  display: flex;
+  justify-content: space-between;
 }
   
 .title {
-    flex: 1;
-    overflow-wrap: break-word;
-    background-color: white;
-    border: none;
+  flex: 1;
+  overflow-wrap: break-word;
+  background-color: white;
+  border: none;
 }
 
 .submit-button {
-    cursor: pointer;
-    font-size: 1.2em;
+  cursor: pointer;
+  font-size: 1.2em;
 }
 
 .delete-row {
-  display: block;
-  text-align: right;
+  display: flex;
+  justify-content: flex-end;
 }
 
 .delete-list {
-  text-decoration: underline;
-  color: #D64045;
+  background-color: #D64045;
+  color: white;
   cursor: pointer;
 }
 

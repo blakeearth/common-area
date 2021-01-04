@@ -28,6 +28,8 @@ export class SettingsComponent implements OnInit, Activity {
   roomChangeService: RoomChangeService;
   componentFactoryResolver: ComponentFactoryResolver;
 
+  displayName: string;
+
   constructor(socketService: SocketService, roomChangeService: RoomChangeService, componentFactoryResolver: ComponentFactoryResolver) {
     this.socketService = socketService;
     this.roomChangeService = roomChangeService;
@@ -39,7 +41,6 @@ export class SettingsComponent implements OnInit, Activity {
     this.roomChangeService.roomId.subscribe(msg => this.onRoomChange(msg));
     this.socketService.sendMessage({channel: "settings", type: "request_rooms"});
     this.socketService.sendMessage({channel: "settings", type: "request_invitations"});
-    console.log(sessionStorage.getItem("room_id"));
     if (sessionStorage.getItem("room_id") != undefined) {
       this.socketService.sendMessage({channel: "settings", type: "enter_room", room_id: sessionStorage.getItem("room_id"), as_player: false});
     }
@@ -48,6 +49,7 @@ export class SettingsComponent implements OnInit, Activity {
       sessionStorage.removeItem("joinRoomId");
       sessionStorage.removeItem("joinRoomTitle");
     }
+    this.displayName = sessionStorage.getItem("display_name");
   }
 
   onResponseReceived(msg: any): void {
@@ -148,6 +150,11 @@ export class SettingsComponent implements OnInit, Activity {
         }
       }
     }
+  }
+
+  onSubmitDisplayName(f: NgForm) {
+    let submission = {channel: "settings", type: "edit_display_name", display_name: <string> f.value["display_name"]};
+    this.socketService.sendMessage(submission);
   }
 
   loadRoomLink(data: any): void {

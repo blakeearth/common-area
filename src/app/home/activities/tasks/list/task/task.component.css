@@ -6,20 +6,13 @@
   margin: 0.5em 0 0.5em 0;
   box-sizing: border-box;
   border-style: solid;
-  border-color: white;
+  border-width: 1px;
+  border-color: lightgrey;
   border-radius: 8px;
 }
 
 .tags, .extras {
   font-size: smaller;
-}
-
-.task:hover {
-  background-color: #D5D5DB;
-}
-
-.task:hover:not(.active) {
-  border-color: #D5D5DB;
 }
 
 .task:focus {
@@ -33,8 +26,6 @@
 }
 
 .active {
-  border-color: black;
-  border-style: solid;
   animation-name: color_change;
 	animation-duration: 1s;
 	animation-iteration-count: infinite;
@@ -55,7 +46,6 @@
   outline: auto;
   border-color: #011638;
   border-width: 2px;
-  background: white;
   box-sizing: border-box;
   border-radius: 4px;
 }
@@ -79,24 +69,17 @@
 }
 
 .contents {
-  flex: 1;
   font-size: small;
-  min-height: fit-content;
-  overflow-wrap: break-word;
+  resize: vertical;
+}
+
+input, textarea {
+  background: transparent;
   box-sizing: border-box;
+  border: none !important;
+  box-shadow: none !important;
+  outline: none !important;
   border-radius: 4px;
-}
-
-[contentEditable=plaintext-only]:empty:not(:focus):not(:hover):before{
-  content: attr(data-ph);
-  color:grey;
-}
-
-.contents:focus {
-  outline: auto;
-  border-color: #011638;
-  border-width: 2px;
-  background: white;
 }
 
 .contents:focus ~ button {
@@ -111,12 +94,6 @@ button {
 
 .open {
   cursor: auto;
-  background-color: #D5D5DB;
-  border-color: #D5D5DB;
-}
-
-.open.active {
-  border-color: #5caf5c;
 }
 
 .not-displayed {
@@ -150,5 +127,5 @@ button {
 
 @keyframes color_change {
 	from { background-color: white; }
-	to { background-color: lightgrey; }
+	to { background-color: #ececec; }
 }

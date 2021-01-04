@@ -2,6 +2,18 @@
     <app-panel-header [header]="header"></app-panel-header>
     <div class="list">
         <div class="margin">
+            <div id="profile-settings">
+                <h2>Profile</h2>
+                <h3>Update Display Name</h3>
+                <form #i="ngForm" (ngSubmit)="onSubmitDisplayName(i)" novalidate>
+                    <div class="form-element">
+                        <input type="text" placeholder="{{ displayName }}" name="display_name" ngModel required>
+                    </div>
+                    <div class="form-element">
+                        <button type="submit">Save</button>
+                    </div>
+                </form>
+            </div>
             <div id="room-settings" class="hidden">
                 <h2 id="room-title">{{ roomTitle }}</h2>
                 <form class="privacy-form hidden">

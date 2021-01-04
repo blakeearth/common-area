@@ -88,15 +88,15 @@ export class TaskComponent implements OnInit, AfterViewInit {
   }
 
   saveTitle(): void {
-    let titleField: HTMLElement = document.getElementById(this.data.task_id + "-title");
+    let titleField: HTMLInputElement = document.getElementById(this.data.task_id + "-title") as HTMLInputElement;
     titleField.blur();
-    let title: string = titleField.innerHTML;
+    let title: string = titleField.value;
     this.socketService.sendMessage({channel: "tasks", type: "edit_task_title", task_id: this.data.task_id, title: title});
   }
 
   saveDescription(): void {
-    let contents: HTMLElement = document.getElementById(this.data.task_id + "-contents");
-    let description: string = contents.innerHTML;
+    let contents: HTMLInputElement = document.getElementById(this.data.task_id + "-contents") as HTMLInputElement;
+    let description: string = contents.value;
     this.socketService.sendMessage({channel: "tasks", type: "edit_task_contents", task_id: this.data.task_id, contents: description});
   }
 
@@ -132,7 +132,7 @@ export class TaskComponent implements OnInit, AfterViewInit {
   onRequestTask(msg: any) {
     if (msg["task_id"] == this.data.task_id) {
       let contents: HTMLElement = document.getElementById(this.data.task_id + "-contents");
-      contents.innerHTML = msg["contents"]; 
+      contents.innerHTML = msg["contents"];
     }
   }
 

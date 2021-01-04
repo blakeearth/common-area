@@ -39,11 +39,12 @@ export class SocketService {
 
           if (msg["password_correct"] == true) {
             sessionStorage.setItem("username", msg["username"]);
+            sessionStorage.setItem("display_name", msg["display_name"]);
           }
 
           this.setResponse(msg);
 
-          // in the future, the below should be the only to get messages.
+          // in the future, the below should be the only way to get messages.
           // classes should subscribe to individual channels.
           let channel: string = msg["channel"];
           if (this.channelIsRegistered(channel)) {

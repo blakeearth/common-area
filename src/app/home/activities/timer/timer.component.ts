@@ -98,15 +98,14 @@ export class TimerComponent extends Handler implements OnInit, Activity {
     this.joinButtonDisplay = "none";
 
     this.participants = msg["participants"];
-    console.log(this.participants);
-    console.log(sessionStorage.getItem("username"));
-    console.log(this.participants.includes(sessionStorage.getItem("username")));
-    if (this.participants.includes(sessionStorage.getItem("username"))) this.leaveButtonDisplay = "inherit";
+
+    // reveal leave session button, participants
+    // TODO: the below could absolutely cause glitches if two people choose the same display name
+    if (this.participants.includes(sessionStorage.getItem("display_name"))) this.leaveButtonDisplay = "inherit";
 
     this.participantsDisplay = "initial";
 
 
-    // reveal leave session button, participants
   }
 
   joinSession(msg: any): void {

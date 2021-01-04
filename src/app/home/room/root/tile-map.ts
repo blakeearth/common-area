@@ -1,4 +1,4 @@
-import { TileEngine, imageAssets, initPointer, onPointerDown, track, getPointer, Sprite, GameObject } from 'kontra';
+import { TileEngine, imageAssets, initPointer, track, getPointer, GameObject, onPointerUp } from 'kontra';
 import { SocketService } from 'src/app/socket/socket.service';
 
 const epsilon = 0.0000000000001;
@@ -33,11 +33,10 @@ export class TileMap extends GameObject.class {
       initPointer();
       track(this);
       track(this.tileEngine);
-      onPointerDown(this.move.bind(this));
+      onPointerUp(this.move.bind(this));
     }
 
     move(): void {
-      console.log("move");
       let pointer: any = getPointer();
       // this is pretty gross, but the server typechecks for floats
       this.socketService.sendMessage({channel: "room", type: "set_target", position_x: (pointer.x + epsilon), "position_y": (pointer.y + epsilon)})

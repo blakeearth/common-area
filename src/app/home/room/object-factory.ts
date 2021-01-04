@@ -2,7 +2,7 @@
 // simply exists to return object that matches server's id
 // variant on factory pattern. May result in duplicate code; beware!
 
-import { Player } from './root/player';
+import { Player } from './root/player/player';
 import { TileMap } from './root/tile-map'
 import { SocketService } from 'src/app/socket/socket.service';
 import { GameObject } from 'kontra';

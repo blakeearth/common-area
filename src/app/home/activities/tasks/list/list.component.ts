@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, ComponentFactoryResolver, ViewChild, ViewChildren, QueryList, ViewContainerRef, ViewRef, ComponentRef } from '@angular/core';
+import { Component, OnInit, AfterViewInit, Input, ComponentFactoryResolver, ViewChild, ViewChildren, QueryList, ViewContainerRef, ViewRef, ComponentRef } from '@angular/core';
 import { SocketService } from 'src/app/socket/socket.service';
 import { TaskDirective } from './task.directive';
 import { TaskComponent } from './task/task.component';
@@ -41,13 +41,20 @@ export class ListComponent implements OnInit {
     this.listsService.lists[this.data.list_id] = this;
   }
 
+  ngAfterViewInit(): void {
+    let status: string = sessionStorage.getItem(this.data.list_id + "_status");
+    if (status == "collapsed") {
+      let checkbox: HTMLInputElement = document.getElementById(this.data.list_id + "-checkbox") as HTMLInputElement;
+      checkbox.checked = true;
+      this.toggleArrow();
+    }
+  }
+
   dropTask(event: CdkDragDrop<string[]>): void {
     if (event.previousContainer === event.container) {
       if (!(event.currentIndex == event.previousIndex)) {
         this.taskHost.viewContainerRef.move(this.taskHost.viewContainerRef.get(event.previousIndex), event.currentIndex);
         let taskId: string = event.item.data.task_id;
-        console.log(taskId);
-        console.log(event.previousContainer.id);
         let data: any = this.listsService.lists.get(event.previousContainer.id).tasks.get(taskId).data;
         this.socketService.sendMessage({channel: "tasks", type: "edit_listing", listing_id: data.listing_id, list_id: event.container.id, index: event.currentIndex});
         return
@@ -91,9 +98,11 @@ export class ListComponent implements OnInit {
     let dropdownLabel: Element = document.getElementById(this.data.list_id + "-label");
     if (dropdownLabel.innerHTML == "▲") {
       dropdownLabel.innerHTML = "▼";
+      sessionStorage.setItem(this.data.list_id + "_status", "collapsed");
     }
     else {
       dropdownLabel.innerHTML = "▲";
+      sessionStorage.removeItem(this.data.list_id + "_status");
     }
   }
 

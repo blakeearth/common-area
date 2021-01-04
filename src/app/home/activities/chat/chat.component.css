@@ -42,7 +42,6 @@ form {
 
 #chat-box {
     display: flex;
-    background-color: #C2BBDD;
     padding: 1em 0 1em 0;
 }
 
@@ -52,20 +51,13 @@ form {
     margin: 0 2ch 0 2ch;
     word-wrap: break-word;
     overflow-wrap: break-word;
-    background-color: #F5F5FC;
+    background-color: #dfdfdf;
     box-sizing: border-box;
     border: none !important;
     box-shadow: none !important;
     outline: none !important;
-    border-radius: 4px;
-}
-
-#chat-field:hover {
-    background-color: white;
-}
-
-#chat-field:focus {
-    background-color: white;
+    resize: vertical;
+    border-radius: 8px;
 }
 
 @media only screen and (max-width: 600px) {

@@ -5,10 +5,12 @@ canvas {
     image-rendering: pixelated;
     image-rendering: crisp-edges;
     cursor: crosshair;
+    border-radius: 2rem 0 0 0;
 }
 
 .room {
     display: flex;
     flex-direction: column;
     flex: 1 0 0;
+    background-color: #011638;
 }

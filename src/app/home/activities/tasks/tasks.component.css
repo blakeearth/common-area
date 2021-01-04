@@ -14,7 +14,6 @@
 }
 
 .new-list {
-    background-color: #C2BBDD;
     padding: 0.4em 1ch 0.2em 1ch;
     margin: 0 0 1em 0;
 }
@@ -41,13 +40,8 @@ input:checked~.tasks {
     right: 1ch;
 }
   
-#new-list-title-field {
-    background-color: #C2BBDD;
-    cursor: pointer;
-    border: none;
-    flex: 1;
-}
 
-#new-list-title-field:focus {
-    background-color: #F5F5FC;
+#new-list-title-field {
+    cursor: text;
+    border: none;
 }
