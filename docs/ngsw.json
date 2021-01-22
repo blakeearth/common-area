@@ -1,6 +1,6 @@
 {
   "configVersion": 1,
-  "timestamp": 1607549647598,
+  "timestamp": 1611329641663,
   "index": "/index.html",
   "assetGroups": [
     {
@@ -10,14 +10,14 @@
       "urls": [
         "/favicon.ico",
         "/index.html",
-        "/main-es2015.cef9ff0f60e557eb6aa9.js",
-        "/main-es5.cef9ff0f60e557eb6aa9.js",
+        "/main-es2015.46f3edab0da595292346.js",
+        "/main-es5.46f3edab0da595292346.js",
         "/manifest.webmanifest",
         "/polyfills-es2015.690002c25ea8557bb4b0.js",
-        "/polyfills-es5.1fd9b76218eca8053895.js",
+        "/polyfills-es5.9e286f6d9247438cbb02.js",
         "/runtime-es2015.1eba213af0b233498d9d.js",
         "/runtime-es5.1eba213af0b233498d9d.js",
-        "/styles.af8f753497b844068928.css"
+        "/styles.953aedbca45a2392bd29.css"
       ],
       "patterns": []
     },
@@ -28,6 +28,10 @@
       "urls": [
         "/Poppins-Bold.e2abc8f5e9a67ea669ea.ttf",
         "/Poppins-Regular.1c701c9a6b587802e3d0.ttf",
+        "/assets/fonts/NotoSans-Bold.ttf",
+        "/assets/fonts/NotoSans-BoldItalic.ttf",
+        "/assets/fonts/NotoSans-Italic.ttf",
+        "/assets/fonts/NotoSans-Regular.ttf",
         "/assets/fonts/OFL.txt",
         "/assets/fonts/Poppins-Bold.ttf",
         "/assets/fonts/Poppins-Regular.ttf",
@@ -40,6 +44,7 @@
         "/assets/icons/icon-72x72.png",
         "/assets/icons/icon-96x96.png",
         "/assets/room/alien.png",
+        "/assets/room/bear.png",
         "/assets/room/floor.png"
       ],
       "patterns": []
@@ -49,7 +54,11 @@
   "hashTable": {
     "/Poppins-Bold.e2abc8f5e9a67ea669ea.ttf": "cbe48c785f1af6bcd7320609094055e299481da9",
     "/Poppins-Regular.1c701c9a6b587802e3d0.ttf": "440dc8992517a306d66e55cb0afed0cfe9b971b5",
-    "/assets/fonts/OFL.txt": "136a80bf62c3709ba0a6aea19b0ca144f49a0bca",
+    "/assets/fonts/NotoSans-Bold.ttf": "2bbc2b3df20c7f3e5bcb249a5becc5afdac241eb",
+    "/assets/fonts/NotoSans-BoldItalic.ttf": "e7be244c388a66230665e7f4f4d4f176158cc7d8",
+    "/assets/fonts/NotoSans-Italic.ttf": "0395aec563a417025171895417c40ea72d60c64f",
+    "/assets/fonts/NotoSans-Regular.ttf": "9c438cb12d406e83f26ca88a95d8cc6f64489187",
+    "/assets/fonts/OFL.txt": "06578f59377f801890d1a1eeb1279e3e51e0803d",
     "/assets/fonts/Poppins-Bold.ttf": "cbe48c785f1af6bcd7320609094055e299481da9",
     "/assets/fonts/Poppins-Regular.ttf": "440dc8992517a306d66e55cb0afed0cfe9b971b5",
     "/assets/icons/icon-128x128.png": "dae3b6ed49bdaf4327b92531d4b5b4a5d30c7532",
@@ -61,17 +70,18 @@
     "/assets/icons/icon-72x72.png": "c457e56089a36952cd67156f9996bc4ce54a5ed9",
     "/assets/icons/icon-96x96.png": "3914125a4b445bf111c5627875fc190f560daa41",
     "/assets/room/alien.png": "5439c6f4b00c9f98105eb0a18bcce593594160cc",
+    "/assets/room/bear.png": "a9440b26746bb1d902fa2cefa8db52871da1fcfe",
     "/assets/room/floor.png": "faa77b6cc31720f05bcbcc44e9a1e5194db2f0c6",
     "/favicon.ico": "22f6a4a3bcaafafb0254e0f2fa4ceb89e505e8b2",
-    "/index.html": "c579f55a9dfcdef6b5284654f52760c1e0bc9061",
-    "/main-es2015.cef9ff0f60e557eb6aa9.js": "7a0526a54cd9b4addd3b40d145c6d73e60798b57",
-    "/main-es5.cef9ff0f60e557eb6aa9.js": "2b1785ff96fc47cacb5ff7dfa6d23294ebcc6250",
-    "/manifest.webmanifest": "8773f910caa0c7997e3f49f428f0efd33ca1c4e3",
+    "/index.html": "e978918132d462009de26d935b7845cedcf782f4",
+    "/main-es2015.46f3edab0da595292346.js": "c1585b26d01f5693e94951d03ecebae22fc44337",
+    "/main-es5.46f3edab0da595292346.js": "b5ed486e0076a708e71ec060e9e5e55948051d6c",
+    "/manifest.webmanifest": "d3f55976781a3810eb6827f7dd10079c8b96a216",
     "/polyfills-es2015.690002c25ea8557bb4b0.js": "72ad4ccc0a3916ae4598199447cdeadd6d380570",
-    "/polyfills-es5.1fd9b76218eca8053895.js": "e51a1de4f016cd689dbdbef51043dec9518c4111",
+    "/polyfills-es5.9e286f6d9247438cbb02.js": "e51a1de4f016cd689dbdbef51043dec9518c4111",
     "/runtime-es2015.1eba213af0b233498d9d.js": "a9aafcf49f49145093fc831efd9b8e2f6c71bb9c",
     "/runtime-es5.1eba213af0b233498d9d.js": "a9aafcf49f49145093fc831efd9b8e2f6c71bb9c",
-    "/styles.af8f753497b844068928.css": "adf423c686d030df1656e79661ceb9cf8462e8bb"
+    "/styles.953aedbca45a2392bd29.css": "2a8a3d3d120bcb093559fd71e327e33a97d3a797"
   },
   "navigationUrls": [
     {

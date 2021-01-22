@@ -4,6 +4,7 @@ const speed: number = 5;
 
 export class Player extends Sprite.class {
     id: string;
+    displayName: string;
     target: Vector;
     direction: Vector;
 
@@ -11,7 +12,7 @@ export class Player extends Sprite.class {
 
     nameTag: HTMLElement;
 
-    constructor(id: string) {
+    constructor(id: string, displayName: string) {
         let spriteSheet = SpriteSheet({
             image: imageAssets["bear"],
             frameWidth: 128,
@@ -52,8 +53,6 @@ export class Player extends Sprite.class {
             }
         });
 
-        console.log(spriteSheet.animations);
-
         super({
             type: 'player',
             x: 128,
@@ -64,7 +63,6 @@ export class Player extends Sprite.class {
             animations: spriteSheet.animations,
             onDown: function(event: Event) {
                 event.preventDefault();
-                console.log("empty")
             }
         });
 
@@ -72,6 +70,7 @@ export class Player extends Sprite.class {
         this.playingAnimation = 'idleFR';
 
         this.id = id;
+        this.displayName = displayName;
         this.target = Vector(this.x, this.y);
         track(this);
     }
@@ -85,7 +84,7 @@ export class Player extends Sprite.class {
         else if (!this.playingAnimation.includes('idle')) {
             this.playingAnimation = this.playingAnimation.replace('walk', 'idle');
             this.playAnimation(this.playingAnimation);
-            console.log(this.playingAnimation);
+            this.reportLocation();
             this.target = Vector(this.x, this.y);
             this.dx = 0;
             this.dy = 0;
@@ -117,6 +116,13 @@ export class Player extends Sprite.class {
 
     setActiveTask(msg: any): void {
 
+    }
+
+    reportLocation(): void {
+        let log: HTMLElement = document.getElementById("game-log");
+        let message: HTMLParagraphElement = document.createElement("p");
+        message.innerHTML = this.displayName + " is now at " + Math.round(this.x) + " on the x-axis and " + Math.round(this.y) + " on the y-axis.";
+        log.appendChild(message);
     }
 
 }

@@ -27,7 +27,7 @@ export class ObjectFactory {
             } 
             case 1: { 
                 // player
-                object = new Player(data["id"]);
+                object = new Player(data["id"], data["display_name"]);
 
                 /* create the task popup
                 OMITTED FOR USER TESTS--WILL ASK USERS WHAT THEY WOULD DO INSTEAD
