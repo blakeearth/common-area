@@ -16,7 +16,7 @@ export class HomeComponent implements OnInit {
   ngOnInit(): void {
     //this.location.replaceState(window.location.href.replace("xn--dk8hvr", "slumberparty"));
     if (this.location.path() == '/home') {
-      this.location.replaceState('/home/chat');
+      //this.location.replaceState('/home/chat');
     }
     this.updateActivity(this.location.path(), this.location.getState());
     this.location.onUrlChange(this.updateActivity);

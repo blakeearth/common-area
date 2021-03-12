@@ -31,8 +31,8 @@ export class TileMap extends GameObject.class {
       
       this.socketService = socketService;
       initPointer();
-      track(this);
-      track(this.tileEngine);
+      //track(this);
+      //track(this.tileEngine);
       onPointerUp(this.move.bind(this));
     }
 

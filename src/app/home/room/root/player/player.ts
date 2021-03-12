@@ -1,4 +1,4 @@
-import { imageAssets, Sprite, SpriteSheet, track, Vector } from 'kontra';
+import { imageAssets, Sprite, SpriteSheet, track, Vector, Text } from 'kontra';
 
 const speed: number = 5;
 
@@ -10,9 +10,7 @@ export class Player extends Sprite.class {
 
     playingAnimation: string;
 
-    nameTag: HTMLElement;
-
-    constructor(id: string, displayName: string) {
+    constructor(id: string, displayName: string, position: Vector) {
         let spriteSheet = SpriteSheet({
             image: imageAssets["bear"],
             frameWidth: 128,
@@ -55,8 +53,8 @@ export class Player extends Sprite.class {
 
         super({
             type: 'player',
-            x: 128,
-            y: 128,
+            x: position.x,
+            y: position.y,
             dx: 0,
             dy: 0,
             image: spriteSheet.frame[48],
@@ -90,6 +88,22 @@ export class Player extends Sprite.class {
             this.dy = 0;
         }
         super.update();
+    }
+
+    draw(): void {
+        super.draw();
+        let nameTag: Text = new Text({
+            text: this.displayName,
+            font: '16px Arial',
+            color: 'black',
+            width: 128,
+            x: 0,
+            y: 128,
+            anchor: {x: 0, y: 0},
+            textAlign: 'center'
+        });
+
+        nameTag.render();
     }
 
     setTarget(msg: any): void {

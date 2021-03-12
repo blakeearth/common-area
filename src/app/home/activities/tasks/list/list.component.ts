@@ -98,12 +98,18 @@ export class ListComponent implements OnInit {
     let dropdownLabel: Element = document.getElementById(this.data.list_id + "-label");
     if (dropdownLabel.innerHTML == "▲") {
       dropdownLabel.innerHTML = "▼";
-      sessionStorage.setItem(this.data.list_id + "_status", "collapsed");
+      localStorage.setItem(this.data.list_id + "_status", "collapsed");
     }
     else {
       dropdownLabel.innerHTML = "▲";
-      sessionStorage.removeItem(this.data.list_id + "_status");
+      localStorage.removeItem(this.data.list_id + "_status");
     }
+  }
+
+  toggleArrowAndCheck(): void {
+    this.toggleArrow();
+    let checkbox: HTMLInputElement = document.getElementById(this.data.list_id + "-checkbox") as HTMLInputElement;
+    checkbox.checked = !checkbox.checked;
   }
 
   onRequestTasksForList(msg: any): void {

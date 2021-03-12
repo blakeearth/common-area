@@ -8,7 +8,11 @@
     src: url("./assets/fonts/Poppins-Regular.ttf") format("truetype");
 }
 
-body, html, canvas {
+canvas {
+    background-color: #238531;
+}
+
+body, html {
     color: #011638;
     margin: 0;
     height: 100%;

@@ -8,6 +8,8 @@ import { images } from "./images";
 
 import { ObjectFactory } from './object-factory'
 
+import { TileMap } from './root/tile-map'
+
 @Component({
   selector: 'app-room',
   templateUrl: './room.component.html',
@@ -99,7 +101,10 @@ export class RoomComponent extends Handler implements OnInit {
   }
 
   removePersistObject(msg: any): void {
-    
+    if (this.objects.has(msg["id"])) {
+      let object: GameObject = this.objects.get(msg["id"]);
+      object.parent.removeChild(object);
+    }
   }
 
   onRoomChange(roomId: string): void {
