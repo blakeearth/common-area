@@ -8,7 +8,7 @@
   border-width: 1px;
   border-color: lightgrey;
   animation-name: color_change;
-	animation-duration: 1s;
+	animation-duration: 0.5s;
 	animation-iteration-count: infinite;
 	animation-direction: alternate;
   border-radius: 8px;

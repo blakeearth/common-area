@@ -2,7 +2,6 @@ nav {
     height: 100%;
     background-color: white;
     min-width: 12ch;
-    border-radius: 0 2rem 0 0;
 }
 
 svg {
@@ -42,6 +41,8 @@ a:hover:not(.selected), a:focus {
 
 @media only screen and (max-width: 600px) {
     nav {
+        border-top: solid 1px black;
+        padding: 0.5rem 0 0.5rem 0;
         margin-top: auto;
         height: auto;
         display: flex;
@@ -49,7 +50,6 @@ a:hover:not(.selected), a:focus {
 
     a {
         flex-grow: 1;
-        padding: 0.2em 0.2em 0.1em 0.2em;
     }
 
     #settings-nav {
@@ -58,5 +58,11 @@ a:hover:not(.selected), a:focus {
 
     #room-nav {
         display: block;
+    }
+}
+
+@media only screen and (min-width: 600px) {
+    nav {
+        border-radius: 0 2rem 0 0;
     }
 }

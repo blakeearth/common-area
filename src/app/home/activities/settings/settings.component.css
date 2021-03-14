@@ -15,13 +15,14 @@
     padding: 0 0 2em 0;
 }
 
-form {
+.form {
     display: flex;
+    flex-direction: row;
     justify-content: space-between;
 }
 
 .form-element {
-    max-width: fit-content;
+    max-width: 12ch;
     flex: 1 0 0;
 }
 
@@ -41,10 +42,4 @@ input {
 
 .form-label {
     margin: 0 4ch 0 2ch;
-}
-
-@media only screen and (max-width: 600px) {
-    .list {
-        height: 70vh;
-    }
 }

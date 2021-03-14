@@ -5,7 +5,7 @@ canvas {
     image-rendering: pixelated;
     image-rendering: crisp-edges;
     cursor: crosshair;
-    border-radius: 2rem 0 0 0;
+    border-radius: 2rem 2rem 0 0;
 }
 
 .room {
@@ -13,4 +13,11 @@ canvas {
     flex-direction: column;
     flex: 1 0 0;
     background-color: #011638;
+}
+
+@media only screen and (min-width: 600px) {
+    canvas {
+        border-radius: 2rem 0 0 0;
+        margin-left: 4ch;
+    }
 }

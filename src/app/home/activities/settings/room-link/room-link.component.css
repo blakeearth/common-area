@@ -8,12 +8,6 @@
 }
 
 button {
-    max-width: 10ch;
-    flex: 1 0 0;
-    margin-right: 2ch;
-}
-
-button {
     padding: 0.2em 2ch 0.2em 2ch;
 }
 

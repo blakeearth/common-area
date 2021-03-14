@@ -56,7 +56,7 @@ h2, #participants {
     background: white;
 }
 
-.arrow:hover, .arrow:focus {
+.arrow:hover, .arrow:active {
     color: #011638;
 }
 

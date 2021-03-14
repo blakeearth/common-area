@@ -1,6 +1,6 @@
 {
   "configVersion": 1,
-  "timestamp": 1615531302370,
+  "timestamp": 1615751099481,
   "index": "/index.html",
   "assetGroups": [
     {
@@ -10,14 +10,14 @@
       "urls": [
         "/favicon.ico",
         "/index.html",
-        "/main-es2015.e4ef5765d6434ac7cf54.js",
-        "/main-es5.e4ef5765d6434ac7cf54.js",
+        "/main-es2015.f7661f1c454423b66e2f.js",
+        "/main-es5.f7661f1c454423b66e2f.js",
         "/manifest.webmanifest",
         "/polyfills-es2015.f332a089ad1600448873.js",
         "/polyfills-es5.177e85a9724683782539.js",
         "/runtime-es2015.0dae8cbc97194c7caed4.js",
         "/runtime-es5.0dae8cbc97194c7caed4.js",
-        "/styles.79c1bfb2c71785fa7de8.css"
+        "/styles.c2462ffac0ec55790e99.css"
       ],
       "patterns": []
     },
@@ -73,15 +73,15 @@
     "/assets/room/bear.png": "a9440b26746bb1d902fa2cefa8db52871da1fcfe",
     "/assets/room/floor.png": "faa77b6cc31720f05bcbcc44e9a1e5194db2f0c6",
     "/favicon.ico": "22f6a4a3bcaafafb0254e0f2fa4ceb89e505e8b2",
-    "/index.html": "0520c966f22705d4a83ba405f92ce311c2cfcb07",
-    "/main-es2015.e4ef5765d6434ac7cf54.js": "731dbc81e2979d2eb51445e45af228be981257cf",
-    "/main-es5.e4ef5765d6434ac7cf54.js": "fe93da59dab24c819c9e05384b25bfcc068e8c8d",
+    "/index.html": "d3b36d1628a1493e114df32e0c29645a98fc2590",
+    "/main-es2015.f7661f1c454423b66e2f.js": "df58d8bd1ac87d6be168b3ed28101543aa0ba605",
+    "/main-es5.f7661f1c454423b66e2f.js": "fe694b328d042c1dcc2267ec8db2dfa4fbe70d85",
     "/manifest.webmanifest": "d3f55976781a3810eb6827f7dd10079c8b96a216",
     "/polyfills-es2015.f332a089ad1600448873.js": "72ad4ccc0a3916ae4598199447cdeadd6d380570",
     "/polyfills-es5.177e85a9724683782539.js": "f32c7aaca8b60df7a9dfa6cb8f2b7751b5d0832c",
     "/runtime-es2015.0dae8cbc97194c7caed4.js": "a9aafcf49f49145093fc831efd9b8e2f6c71bb9c",
     "/runtime-es5.0dae8cbc97194c7caed4.js": "a9aafcf49f49145093fc831efd9b8e2f6c71bb9c",
-    "/styles.79c1bfb2c71785fa7de8.css": "c6e55bca1fef07e019a5f18deac92096b88ba41b"
+    "/styles.c2462ffac0ec55790e99.css": "ee667b659050b3347653305d0a016fb6d673beda"
   },
   "navigationUrls": [
     {

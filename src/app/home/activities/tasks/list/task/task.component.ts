@@ -47,6 +47,7 @@ export class TaskComponent implements OnInit, AfterViewInit {
       this.tasksService.setActiveTask(this.data);
       (document.getElementById(this.data.task_id + "-active-radio-button") as HTMLInputElement).checked = true;
     }
+    this.updateTitle();
   }
 
   onResponseReceived(msg: any): void {
@@ -55,6 +56,18 @@ export class TaskComponent implements OnInit, AfterViewInit {
         this.onRequestTask(msg);
       }
     }
+  }
+
+  updateTitle(): void {
+    let title: HTMLTextAreaElement = (document.getElementById(this.data.task_id + "-title") as HTMLTextAreaElement);
+    title.style.height = "0";
+    title.style.height = (title.scrollHeight + 16) + "px";
+  }
+
+  updateContents(): void {
+    let contents: HTMLTextAreaElement = (document.getElementById(this.data.task_id + "-contents") as HTMLTextAreaElement);
+    contents.style.height = "0";
+    contents.style.height = (contents.scrollHeight + 16) + "px";
   }
 
   startDragging(event: CdkDragStart<string[]>): void {
@@ -133,6 +146,7 @@ export class TaskComponent implements OnInit, AfterViewInit {
     if (msg["task_id"] == this.data.task_id) {
       let contents: HTMLElement = document.getElementById(this.data.task_id + "-contents");
       contents.innerHTML = msg["contents"];
+      this.updateContents();
     }
   }
 

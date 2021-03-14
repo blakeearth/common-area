@@ -3,9 +3,9 @@
       <div class="tags">
         tags
       </div>
-      <input id="{{ data.task_id }}-title" class="title" (keydown.enter)="saveTitle()" (focusout)="saveTitle()" value="{{ data.title }}">
+      <textarea id="{{ data.task_id }}-title" class="title" (input)="updateTitle()" (keydown.enter)="saveTitle()" (focusout)="saveTitle()" value="{{ data.title }}"></textarea>
       <div id="{{ data.task_id }}-full" class="full">
-        <textarea id="{{ data.task_id }}-contents" class="contents" tabindex="0" (focusout)="saveDescription()" placeholder="Add a description..."></textarea>
+        <textarea id="{{ data.task_id }}-contents" class="contents" (input)="updateContents()" tabindex="0" (focusout)="saveDescription()" placeholder="Add a description..."></textarea>
         <button>Close</button>
       </div>
       <div class="extras">

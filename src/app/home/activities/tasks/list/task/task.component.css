@@ -1,5 +1,6 @@
 .task {
   display: flex;
+  justify-content: space-between;
   cursor: grab;
   background-color: white;
   padding: 0.2em 1ch 0.2em 1ch;
@@ -21,8 +22,6 @@
 
 .active-radio-button {
   cursor: pointer;
-  -webkit-transform: scale(2);
-  transform: scale(2);
 }
 
 .active {
@@ -36,8 +35,8 @@
   outline: none;
   border: none;
   background: none;
+  resize: none;
   padding: 0;
-  flex: 1;
   font-size: 1.2em;
   overflow-wrap: break-all;
 }
@@ -52,10 +51,8 @@
 
 .center {
   display: flex;
-  height: auto;
-  flex: 1;
   flex-direction: column;
-  justify-content: space-between;
+  justify-content: top;
 }
 
 .full {
@@ -70,7 +67,7 @@
 
 .contents {
   font-size: small;
-  resize: vertical;
+  resize: none;
 }
 
 input, textarea {
