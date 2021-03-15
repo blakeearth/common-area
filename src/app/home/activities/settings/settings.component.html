@@ -16,8 +16,8 @@
             </div>
             <div id="room-settings" class="hidden">
                 <h2 id="room-title">{{ roomTitle }}</h2>
-                <form class="form hidden">
-                    <div class="form-element">
+                <form class="privacy-form form hidden">
+                    <div>
                         <p class="form-label">{{ roomTitle }} is currently public. Anyone with the link or room code
                         can join this room.</p>
                     </div>
@@ -25,16 +25,16 @@
                         <button (click)="onToggleRoomPrivacy()" type="submit">Make private</button>
                     </div>
                 </form>
-                <form class="form">
-                    <div class="form-element">
+                <form class="privacy-form form">
+                    <div>
                         <p class="form-label">{{ roomTitle }} is currently private. No one can join this room without an invitation.</p>
                     </div>
                     <div class="form-element">
                         <button (click)="onToggleRoomPrivacy()" type="submit">Make public</button>
                     </div>
                 </form>
-                <h3 class="form hidden">Share an invite link for {{ roomTitle }}</h3>
-                <form class="form hidden">
+                <h3 class="form privacy-form hidden">Share an invite link for {{ roomTitle }}</h3>
+                <form class="form privacy-form hidden">
                     <div class="form-element">
                         <input readonly value="💤🎉.ws/j/{{ roomId }}"/>
                     </div>
