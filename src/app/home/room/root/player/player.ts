@@ -10,6 +10,8 @@ export class Player extends Sprite.class {
 
     playingAnimation: string;
 
+    shadow: Sprite;
+
     constructor(id: string, displayName: string, position: Vector) {
         let spriteSheet = SpriteSheet({
             image: imageAssets["bear"],
@@ -71,6 +73,12 @@ export class Player extends Sprite.class {
         this.displayName = displayName;
         this.target = Vector(this.x, this.y);
         track(this);
+
+        this.shadow = Sprite({
+            image: imageAssets["bear-shadow"],
+            opacity: 0.5,
+            y: 96
+        });
     }
 
     update(): void {
@@ -91,7 +99,12 @@ export class Player extends Sprite.class {
     }
 
     draw(): void {
+        this.addChild(this.shadow);
+        this.shadow.render();
+        this.removeChild(this.shadow);
+
         super.draw();
+
         let nameTag: Text = new Text({
             text: this.displayName,
             font: '16px Arial',
@@ -103,7 +116,9 @@ export class Player extends Sprite.class {
             textAlign: 'center'
         });
 
+
         nameTag.render();
+        
     }
 
     setTarget(msg: any): void {

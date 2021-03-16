@@ -45,7 +45,6 @@ export class TaskComponent implements OnInit, AfterViewInit {
   ngAfterViewInit(): void {
     if (this.data.active == true) {
       this.tasksService.setActiveTask(this.data);
-      (document.getElementById(this.data.task_id + "-active-radio-button") as HTMLInputElement).checked = true;
     }
     this.updateTitle();
   }
@@ -61,7 +60,8 @@ export class TaskComponent implements OnInit, AfterViewInit {
   updateTitle(): void {
     let title: HTMLTextAreaElement = (document.getElementById(this.data.task_id + "-title") as HTMLTextAreaElement);
     title.style.height = "0";
-    title.style.height = (title.scrollHeight + 16) + "px";
+    title.style.height = (title.scrollHeight + 1) + "px";
+    title.style.maxHeight = (title.scrollHeight + 1) + "px";
   }
 
   updateContents(): void {

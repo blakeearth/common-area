@@ -1,22 +1,32 @@
 nav {
+    display: flex;
+    flex-direction: column;
+    align-items: left;
     height: 100%;
     background-color: white;
-    min-width: 12ch;
+    padding: 0.5ch;
 }
 
 svg {
+    margin-right: 1ch;
     scale: 2;
-    margin: 0.5ch;
+}
+
+span {
+    font-size: 0.8em
 }
 
 a {
+    display: flex;
+    align-items: center;
     color: #b4b4b4;
     display: block;
     cursor: pointer;
-    font-size: 32px;
+    font-size: 24px;
     text-decoration: none;
-    text-align: center;
+    text-align: left;
     padding: 0.2em 0.2em 0.2em 0.1em;
+    margin: 1ch;
 }
 
 a:hover:not(.selected), a:focus {
@@ -39,13 +49,23 @@ a:hover:not(.selected), a:focus {
     }
 }
 
+@media only screen and (max-width: 1600px) {
+    span {
+        display: none;
+    }
+
+    svg {
+        margin-right: 0;
+    }
+}
+
 @media only screen and (max-width: 600px) {
     nav {
+        flex-direction: row;
         border-top: solid 1px black;
         padding: 0.5rem 0 0.5rem 0;
         margin-top: auto;
         height: auto;
-        display: flex;
     }
 
     a {

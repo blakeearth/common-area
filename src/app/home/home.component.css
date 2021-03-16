@@ -12,10 +12,14 @@
 }
 
 #activity-container {
-    flex: 5 0 0;
+    flex: 5;
 }
 
-.room {
+#menu {
+    min-width: fit-content;
+}
+
+#room {
     flex: 10 0 0;
     background-color: #000000;
     display: flex;
@@ -38,6 +42,7 @@
 
     #menu {
         order: 3;
+        width: auto;
     }
 
     .room {
