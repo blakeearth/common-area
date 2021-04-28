@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, AfterViewInit } from '@angular/core';
+import { Godot } from 'src/assets/room/slumber-party-room';
 import { init, TileEngine, load, setImagePath, imageAssets, GameLoop, GameObject } from 'kontra';
 import { Handler } from 'src/app/handler';
 import { SocketService } from 'src/app/socket/socket.service';
@@ -31,6 +32,14 @@ export class RoomComponent extends Handler implements OnInit {
     this.roomChangeService = roomChangeService;
     this.objects = new Map<string, any>();
     this.objectFactory = new ObjectFactory(socketService);
+  
+    let meta = {"gloria": "beret"};
+
+
+    // TODO: MAKE SURE TO CLEAR ITEM AT LAUNCH BEFORE SETTING TO NEW THING
+
+    window.sessionStorage.setItem("toGodot", JSON.stringify(meta));
+    let meta1 = JSON.parse(window.localStorage.getItem("meta"));
   }
 
   ngOnInit(): void {
@@ -43,7 +52,7 @@ export class RoomComponent extends Handler implements OnInit {
 
     this.roomChangeService.roomId.subscribe(msg => this.onRoomChange(msg));
 
-    let { canvas, context } = init();
+    /*let { canvas, context } = init();
     canvas.width = canvas.clientWidth;
     canvas.height = canvas.clientHeight;
 
@@ -57,9 +66,8 @@ export class RoomComponent extends Handler implements OnInit {
     document.onresize = function() {
       canvas.width = canvas.clientWidth;
       canvas.height = canvas.clientHeight;
-    };
+    };*/
 
-    console.log("testing");
   }
 
   addPersistObject(msg: any): void {
