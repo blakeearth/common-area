@@ -41,7 +41,7 @@ const routes: Routes = [
     component: HomeComponent
   },
   {
-    path: 'home/analytics',
+    path: 'home/stats',
     component: HomeComponent
   },
   {

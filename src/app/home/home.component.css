@@ -12,14 +12,15 @@
 }
 
 #activity-container {
-    flex: 5;
+    min-width: 50ch;
+    max-width: 50ch;
 }
 
 #menu {
     min-width: fit-content;
 }
 
-#room {
+.room {
     flex: 10 0 0;
     background-color: #000000;
     display: flex;
@@ -49,7 +50,7 @@
         display: none;
     }
 
-    .visible-mobile {
+    #visible-mobile {
         display: inherit;
     }
 }

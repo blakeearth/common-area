@@ -39,8 +39,9 @@ import { StatsComponent } from './home/activities/stats/stats.component';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
 import { TaskPreviewComponent } from './home/activities/timer/task-preview/task-preview.component';
-import { TaskPopupDirective } from './home/room/root/task-popup.directive';
-import { TaskPopupComponent } from './home/room/root/task-popup/task-popup.component';
+import { NotMonetizedComponent } from './home/activities/stats/not-monetized/not-monetized.component';
+import { LoadingMonetizationComponent } from './home/activities/stats/loading-monetization/loading-monetization.component';
+import { MonetizedComponent } from './home/activities/stats/monetized/monetized.component';
 
 @NgModule({
   declarations: [
@@ -74,8 +75,9 @@ import { TaskPopupComponent } from './home/room/root/task-popup/task-popup.compo
     TaskComponent,
     TaskDirective,
     TaskPreviewComponent,
-    TaskPopupDirective,
-    TaskPopupComponent,
+    NotMonetizedComponent,
+    LoadingMonetizationComponent,
+    MonetizedComponent,
   ],
   imports: [
     BrowserModule,

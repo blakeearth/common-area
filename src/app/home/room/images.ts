@@ -1,1 +1,0 @@
-export const images: Array<string> = ['floor.png', 'alien.png', 'bear.png', 'bear-shadow.png'];

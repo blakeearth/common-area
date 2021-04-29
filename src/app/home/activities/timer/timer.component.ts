@@ -37,8 +37,8 @@ export class TimerComponent extends Handler implements OnInit, Activity {
   
   joinedSession: boolean = false;
 
-  rightVisibility: string = "visible";
-  leftVisibility: string = "visible";
+  rightVisibility: string = "inherit";
+  leftVisibility: string = "inherit";
 
   startButtonDisplay: string = "inherit";
   joinButtonDisplay: string = "none";
@@ -70,8 +70,8 @@ export class TimerComponent extends Handler implements OnInit, Activity {
 
   addTime(event: Event, time: number): void {
     this.timeToSubmit += time;
-    this.rightVisibility = "visible";
-    this.leftVisibility = "visible";
+    this.rightVisibility = "inherit";
+    this.leftVisibility = "inherit";
     if (this.timeToSubmit > 45 || this.timeToSubmit < 10) this.timeToSubmit -= time;
     if (this.timeToSubmit == 45) {
       this.rightVisibility = "hidden";
@@ -146,8 +146,8 @@ export class TimerComponent extends Handler implements OnInit, Activity {
         this.timeRemaining = new Date(0, 0, 0, 0, this.timeToSubmit);
         this.timerService.stopTimer();
         this.timerSubscription.unsubscribe();
-        this.leftVisibility = "visible";
-        this.rightVisibility = "visible";
+        this.leftVisibility = "inherit";
+        this.rightVisibility = "inherit";
       }
       else {
         newDate.setSeconds(59);

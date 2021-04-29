@@ -1,2 +1,7 @@
 <app-panel-header [header]="header"></app-panel-header>
-<p>analytics works!</p>
+<!--Why didn't I pad all of these like this? Need serious refactoring-->
+<div class="container">
+    <app-not-monetized class="current-state"></app-not-monetized>
+    <app-loading-monetization></app-loading-monetization>
+    <app-monetized></app-monetized>
+</div>

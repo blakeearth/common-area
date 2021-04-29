@@ -67,11 +67,15 @@ export class TaskComponent implements OnInit, AfterViewInit {
   updateContents(): void {
     let contents: HTMLTextAreaElement = (document.getElementById(this.data.task_id + "-contents") as HTMLTextAreaElement);
     contents.style.height = "0";
-    contents.style.height = (contents.scrollHeight + 16) + "px";
+    contents.style.height = (contents.scrollHeight + 1) + "px";
   }
 
   startDragging(event: CdkDragStart<string[]>): void {
     event.source.data = this.data;
+  }
+
+  requestTask(): void {
+    this.socketService.sendMessage({channel: "tasks", type: "request_task", "task_id": this.data.task_id});
   }
 
   openTask(): void {
@@ -95,7 +99,6 @@ export class TaskComponent implements OnInit, AfterViewInit {
         this.listsService.disabledLists.set(this.data.list_id, 1);
       }
 
-      this.socketService.sendMessage({channel: "tasks", type: "request_task", "task_id": this.data.task_id});
       this.open = true;
     }
   }
@@ -135,7 +138,6 @@ export class TaskComponent implements OnInit, AfterViewInit {
     }
 
     this.open = false;
-    this.socketService.sendMessage({channel: "tasks", type: "request_task", "task_id": this.data.task_id});
   }
 
   removeTask() {
@@ -147,6 +149,7 @@ export class TaskComponent implements OnInit, AfterViewInit {
       let contents: HTMLElement = document.getElementById(this.data.task_id + "-contents");
       contents.innerHTML = msg["contents"];
       this.updateContents();
+      this.openTask();
     }
   }
 

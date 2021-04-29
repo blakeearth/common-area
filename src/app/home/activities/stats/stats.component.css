@@ -1,0 +1,12 @@
+.container {
+    margin: 0 2ch 0 2ch;
+}
+
+app-loading-monetization, app-monetized, app-not-monetized {
+    display: none;
+}
+
+.current-state {
+    display: flex;
+    flex-direction: column;
+}

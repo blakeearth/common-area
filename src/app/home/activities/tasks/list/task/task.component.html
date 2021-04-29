@@ -1,9 +1,9 @@
-<div (click)="openTask()" (focus)="openTask()" tabindex="0" class="task" id="{{ data.task_id }}" [cdkDragDisabled]="disabled" (cdkDragStarted)="startDragging($event)" cdkDrag>
-    <div class="center">
+<div tabindex="0" class="task" id="{{ data.task_id }}" [cdkDragDisabled]="disabled" (cdkDragStarted)="startDragging($event)" cdkDrag>
+    <div class="center" (click)="requestTask()" (focus)="requestTask()">
       <div class="tags">
         tags
       </div>
-      <textarea id="{{ data.task_id }}-title" class="title" (input)="updateTitle()" (keydown.enter)="saveTitle()" (focusout)="saveTitle()" value="{{ data.title }}"></textarea>
+      <textarea id="{{ data.task_id }}-title" class="title" (click)="requestTask()" (focus)="requestTask()" (input)="updateTitle()" (keydown.enter)="saveTitle()" (focusout)="saveTitle()" value="{{ data.title }}"></textarea>
       <div id="{{ data.task_id }}-full" class="full">
         <textarea id="{{ data.task_id }}-contents" class="contents" (input)="updateContents()" tabindex="0" (focusout)="saveDescription()" placeholder="Add a description..."></textarea>
         <button>Close</button>

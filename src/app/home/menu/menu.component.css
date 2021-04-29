@@ -8,11 +8,12 @@ nav {
 }
 
 svg {
-    margin-right: 1ch;
+    margin-right: 1.5ch;
     scale: 2;
 }
 
 span {
+    font-family: 'Poppins Bold';
     font-size: 0.8em
 }
 
