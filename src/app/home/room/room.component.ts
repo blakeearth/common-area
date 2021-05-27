@@ -46,17 +46,21 @@ export class RoomComponent extends Handler implements OnInit {
       this[this.snakeToCamel(msg["type"])](msg);
     }
     else if (msg["channel"] == "room") {
-      console.log(msg);
       this.socketService.sendMessage(msg);
     }
   }
 
+  /*reportLocation(): void {
+    let log: HTMLElement = document.getElementById("game-log");
+    let message: HTMLParagraphElement = document.createElement("p");
+    message.innerHTML = this.displayName + " is now at " + Math.round(this.x) + " on the x-axis and " + Math.round(this.y) + " on the y-axis.";
+    log.appendChild(message);
+  }*/
+
   ready(msg: any) {
     this.gameIsReady = true;
-    console.log("sending old messages");
     while (this.unsentMessages.length > 0) {
       let oldmsg: any = this.unsentMessages.pop();
-      console.log("sending " + JSON.stringify(oldmsg));
       this.game.contentWindow.postMessage(JSON.stringify(oldmsg), window.origin);
     }
   }

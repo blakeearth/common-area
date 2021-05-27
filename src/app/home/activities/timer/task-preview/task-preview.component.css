@@ -1,4 +1,7 @@
 #preview-task {
+  cursor: pointer;
+  text-decoration: none;
+  color: black;
   display: flex;
   background-color: white;
   padding: 0.2em 1ch 0.2em 1ch;
