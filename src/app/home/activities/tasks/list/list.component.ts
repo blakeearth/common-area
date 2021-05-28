@@ -43,7 +43,8 @@ export class ListComponent implements OnInit {
 
   ngAfterViewInit(): void {
     let status: string = sessionStorage.getItem(this.data.list_id + "_status");
-    if (status == "collapsed") {
+    this.toggleArrowAndCheck();
+    if (status != "collapsed" && status != null) {
       let checkbox: HTMLInputElement = document.getElementById(this.data.list_id + "-checkbox") as HTMLInputElement;
       checkbox.checked = true;
       this.toggleArrow();

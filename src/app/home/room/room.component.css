@@ -5,19 +5,22 @@ iframe {
     image-rendering: pixelated;
     image-rendering: crisp-edges;
     cursor: crosshair;
-    border-radius: 2rem 2rem 0 0;
 }
 
 .room {
     display: flex;
     flex-direction: column;
     flex: 1 0 0;
-    background-color: #011638;
 }
 
 @media only screen and (min-width: 600px) {
+    .room {
+        border-radius: 2rem 2rem 2em 2em;
+    }
+
     iframe {
-        border-radius: 2rem 0 0 0;
-        margin-left: 4ch;
+        margin: 2em;
+        border-color: transparent;
+        border-radius: 2em;
     }
 }

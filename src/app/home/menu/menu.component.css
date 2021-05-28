@@ -4,11 +4,10 @@ nav {
     align-items: left;
     height: 100%;
     background-color: white;
-    padding: 0.5ch;
+    padding: 0 0.5ch 0 0.5ch;
 }
 
 svg {
-    margin-right: 1.5ch;
     scale: 2;
 }
 
@@ -27,7 +26,7 @@ a {
     text-decoration: none;
     text-align: left;
     padding: 0.2em 0.2em 0.2em 0.1em;
-    margin: 1ch;
+    margin-left: 1ch;
 }
 
 a:hover:not(.selected), a:focus {

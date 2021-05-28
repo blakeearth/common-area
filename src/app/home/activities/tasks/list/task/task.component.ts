@@ -1,4 +1,5 @@
 import { Component, OnInit, Input, HostListener, AfterViewInit } from '@angular/core';
+import { Location } from '@angular/common';
 import { CdkDragStart } from '@angular/cdk/drag-drop';
 import { SocketService } from 'src/app/socket/socket.service';
 import { ListsService } from '../../lists.service';
@@ -24,6 +25,7 @@ export class TaskComponent implements OnInit, AfterViewInit {
   socketService: SocketService;
   listsService: ListsService;
   tasksService: TasksService;
+  location: Location;
 
   @HostListener('document:click', ['$event'])
   clickout(event) {
@@ -32,10 +34,11 @@ export class TaskComponent implements OnInit, AfterViewInit {
     }
   }
 
-  constructor(socketService: SocketService, listsService: ListsService, tasksService: TasksService) {
+  constructor(socketService: SocketService, listsService: ListsService, tasksService: TasksService, location: Location) {
     this.socketService = socketService;
     this.listsService = listsService;
     this.tasksService = tasksService;
+    this.location = location;
   }
 
   ngOnInit(): void {
@@ -153,9 +156,11 @@ export class TaskComponent implements OnInit, AfterViewInit {
     }
   }
 
-  setActive() {
+  setActive(event: Event) {
     this.tasksService.setActiveTask(this.data);
     this.socketService.sendMessage({channel: "tasks", type: "set_listing_active", listing_id: this.data.listing_id});
+    event.preventDefault();
+    this.location.replaceState("/home/timer");
   }
 
 }

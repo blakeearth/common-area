@@ -7,14 +7,9 @@
 }
 
 h1 {
+    font-size: large;
     display: contents;
     text-decoration: none;
     color: #011638;
     margin: 0;
-}
-
-@media only screen and (max-width: 600px) {
-    h1 {
-        font-size: medium;
-    }
 }
