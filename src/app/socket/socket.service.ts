@@ -31,8 +31,8 @@ export class SocketService {
   }
 
   establishWebsocket() {
-    this.httpClient.get('https://websocket.commonarea.cc', {responseType: 'text', withCredentials: true}).subscribe(data => {
-      this.socket = webSocket('wss://websocket.commonarea.cc:4433');
+    this.httpClient.get('https://ws.cowork.ac', {responseType: 'text', withCredentials: true}).subscribe(data => {
+      this.socket = webSocket('wss://ws.cowork.ac:4433');
 
       this.socket.subscribe(
         msg => {
