@@ -22,7 +22,7 @@ export class SettingsComponent implements OnInit, Activity {
   roomPrivate: boolean = true;
   roomTitle: string = sessionStorage.getItem("room_title");
   roomId: string = sessionStorage.getItem("room_id");
-  roomLink: string = "https://commonarea.cc/j/" + this.roomId;
+  roomLink: string = "https://cowork.ac/j/" + this.roomId;
 
   socketService: SocketService;
   roomChangeService: RoomChangeService;
@@ -187,7 +187,7 @@ export class SettingsComponent implements OnInit, Activity {
     this.socketService.sendMessage({channel: "settings", type: "request_room_privacy", room_id: roomId});
     document.getElementById("room-title").innerHTML = sessionStorage.getItem("room_title");
     this.roomId = roomId;
-    this.roomLink = "https://commonarea.cc/j/" + this.roomId;
+    this.roomLink = "https://cowork.ac/j/" + this.roomId;
     this.reloadRooms();
   }
 
