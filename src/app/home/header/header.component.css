@@ -1,12 +1,19 @@
 .header {
     display: flex;
     align-items: left;
-    justify-content: left;
+    justify-content: space-between;
     padding: 0.5em 0 0.5em 0;
+    background-color: #00B884;
+    box-shadow: 0 0 1ch 1ch lightgrey;
+}
+
+nav {
+    display: flex;
+    align-items: center;
 }
 
 a {
-    color: #00B884;
+    color: white;
     cursor: pointer;
     text-decoration: underline;
     padding: 0 0.5em 0 0.5em;
@@ -17,22 +24,18 @@ a {
 }
 
 h1 {
-    font-size: medium;
     display: contents;
-    color: #00B884;
+    color: white;
     margin: 0;
 }
 
 .options {
-    position: absolute;
-    right: 0;
-    top: 1.75em;
     display: flex;
     font-size: small;
 }
 
 a:hover {
-    color: #00B884;
+    color: white;
 }
 
 @media only screen and (max-width: 600px) {
@@ -44,9 +47,5 @@ a:hover {
 
     h1 {
         font-size: 1em;
-    }
-
-    .options {
-        top: 0.8em;
     }
 }
