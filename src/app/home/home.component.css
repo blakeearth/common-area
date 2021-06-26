@@ -12,8 +12,7 @@
 }
 
 #activity-container {
-    min-width: 50ch;
-    max-width: 50ch;
+    flex-grow: 1;
 }
 
 #menu {
@@ -37,7 +36,6 @@
 
     #activity-container {
         height: 100%;
-        border-right: none;
     }
 
     #menu {
