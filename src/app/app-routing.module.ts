@@ -28,17 +28,14 @@ const routes: Routes = [
 
   },
   {
-    path: 'home/store',
+    path: 'home/room',
     component: HomeComponent
 
   },
   {
-    path: 'home/chat',
+    path: 'home/store',
     component: HomeComponent
-  },
-  {
-    path: 'home/timer',
-    component: HomeComponent
+
   },
   {
     path: 'home/stats',

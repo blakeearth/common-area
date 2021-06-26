@@ -42,10 +42,6 @@ a:hover:not(.selected), a:focus {
     outline: none;
 }
 
-#room-nav {
-    display: none;
-}
-
 @media only screen and (max-height: 420px) {
     #settings-nav {
         position: relative;
@@ -73,9 +69,5 @@ a:hover:not(.selected), a:focus {
 
     #settings-nav {
         position: relative;
-    }
-
-    #room-nav {
-        display: block;
     }
 }

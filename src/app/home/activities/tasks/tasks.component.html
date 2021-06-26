@@ -1,13 +1,11 @@
 <div class="scroll-container">
     <app-panel-header [header]="header"></app-panel-header>
-    <div id="list">
-        <div cdkDropList (cdkDropListDropped)="dropList($event)">
-            <ng-template appList></ng-template>
-            <div class="new-list">
-                <input id="new-list-checkbox" type="checkbox"/>
-                <div class="list-header">
-                    <input id="new-list-title-field" type="text" placeholder="Add a new list..." (keydown.enter)="addList()"/>
-                </div>
+    <div id="list" cdkDropList cdkDropListOrientation="horizontal" (cdkDropListDropped)="dropList($event)">
+        <ng-template appList></ng-template>
+        <div class="new-list">
+            <input id="new-list-checkbox" type="checkbox"/>
+            <div class="list-header">
+                <input id="new-list-title-field" type="text" placeholder="Add a new list..." (keydown.enter)="addList()"/>
             </div>
         </div>
     </div>

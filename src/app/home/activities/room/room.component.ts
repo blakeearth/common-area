@@ -1,7 +1,7 @@
 import { Component, OnInit, AfterViewInit } from '@angular/core';
 import { Handler } from 'src/app/handler';
 import { SocketService } from 'src/app/socket/socket.service';
-import { RoomChangeService } from '../room-change.service';
+import { RoomChangeService } from '../../room-change.service';
 
 @Component({
   selector: 'app-room',
@@ -15,6 +15,8 @@ export class RoomComponent extends Handler implements OnInit {
 
   game: HTMLIFrameElement;
 
+  header: string = "Room";
+
   unsentMessages: Array<any> = [];
   gameIsReady: boolean = false;
 
@@ -27,6 +29,10 @@ export class RoomComponent extends Handler implements OnInit {
 
   ngOnInit(): void {
     // register and observe socket channels
+    if (sessionStorage.getItem("room_title") != undefined) {
+      // TODO: room name will not automatically update
+      this.header = sessionStorage.getItem("room_title");
+    }
     if (!this.socketService.channelIsRegistered("room")) this.socketService.register("room");
     this.socketService.channelReply.get("room").subscribe(msg => {
       if (!this.gameIsReady) this.unsentMessages.push(msg);

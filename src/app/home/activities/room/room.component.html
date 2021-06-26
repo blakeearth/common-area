@@ -1,0 +1,18 @@
+<div class="room">
+    <div class="game">
+        <app-panel-header [header]="header"></app-panel-header>
+        <iframe id="game" src="assets/room/godot/slumber-party-room.html">
+            <button>Move North</button>
+            <button>Move South</button>
+            <button>Move East</button>
+            <button>Move West</button>
+            <div id="game-log" role="log">
+                
+            </div>
+        </iframe>
+    </div>
+    <div class="sidebar">
+        <app-timer id="timer"></app-timer>
+        <app-chat id="chat"></app-chat>
+    </div>    
+</div>

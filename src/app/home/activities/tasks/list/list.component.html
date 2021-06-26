@@ -11,8 +11,8 @@
         <div class="drop-area" id="{{ data.list_id }}" cdkDropList [cdkDropListConnectedTo]="lists" (cdkDropListDropped)="dropTask($event)">
             <ng-template appTask></ng-template>
         </div>
-        <div class="delete-row">
-            <button class="delete-list" tabindex="0" (click)="deleteList()" (keydown.enter)="deleteList()">Delete</button>
-        </div>
+    </div>
+    <div class="delete-row">
+        <button class="delete-list" tabindex="0" (click)="deleteList()" (keydown.enter)="deleteList()">Delete</button>
     </div>
 </div>

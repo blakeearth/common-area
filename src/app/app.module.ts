@@ -15,7 +15,7 @@ import { ChatComponent } from './home/activities/chat/chat.component';
 import { TimerComponent } from './home/activities/timer/timer.component';
 import { TasksComponent } from './home/activities/tasks/tasks.component';
 import { LandingPageComponent } from './landing-page/landing-page/landing-page.component';
-import { RoomComponent } from './home/room/room.component';
+import { RoomComponent } from './home/activities/room/room.component';
 import { SignInComponent } from './auth/goals/sign-in/sign-in.component';
 import { SignUpComponent } from './auth/goals/sign-up/sign-up.component';
 import { JoinRoomComponent } from './auth/goals/join-room/join-room.component';

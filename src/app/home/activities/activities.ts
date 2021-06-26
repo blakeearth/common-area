@@ -1,1 +1,1 @@
-export const activities: Array<string> = ['store', 'chat', 'timer', 'stats', 'tasks', 'settings'];
+export const activities: Array<string> = ['room', 'store', 'chat', 'timer', 'stats', 'tasks', 'settings'];

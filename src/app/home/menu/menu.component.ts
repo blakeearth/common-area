@@ -53,9 +53,6 @@ export class MenuComponent implements OnInit {
   static getActivity(path: string): string {
     let activity: string = path.replace('/home', '');
     activity = activity.replace('/', '');
-    if (activity == '') {
-      activity = 'room';
-    }
     return activity;
   }
 

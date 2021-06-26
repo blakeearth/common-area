@@ -160,7 +160,7 @@ export class TaskComponent implements OnInit, AfterViewInit {
     this.tasksService.setActiveTask(this.data);
     this.socketService.sendMessage({channel: "tasks", type: "set_listing_active", listing_id: this.data.listing_id});
     event.preventDefault();
-    this.location.replaceState("/home/timer");
+    this.location.replaceState("/home/room");
   }
 
 }

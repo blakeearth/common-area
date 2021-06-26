@@ -1,14 +1,6 @@
-.container {
-    display: flex;
-    flex-direction: column;
-    flex: 1 0 0;
-}
-
 #not-in-session {
     flex: 1 0 0;
-    display: flex;
     padding: 0.2em 0 0.2em 0;
-    flex-direction: column;
 }
 
 h2, #participants {
@@ -21,33 +13,31 @@ h2, #participants {
 }
 
 #host {
-    display: flex;
-    flex-direction: column;
-    align-content: center;
     overflow-y: auto;
     flex: 1 0 0;
-}
-
-#consumable {
-    font-size: 12em;
-    text-align: center;
 }
 
 #time {
     display: flex;
     flex-direction: row;
     text-align: center;
-    margin: 0.5em 2ch 0.5em 2ch;
 }
 
 #time-display {
     flex-grow: 1;
-    font-size: 4em;
+    font-size: 2em;
     text-align: center;
 }
 
+#options {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+}
+
 .arrow {
-    font-size: 4em;
+    font-size: 2em;
+    margin: 0 0.2ch 0 0.2ch;
     cursor: pointer;
     color: #adbbd3;
 }
@@ -62,6 +52,7 @@ h2, #participants {
 
 button {
     font-size: 2em;
+    margin: 0 0.2ch 0 0.2ch;
 }
 
 #active-task {

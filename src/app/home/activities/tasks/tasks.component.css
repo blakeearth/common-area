@@ -7,10 +7,9 @@
 
 #list {
     flex: 1 1 auto;
-    overflow-y: scroll;
-    height: 70vh;
+    overflow-x: auto;
     display: flex;
-    flex-direction: column;
+    max-height: 100%;
 }
 
 .new-list {
