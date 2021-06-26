@@ -1,6 +1,6 @@
 <div class="scroll-container">
     <app-panel-header [header]="header"></app-panel-header>
-    <div id="list" cdkDropList cdkDropListOrientation="horizontal" (cdkDropListDropped)="dropList($event)">
+    <div id="lists" cdkDropList cdkDropListOrientation="horizontal" (cdkDropListDropped)="dropList($event)" (mouseup)="handleMouseUp($event)" (mousedown)="handleMouseDown($event)" (mousemove)="handleMouseMovement($event)">
         <ng-template appList></ng-template>
         <div class="new-list">
             <input id="new-list-checkbox" type="checkbox"/>

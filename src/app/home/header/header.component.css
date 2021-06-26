@@ -7,6 +7,10 @@
     box-shadow: 0 0 1ch 1ch lightgrey;
 }
 
+img {
+    height: 2em;
+}
+
 nav {
     display: flex;
     align-items: center;
@@ -17,6 +21,8 @@ a {
     cursor: pointer;
     text-decoration: underline;
     padding: 0 0.5em 0 0.5em;
+    display: flex;
+    align-items: center;
 }
 
 .home {
@@ -24,6 +30,7 @@ a {
 }
 
 h1 {
+    font-size: medium;
     display: contents;
     color: white;
     margin: 0;

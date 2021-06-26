@@ -20,6 +20,8 @@ export class TasksComponent implements OnInit, Activity {
   lists: string[] = [];
   listViewRefs: Map<string, ViewRef> = new Map<string, ViewRef>();
 
+  scrollPosition: any;
+
   socketService: SocketService;
   listsService: ListsService;
   componentFactoryResolver: ComponentFactoryResolver;
@@ -33,6 +35,40 @@ export class TasksComponent implements OnInit, Activity {
   ngOnInit(): void {
     this.socketService.reply.subscribe(msg => this.onResponseReceived(msg));
     this.socketService.sendMessage({channel: "tasks", type: "request_lists"});
+  }
+
+  handleMouseDown(event: MouseEvent) {
+    let element: Element = document.getElementById("lists");
+    this.scrollPosition = {
+        left: element.scrollLeft,
+        x: event.clientX,
+    };
+  }
+
+  handleMouseMovement(event: MouseEvent) {
+    if (this.scrollPosition != undefined) {
+      const dx = event.clientX - this.scrollPosition.x;
+      
+
+      let element: Element = document.getElementById("lists");
+      this.scrollPosition = {
+        left: element.scrollLeft,
+        x: event.clientX,
+      };
+      element.scrollBy(-dx, 0);
+      if (window.getSelection) {
+        if (window.getSelection().empty) {
+          window.getSelection().empty();
+        }
+        else if (window.getSelection().removeAllRanges) {
+          window.getSelection().removeAllRanges();
+        }
+      }
+    }
+  }
+
+  handleMouseUp(event: MouseEvent) {
+    this.scrollPosition = undefined;
   }
 
   onResponseReceived(msg: any): void {
