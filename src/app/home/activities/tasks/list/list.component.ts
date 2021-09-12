@@ -136,7 +136,7 @@ export class ListComponent implements OnInit {
     }
   }
 
-  loadTask(data: any): void {
+  async loadTask(data: any): Promise<void> {
     const componentFactory = this.componentFactoryResolver.resolveComponentFactory(TaskComponent);
 
     const viewContainerRef = this.taskHost.viewContainerRef;

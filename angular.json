@@ -126,6 +126,10 @@
           }
         }
       }
-    }},
-  "defaultProject": "slumber-party"
+    }
+  },
+  "defaultProject": "slumber-party",
+  "cli": {
+    "analytics": false
+  }
 }
