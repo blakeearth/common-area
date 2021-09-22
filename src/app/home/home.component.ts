@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Location } from '@angular/common';
+import { MenuComponent } from './menu/menu.component';
 
 @Component({
   selector: 'app-home',
@@ -14,9 +15,8 @@ export class HomeComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    //this.location.replaceState(window.location.href.replace("xn--dk8hvr", "slumberparty"));
     if (this.location.path() == '/home') {
-      //this.location.replaceState('/home/chat');
+      this.location.replaceState('/home/tasks');
     }
     this.updateActivity(this.location.path(), this.location.getState());
     this.location.onUrlChange(this.updateActivity);
@@ -24,8 +24,8 @@ export class HomeComponent implements OnInit {
 
   updateActivity(url: string, state: unknown): void {
     window.history.pushState(null, url, url);
-    let activity: string = url.replace('/home', '');
-    activity = activity.replace('/', '');
+    let activity: string = MenuComponent.getActivity(url);
+    console.log(activity);
     if (activity == '') {
       let activityContainer: Element = document.getElementById("activity-container");
       let room: Element = document.getElementsByClassName("room")[0];
@@ -38,6 +38,18 @@ export class HomeComponent implements OnInit {
       let room: Element = document.getElementsByClassName("room")[0];
       room.classList.remove("visible-mobile");
     }
+    
+  }
+
+  static getActivity(path: string): string {
+    let splitPath: string[] = path.split('/');
+    let activity: string = splitPath[2];
+    console.log(activity);
+    activity = activity.replace('/', '');
+    if (activity == '') {
+      activity = 'room';
+    }
+    return activity;
   }
 
 }

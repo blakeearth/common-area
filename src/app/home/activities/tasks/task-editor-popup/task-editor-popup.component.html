@@ -1,0 +1,45 @@
+<div class="modal" (click)="onClose($event)">
+    <div class="modal-content" tabindex="0">
+        <div class="task-header">
+            <textarea id="task-title-field" (focus)="editTitle()" (keydown.enter)="saveTitle()" (blur)="saveTitle()"
+                [(ngModel)]="enteredTitle" [disabled]="!this.owner">{{ data.title }}</textarea>
+            <a tabindex="0" (keydown.enter)="onClose($event)" (click)="onClose($event)" class="close-task">X</a>
+        </div>
+        <div class="task-content">
+            <div class="task-main">
+                <form (submit)="onClose($event)">
+                    <div tabindex="0" class="tooltip-parent">
+                        <h3>Listing</h3>
+                        <span>A listing is your personal copy of a task. Shared versions of the task will not have this
+                            information.</span>
+                    </div>
+                    <p>This section will include time spent on this task, any ongoing timers, and tags.</p>
+                    <h3>Task</h3>
+                    <label for="event-details">Description</label>
+                    <textarea id="event-details" name="event-details" rows="6" style="resize: none;"
+                        [(ngModel)]="enteredDescription" (blur)="saveDescription()" disabled>{{ data.description }}</textarea>
+
+                </form>
+            </div>
+            <div class="task-sidebar">
+                <h6 class="task-actions">Task Settings</h6>
+                <div class="toggle">
+                    <span tabindex="0" class="tooltip-parent">Public<span>Set a task to public if you want it to be visible to others.</span></span>
+                    <label class="switch">
+                        <input type="checkbox" id="public" (change)="changePublic()">
+                        <span class="slider"></span>
+                    </label>
+                </div>
+                <h6 class="task-actions">Listing Settings</h6>
+                <div class="toggle">
+                    <span tabindex="0" class="tooltip-parent">Active<span tabindex="0">Set a listing to active if you want to work on it. You can have up to one active task at a time.</span></span>
+                    <label class="switch">
+                        <input type="checkbox" id="active" (change)="changeActive()">
+                        <span class="slider"></span>
+                    </label>
+                </div>
+                <button class="remove-task" tabindex="0" (click)="removeTask($event)" (keydown.enter)="removeTask($event)">Remove</button>
+            </div>
+        </div>
+    </div>
+</div>

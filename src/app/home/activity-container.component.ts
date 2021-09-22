@@ -1,6 +1,7 @@
 import { Component, OnInit, Input, Output } from '@angular/core';
 import { Location } from '@angular/common';
 import { activities } from './activities/activities';
+import { MenuComponent } from './menu/menu.component';
 
 @Component({
   selector: 'app-activity-container',
@@ -21,10 +22,9 @@ export class ActivityContainerComponent implements OnInit {
     this.updateActivity(this.location.path(), this.location.getState());
   }
 
-  updateActivity(url: String, state: unknown): void {
+  updateActivity(url: string, state: unknown): void {
     // ALERT: REDUNDANCY
-    let activity: string = url.replace('/home', '');
-    activity = activity.replace('/', '');
+    let activity: string = MenuComponent.getActivity(url);
     let visibleActivities: HTMLCollection = document.getElementsByClassName("visible");
     let i: number = 0;
     for (let i: number = 0; i < visibleActivities.length; i++) {

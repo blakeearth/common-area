@@ -1,4 +1,4 @@
-import { TileEngine, imageAssets, initPointer, track, getPointer, GameObject, onPointerUp } from 'kontra';
+import { TileEngine, imageAssets, initPointer, track, getPointer, GameObject, onPointerUp, onPointerDown, Button } from 'kontra';
 import { SocketService } from 'src/app/socket/socket.service';
 
 const epsilon = 0.0000000000001;
@@ -6,6 +6,8 @@ const epsilon = 0.0000000000001;
 export class TileMap extends GameObject.class {
     socketService: SocketService;
     tileEngine: TileEngine;
+
+    moveButton: Button;
   
     constructor(width: number, height: number, layers: object[], socketService: SocketService) {
       super();
@@ -26,24 +28,44 @@ export class TileMap extends GameObject.class {
         }],
     
         // layer object
-        layers: layers
+        layers: layers,
       });
-      
+
       this.socketService = socketService;
       initPointer();
-      //track(this);
-      //track(this.tileEngine);
-      onPointerUp(this.move.bind(this));
-    }
 
-    move(): void {
-      let pointer: any = getPointer();
-      // this is pretty gross, but the server typechecks for floats
-      this.socketService.sendMessage({channel: "room", type: "set_target", position_x: (pointer.x + epsilon), "position_y": (pointer.y + epsilon)})
+      this.moveButton = new Button({
+        // button properties
+        socketService: socketService,
+        padX: width * this.tileEngine.tilewidth,
+        padY: height * this.tileEngine.tileheight,
+        color: "red",
+        onFocus: function() {
+            // read out to the screen reader
+        },
+        render: function() {
+            if (this.pressed) {
+              this.disable();
+              this.willEnable = false;
+              this.pressed = false;
+              let pointer: any = getPointer();
+              // this is pretty gross, but the server typechecks for floats
+              this.socketService.sendMessage({channel: "room", type: "set_target", position_x: (pointer.x + epsilon), position_y: (pointer.y + epsilon)})
+            }
+            else if (this.disabled && !this.willEnable) {
+              console.log("unpressed");
+              this.willEnable = true;
+              new Promise(resolve => setTimeout(this.enable.bind(this), 300));
+            }
+        }
+    });
+
+    this.addChild(this.moveButton);
     }
 
     render(): void {
       this.tileEngine.render();
+      this.moveButton.render();
       super.render();
     }
 

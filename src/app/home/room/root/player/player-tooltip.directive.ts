@@ -1,11 +1,11 @@
 import { Directive, ViewContainerRef } from '@angular/core';
 
 @Directive({
-  selector: '[appTaskPopup]'
+  selector: '[appPlayerTooltip]'
 })
-export class TaskPopupDirective {
-
-  public viewContainerRef: ViewContainerRef
+export class PlayerTooltipDirective {
+  
+  public viewContainerRef: ViewContainerRef;
 
   constructor(viewContainerRef: ViewContainerRef) {
     this.viewContainerRef = viewContainerRef

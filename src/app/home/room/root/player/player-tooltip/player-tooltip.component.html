@@ -1,0 +1,4 @@
+<div class="tooltip" [style.left]="this.x" [style.top]="this.y" cdkDrag>
+    <div class="tooltip-header"><h3>{{ this.displayName }}</h3><a (keydown.enter)="this.onClose()" (click)="this.onClose()" class="close-task">X</a></div>
+    <app-task [isListing]="false" [data]="this.activeTaskData"></app-task>
+</div>

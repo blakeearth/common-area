@@ -37,7 +37,7 @@ export class ListComponent implements OnInit {
 
   ngOnInit(): void {
     this.socketService.reply.subscribe(msg => this.onResponseReceived(msg));
-    this.socketService.sendMessage({channel: "tasks", type: "request_tasks_for_list", "list_id": this.data.list_id});
+    this.socketService.sendMessage({channel: "tasks", type: "request_tasks_for_list", "list_id": this.data.list_id, "index": 0});
     this.listsService.lists[this.data.list_id] = this;
   }
 
@@ -113,6 +113,7 @@ export class ListComponent implements OnInit {
   }
 
   onRequestTasksForList(msg: any): void {
+    let initialTasksSize = this.tasks.size;
     msg["tasks"].sort(function(a: any, b: any) {
       return a.index - b.index;
     });
@@ -121,6 +122,9 @@ export class ListComponent implements OnInit {
         this.loadTask(data);
       }
     });
+    if (this.tasks.size > initialTasksSize) {
+      this.socketService.sendMessage({channel: "tasks", type: "request_tasks_for_list", "list_id": this.data.list_id, "index": this.tasks.size});
+    }
   }
   
   onAddTask(msg: any): void {
@@ -147,6 +151,7 @@ export class ListComponent implements OnInit {
 
     let instance: TaskComponent = <TaskComponent>componentRef.instance;
     instance.data = data;
+    instance.isListing = true;
     this.tasks.set(data.task_id, instance);
     this.taskViewRefs.set(data.task_id, componentRef.hostView);
   }

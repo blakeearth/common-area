@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { TaskPreviewComponent } from './task-preview.component';
+import { PlayerTooltipComponent } from './player-tooltip.component';
 
-describe('TaskPreviewComponent', () => {
-  let component: TaskPreviewComponent;
-  let fixture: ComponentFixture<TaskPreviewComponent>;
+describe('PlayerTooltipComponent', () => {
+  let component: PlayerTooltipComponent;
+  let fixture: ComponentFixture<PlayerTooltipComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ TaskPreviewComponent ]
+      declarations: [ PlayerTooltipComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(TaskPreviewComponent);
+    fixture = TestBed.createComponent(PlayerTooltipComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

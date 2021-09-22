@@ -1,4 +1,4 @@
-.task {
+.listing, .task {
   display: flex;
   justify-content: space-between;
   cursor: grab;
@@ -12,11 +12,30 @@
   border-radius: 8px;
 }
 
+a.listing, a.task {
+  cursor: grab;
+  text-decoration: none;
+  color: black;
+}
+
+.listing:hover {
+  background-color: ghostwhite;
+}
+
+.task div .tags, .task div .extras {
+  visibility: hidden;
+}
+
+.task:hover {
+  cursor: pointer;
+  background-color: ghostwhite;
+}
+
 .tags, .extras {
   font-size: smaller;
 }
 
-.task:focus {
+.listing:focus {
   outline: none;
 }
 
@@ -36,15 +55,8 @@
 }
 
 .title {
-  outline: none;
-  border: none;
-  background: none;
-  resize: none;
   padding: 0;
-  font-size: 1.2em;
-  min-height: 1.2em;
-  max-height: 1.2em;
-  overflow-wrap: break-all;
+  font-size: small;
 }
 
 .title:focus {
@@ -62,55 +74,13 @@
   justify-content: top;
 }
 
-.full {
-  overflow: hidden;
-  display: none;
-}
-
-.full-shown {
-  display: flex;
-  flex-direction: column;
-}
-
-.contents {
-  font-size: small;
-  resize: none;
-}
-
-input, textarea {
-  background: transparent;
-  box-sizing: border-box;
-  border: none !important;
-  box-shadow: none !important;
-  outline: none !important;
-  border-radius: 4px;
-}
-
-.contents:focus ~ button {
-  display: block;
-}
-
-button {
-  margin-top: 0.5em;
-  align-self: flex-start;
-  display: none;
-}
-
 .open {
   cursor: auto;
-}
-
-.not-displayed {
-  display: none;
 }
 
 .extras {
   display: flex;
   justify-content: space-between;
-}
-
-.remove-task {
-  cursor: pointer;
 }
 
 .cdk-drag-preview {

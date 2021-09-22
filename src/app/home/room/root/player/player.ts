@@ -1,8 +1,10 @@
-import { imageAssets, Sprite, SpriteSheet, track, Vector, Text } from 'kontra';
+import { imageAssets, Sprite, SpriteSheet, track, Vector, Text, Button, getCanvas, getWorldRect } from 'kontra';
+import { RoomComponent } from '../../room.component';
 
 const speed: number = 5;
 
 export class Player extends Sprite.class {
+    room: RoomComponent;
     id: string;
     displayName: string;
     target: Vector;
@@ -12,7 +14,7 @@ export class Player extends Sprite.class {
 
     shadow: Sprite;
 
-    constructor(id: string, displayName: string, position: Vector) {
+    constructor(room: RoomComponent, id: string, displayName: string, position: Vector) {
         let spriteSheet = SpriteSheet({
             image: imageAssets["bear"],
             frameWidth: 128,
@@ -61,10 +63,60 @@ export class Player extends Sprite.class {
             dy: 0,
             image: spriteSheet.frame[48],
             animations: spriteSheet.animations,
-            onDown: function(event: Event) {
-                event.preventDefault();
-            }
+            children: [new Button({
+                // button properties
+                
+                room: room,
+                persistObjectId: id,
+                
+                padX: 64,
+                padY: 64,
+                color: "transparent",
+                onFocus: function() {
+                    // read out to the screen reader
+                },
+                render: function() {
+                    if (this.pressed) {
+                        if (!(this.previouslyPressed == true)) {
+                            this.previouslyPressed = true;
+                            // open their little profile
+                            // with current task etc.
+                            console.log(displayName);
+                            room.openPlayerTooltip(displayName, id, Vector(getWorldRect(this).x, getWorldRect(this).y));
+                        }
+                    }
+                    else {
+                        if (this.previouslyPressed == true) {
+                            this.previouslyPressed = false;
+                            // close the tooltip specifically (must be THIS one--what about othr players?)
+                        }
+                    }
+
+
+                    if (this.hovered) {
+                        if (!(this.previouslyHovered == true)) {
+                            this.previouslyHovered = true;
+                            getCanvas().style.cursor = "pointer";
+                        }
+                    }
+                    else {
+                        if (this.previouslyHovered == true) {
+                            this.previouslyHovered = false;
+                            getCanvas().style.cursor = "initial";
+                        }
+                    }
+
+                    if (this.focused) {
+                        this.context.setLineDash([8,10]);
+                        this.context.lineWidth = 3;
+                        this.context.strokeStyle = 'red';
+                        this.context.strokeRect(0, 0, this.width, this.height);
+                      }
+                }
+            })]
         });
+
+        this.room = room;
 
         this.playAnimation('idleFR');
         this.playingAnimation = 'idleFR';
@@ -116,7 +168,6 @@ export class Player extends Sprite.class {
             textAlign: 'center'
         });
 
-
         nameTag.render();
         
     }
@@ -141,10 +192,6 @@ export class Player extends Sprite.class {
             this.playingAnimation = 'walkBL';
         }
         this.playAnimation(this.playingAnimation);
-    }
-
-    setActiveTask(msg: any): void {
-
     }
 
     reportLocation(): void {

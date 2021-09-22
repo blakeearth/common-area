@@ -45,6 +45,10 @@ const routes: Routes = [
     component: HomeComponent
   },
   {
+    path: 'home/tasks/:taskId',
+    component: HomeComponent
+  },
+  {
     path: 'home/tasks',
     component: HomeComponent
   },

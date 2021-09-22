@@ -1,10 +1,5 @@
 canvas {
     height: 100%;
-    image-rendering: -moz-crisp-edges;
-    image-rendering: -webkit-crisp-edges;
-    image-rendering: pixelated;
-    image-rendering: crisp-edges;
-    cursor: crosshair;
     border-radius: 2rem 2rem 0 0;
 }
 

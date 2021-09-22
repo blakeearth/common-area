@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { Location } from '@angular/common';
-import { activities } from '../activities/activities';
 import { faHome, faStore, faComments, faHourglass, faChartPie, faTasks, faCalendar, faCog } from '@fortawesome/free-solid-svg-icons';
 
 
@@ -51,11 +50,9 @@ export class MenuComponent implements OnInit {
   }
 
   static getActivity(path: string): string {
-    let activity: string = path.replace('/home', '');
+    let splitPath: string[] = path.split('/');
+    let activity: string = splitPath[2];
     activity = activity.replace('/', '');
-    if (activity == '') {
-      activity = 'room';
-    }
     return activity;
   }
 

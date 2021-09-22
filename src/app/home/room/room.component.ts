@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { init, TileEngine, load, setImagePath, imageAssets, GameLoop, GameObject } from 'kontra';
+import { Component, ComponentFactoryResolver, ComponentRef, OnInit, ViewChild } from '@angular/core';
+import { init, TileEngine, load, setImagePath, imageAssets, GameLoop, GameObject, Vector } from 'kontra';
 import { Handler } from 'src/app/handler';
 import { SocketService } from 'src/app/socket/socket.service';
 import { RoomChangeService } from '../room-change.service';
@@ -7,6 +7,9 @@ import { RoomChangeService } from '../room-change.service';
 import { images } from "./images";
 
 import { ObjectFactory } from './object-factory'
+import { Player } from './root/player/player';
+import { PlayerTooltipDirective } from './root/player/player-tooltip.directive';
+import { PlayerTooltipComponent } from './root/player/player-tooltip/player-tooltip.component';
 
 import { TileMap } from './root/tile-map'
 
@@ -18,6 +21,8 @@ import { TileMap } from './root/tile-map'
 
 export class RoomComponent extends Handler implements OnInit {
 
+  @ViewChild(PlayerTooltipDirective, { static: true }) public playerTooltipHost: PlayerTooltipDirective;
+
   objects: Map<string, any>;
 
   objectFactory: ObjectFactory;
@@ -25,29 +30,29 @@ export class RoomComponent extends Handler implements OnInit {
   roomChangeService: RoomChangeService;
   socketService: SocketService;
 
-  constructor(socketService: SocketService, roomChangeService: RoomChangeService) {
+  componentFactoryResolver: ComponentFactoryResolver;
+
+  constructor(socketService: SocketService, roomChangeService: RoomChangeService, componentFactoryResolver: ComponentFactoryResolver) {
     super();
     this.socketService = socketService;
     this.roomChangeService = roomChangeService;
     this.objects = new Map<string, any>();
-    this.objectFactory = new ObjectFactory(socketService);
+    this.objectFactory = new ObjectFactory(this, socketService);
+    this.componentFactoryResolver = componentFactoryResolver;
   }
 
   ngOnInit(): void {
     // register and observe socket channels
     if (!this.socketService.channelIsRegistered("room")) this.socketService.register("room");
     this.socketService.channelReply.get("room").subscribe(msg => {
-      this[this.snakeToCamel(msg["type"])](msg);
+      if (this[this.snakeToCamel(msg["type"])] != undefined) this[this.snakeToCamel(msg["type"])](msg);
     });
-
 
     this.roomChangeService.roomId.subscribe(msg => this.onRoomChange(msg));
 
     let { canvas, context } = init();
     canvas.width = canvas.clientWidth;
     canvas.height = canvas.clientHeight;
-
-    //context.imageSmoothingEnabled = false;
 
     setImagePath('/assets/room/');
     load.apply(
@@ -59,7 +64,6 @@ export class RoomComponent extends Handler implements OnInit {
       canvas.height = canvas.clientHeight;
     };
 
-    console.log("testing");
   }
 
   addPersistObject(msg: any): void {
@@ -87,8 +91,6 @@ export class RoomComponent extends Handler implements OnInit {
   modifyPersistObject(msg: any): void {
 	  if (this.objects.has(msg["id"])) {
       let object: any = this.objects.get(msg["id"]);
-      console.log(object);
-      console.log(msg["method"]);
       object[this.snakeToCamel(msg["method"])](msg);
     }
   }
@@ -109,5 +111,32 @@ export class RoomComponent extends Handler implements OnInit {
 
   onRoomChange(roomId: string): void {
   
+  }
+
+  openPlayerTooltip(displayName: string, id: string, position: Vector) {
+    let roomPosition: Vector = new Vector(document.getElementById("game").offsetLeft, document.getElementById("game").offsetTop);
+
+    let playerPositionCanvas: Vector = roomPosition.add(position).add(new Vector(64, 0));
+
+    const viewContainerRef = this.playerTooltipHost.viewContainerRef;
+    viewContainerRef.clear();
+
+    const componentFactory = this.componentFactoryResolver.resolveComponentFactory(PlayerTooltipComponent);
+
+    let componentRef: ComponentRef<PlayerTooltipComponent>;
+
+    componentRef = viewContainerRef.createComponent(componentFactory);
+
+    let instance: PlayerTooltipComponent = <PlayerTooltipComponent>componentRef.instance;
+    instance.onClose = this.closePlayerTooltip.bind(this);
+    instance.displayName = displayName;
+    instance.id = id;
+    instance.position = playerPositionCanvas;
+  }
+
+  closePlayerTooltip() {
+    console.log("working on it luv");
+    const viewContainerRef = this.playerTooltipHost.viewContainerRef;
+    viewContainerRef.clear();
   }
 }

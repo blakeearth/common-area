@@ -6,12 +6,14 @@ import { Player } from './root/player/player';
 import { TileMap } from './root/tile-map'
 import { SocketService } from 'src/app/socket/socket.service';
 import { GameObject, Vector } from 'kontra';
-import { TaskPopupComponent } from './root/task-popup/task-popup.component';
+import { RoomComponent } from './room.component';
 
 export class ObjectFactory {
     socketService: SocketService;
+    room: RoomComponent;
 
-    constructor(socketService: SocketService) {
+    constructor(room: RoomComponent, socketService: SocketService) {
+        this.room = room;
         this.socketService = socketService;
     }
 
@@ -28,7 +30,7 @@ export class ObjectFactory {
             case 1: { 
                 // player
                 console.log(data);
-                object = new Player(data["id"], data["display_name"], new Vector(data["translation_x"], data["translation_y"]));
+                object = new Player(this.room, data["id"], data["display_name"], new Vector(data["translation_x"], data["translation_y"]));
 
                 /* create the task popup
                 OMITTED FOR USER TESTS--WILL ASK USERS WHAT THEY WOULD DO INSTEAD

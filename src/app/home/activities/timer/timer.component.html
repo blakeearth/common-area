@@ -6,7 +6,7 @@
         <h2 [ngStyle]="{ 'display': this.participantsDisplay }">Participants:</h2>
         <p id="participants" *ngFor="let participant of participants; let isLast=last" [ngStyle]="{ 'display': this.participantsDisplay }">{{ participant }}{{ isLast ? '' : ', ' }}</p>
         <h2>Active task:</h2>
-        <app-task-preview [activeTaskData]="this.activeTaskData"></app-task-preview>
+        <app-task [data]="this.activeTaskData"></app-task>
         <div id="time">
             <a tabindex="0" id="left-arrow" class="arrow" [ngStyle]="{ 'visibility': this.leftVisibility }" (click)="addTime($event, -5)" (keydown.enter)="addTime($event, -5)"><</a>
             <div id="time-display">{{ this.timeRemaining | date:'mm:ss'}}</div>
