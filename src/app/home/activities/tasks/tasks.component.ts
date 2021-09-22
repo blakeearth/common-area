@@ -1,6 +1,5 @@
 import { Component, OnInit, ViewChild, ComponentFactoryResolver, ViewRef, ComponentRef } from '@angular/core';
 import { Location } from '@angular/common'
-import { CdkDragDrop } from '@angular/cdk/drag-drop';
 import { Activity } from '../activity';
 import { ListDirective } from './list.directive';
 import { ListComponent } from './list/list.component';
@@ -60,12 +59,6 @@ export class TasksComponent extends Handler implements OnInit, Activity {
       if (msg["type"] == "request_lists") {
         this.onRequestLists(msg);
       }
-      else if (msg["type"] == "add_list") {
-        this.loadList({title: msg["title"], index: msg["index"], list_id: msg["list_id"]})
-      }
-      else if (msg["type"] == "delete_list") {
-        this.onDeleteList(msg["list_id"]);
-      }
       else if (msg["type"] == "request_task") {
         this.onRequestTask(msg);
       }
@@ -97,20 +90,6 @@ export class TasksComponent extends Handler implements OnInit, Activity {
     this.listViewRefs.set(data.list_id, componentRef.hostView);
   }
 
-  addList(): void {
-    let newListTitleField: HTMLInputElement = <HTMLInputElement> document.getElementById("new-list-title-field");
-    let title: string = newListTitleField.value;
-    this.socketService.sendMessage({channel: "tasks", type: "add_list", title: title, index: this.lists.length});
-    newListTitleField.value = "";
-  }
-
-  onDeleteList(listId: string) {
-    let index: number = this.listHost.viewContainerRef.indexOf(this.listViewRefs.get(listId));
-    this.listHost.viewContainerRef.remove(index);
-    // TODO: the below line is not working
-    this.listsService.lists.delete(listId);
-  }
-
   handleTask() {
     if (MenuComponent.getActivity(this.location.path()) == "tasks" && this.location.path().split('/').length > 3) {
       this.taskId = this.location.path().split('/')[3];
@@ -139,13 +118,6 @@ export class TasksComponent extends Handler implements OnInit, Activity {
       const viewContainerRef = this.taskEditorPopupHost.viewContainerRef;
       viewContainerRef.clear();
       this.location.replaceState('/home/tasks');
-    }
-  }
-
-  dropList(event: CdkDragDrop<string[]>): void {
-    if (event.previousContainer === event.container) {
-      this.listHost.viewContainerRef.move(this.listHost.viewContainerRef.get(event.previousIndex), event.currentIndex);
-      this.socketService.sendMessage({channel: "tasks", type: "move_list", list_id: event.item.data.list_id, index: event.currentIndex});
     }
   }
 }

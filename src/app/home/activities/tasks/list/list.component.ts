@@ -1,8 +1,8 @@
-import { Component, OnInit, AfterViewInit, Input, ComponentFactoryResolver, ViewChild, ViewChildren, QueryList, ViewContainerRef, ViewRef, ComponentRef } from '@angular/core';
+import { Component, OnInit, Input, ComponentFactoryResolver, ViewChild, ViewChildren, QueryList, ViewContainerRef, ViewRef, ComponentRef } from '@angular/core';
 import { SocketService } from 'src/app/socket/socket.service';
 import { TaskDirective } from './task.directive';
 import { TaskComponent } from './task/task.component';
-import { CdkDragDrop, transferArrayItem, moveItemInArray, CdkDrag, CdkDragStart } from '@angular/cdk/drag-drop';
+import { CdkDragDrop, CdkDragStart } from '@angular/cdk/drag-drop';
 import { ListsService } from '../lists.service';
 
 @Component({
@@ -39,15 +39,6 @@ export class ListComponent implements OnInit {
     this.socketService.reply.subscribe(msg => this.onResponseReceived(msg));
     this.socketService.sendMessage({channel: "tasks", type: "request_tasks_for_list", "list_id": this.data.list_id, "index": 0});
     this.listsService.lists[this.data.list_id] = this;
-  }
-
-  ngAfterViewInit(): void {
-    let status: string = sessionStorage.getItem(this.data.list_id + "_status");
-    if (status == "collapsed") {
-      let checkbox: HTMLInputElement = document.getElementById(this.data.list_id + "-checkbox") as HTMLInputElement;
-      checkbox.checked = true;
-      this.toggleArrow();
-    }
   }
 
   dropTask(event: CdkDragDrop<string[]>): void {
@@ -92,24 +83,6 @@ export class ListComponent implements OnInit {
 
   checkDisable() {
     this.disabled = this.listsService.disabledLists.has(this.data.list_id);
-  }
-
-  toggleArrow(): void {
-    let dropdownLabel: Element = document.getElementById(this.data.list_id + "-label");
-    if (dropdownLabel.innerHTML == "▲") {
-      dropdownLabel.innerHTML = "▼";
-      localStorage.setItem(this.data.list_id + "_status", "collapsed");
-    }
-    else {
-      dropdownLabel.innerHTML = "▲";
-      localStorage.removeItem(this.data.list_id + "_status");
-    }
-  }
-
-  toggleArrowAndCheck(): void {
-    this.toggleArrow();
-    let checkbox: HTMLInputElement = document.getElementById(this.data.list_id + "-checkbox") as HTMLInputElement;
-    checkbox.checked = !checkbox.checked;
   }
 
   onRequestTasksForList(msg: any): void {
