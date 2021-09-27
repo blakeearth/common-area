@@ -9,7 +9,6 @@ import { SocketService } from 'src/app/socket/socket.service';
 export class TaskEditorPopupComponent implements OnInit {
 
   data: any;
-  owner: boolean;
   onClose: Function;
 
   enteredTitle: string;
@@ -25,7 +24,6 @@ export class TaskEditorPopupComponent implements OnInit {
 
   ngOnInit(): void {
     this.enteredTitle = this.data.title || "Untitled task";
-    this.owner = this.data.account_id == sessionStorage.getItem("accountId");
     this.enteredDescription = this.data.contents;
     let modalContent: HTMLElement = document.getElementsByClassName("modal-content")[0] as HTMLElement;
     modalContent.focus();
@@ -34,9 +32,6 @@ export class TaskEditorPopupComponent implements OnInit {
   editTitle(): void {
     let titleField: HTMLInputElement = document.getElementById("task-title-field") as HTMLInputElement;
     this.enteredTitle = this.data.title;
-
-    console.log(titleField.value);
-
     this.isEditingTitle = true;
   }
 
@@ -61,14 +56,11 @@ export class TaskEditorPopupComponent implements OnInit {
   }
 
   changeActive(): void {
-    console.log(this.data.listing_id);
-    if (this.data.active == false) {
-      this.socketService.sendMessage({channel: "tasks", type: "set_listing_active", listing_id: this.data.listing_id});
-    }
+    this.socketService.sendMessage({channel: "tasks", type: "set_listing_active", listing_id: this.data.listing_id, active: !this.data.active});
   }
 
   changePublic(): void {
-
+    this.socketService.sendMessage({channel: "tasks", type: "set_task_public", task_id: this.data.task_id, public: !this.data.public});
   }
 
   removeTask(event: Event): void {

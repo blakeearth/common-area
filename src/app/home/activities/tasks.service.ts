@@ -25,11 +25,6 @@ export class TasksService {
 
     this.activeTaskSource.next(data);
 
-    if (this.activeTaskId != null) {
-      document.getElementById(this.activeTaskId).classList.remove("active");
-    }
-
     this.activeTaskId = id;
-    document.getElementById(this.activeTaskId).classList.add("active");
   }
 }

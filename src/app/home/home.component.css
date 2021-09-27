@@ -13,6 +13,7 @@
 
 #activity-container {
     flex: 5;
+    min-width: 50ch;
 }
 
 #menu {

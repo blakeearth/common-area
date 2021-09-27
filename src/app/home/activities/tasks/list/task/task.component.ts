@@ -3,7 +3,6 @@ import { Location } from '@angular/common';
 import { CdkDragStart } from '@angular/cdk/drag-drop';
 import { SocketService } from 'src/app/socket/socket.service';
 import { ListsService } from '../../lists.service';
-import { faTrash } from '@fortawesome/free-solid-svg-icons';
 import { TasksService } from '../../../tasks.service';
 
 
@@ -12,7 +11,7 @@ import { TasksService } from '../../../tasks.service';
   templateUrl: './task.component.html',
   styleUrls: ['./task.component.css']
 })
-export class TaskComponent implements OnInit, AfterViewInit {
+export class TaskComponent implements OnInit {
 
   @Input() data: any;
   @Input() isListing: boolean;
@@ -37,16 +36,17 @@ export class TaskComponent implements OnInit, AfterViewInit {
     this.socketService.reply.subscribe(msg => this.onResponseReceived(msg));
   }
 
-  ngAfterViewInit(): void {
-    if (this.data.active == true) {
-      this.tasksService.setActiveTask(this.data);
-    }
-  }
-
   onResponseReceived(msg: any): void {
     if (msg["channel"] == "tasks") {
       if (msg["type"] == "request_task") {
         this.onRequestTask(msg);
+      }
+      if (msg["type"] == "set_listing_active") {
+        if (msg["listing_id"] == this.data.listing_id) this.data.active = msg["active"];
+        else this.data.active = false;
+      }
+      if (msg["type"] == "set_task_public") {
+        if (msg["task_id"] == this.data.task_id) this.data.public = msg["public"];
       }
     }
   }

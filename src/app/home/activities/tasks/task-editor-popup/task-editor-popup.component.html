@@ -2,7 +2,7 @@
     <div class="modal-content" tabindex="0">
         <div class="task-header">
             <textarea id="task-title-field" (focus)="editTitle()" (keydown.enter)="saveTitle()" (blur)="saveTitle()"
-                [(ngModel)]="enteredTitle" [disabled]="!this.owner">{{ data.title }}</textarea>
+                [(ngModel)]="enteredTitle" [disabled]="!this.data.can_edit_title">{{ data.title }}</textarea>
             <a tabindex="0" (keydown.enter)="onClose($event)" (click)="onClose($event)" class="close-task">X</a>
         </div>
         <div class="task-content">
@@ -17,28 +17,36 @@
                     <h3>Task</h3>
                     <label for="event-details">Description</label>
                     <textarea id="event-details" name="event-details" rows="6" style="resize: none;"
-                        [(ngModel)]="enteredDescription" (blur)="saveDescription()" disabled>{{ data.description }}</textarea>
+                        [(ngModel)]="enteredDescription" (blur)="saveDescription()"
+                        [disabled]="!this.data.can_edit_contents">{{ data.description }}</textarea>
 
                 </form>
             </div>
             <div class="task-sidebar">
-                <h6 class="task-actions">Task Settings</h6>
-                <div class="toggle">
-                    <span tabindex="0" class="tooltip-parent">Public<span>Set a task to public if you want it to be visible to others.</span></span>
-                    <label class="switch">
-                        <input type="checkbox" id="public" (change)="changePublic()">
-                        <span class="slider"></span>
-                    </label>
+                <div [ngClass]="this.data.can_edit_settings ? 'settings' : 'hidden-settings'">
+                    <h6 class="task-actions">Task Settings</h6>
+                    <div class="toggle">
+                        <span tabindex="0" class="tooltip-parent">Public<span>Set a task to public if you want it to be
+                                visible to others.</span></span>
+                        <label class="switch">
+                            <input type="checkbox" id="public" (change)="changePublic()" [checked]="this.data.public">
+                            <span class="slider"></span>
+                        </label>
+                    </div>
                 </div>
-                <h6 class="task-actions">Listing Settings</h6>
-                <div class="toggle">
-                    <span tabindex="0" class="tooltip-parent">Active<span tabindex="0">Set a listing to active if you want to work on it. You can have up to one active task at a time.</span></span>
-                    <label class="switch">
-                        <input type="checkbox" id="active" (change)="changeActive()">
-                        <span class="slider"></span>
-                    </label>
+                <div [ngClass]="this.data.can_edit_settings ? 'settings' : 'hidden-settings'">
+                    <h6 class="task-actions">Listing Settings</h6>
+                    <div class="toggle">
+                        <span tabindex="0" class="tooltip-parent">Active<span tabindex="0">Set a listing to active if
+                                you want to work on it. You can have up to one active task at a time.</span></span>
+                        <label class="switch">
+                            <input type="checkbox" id="active" (change)="changeActive()" [checked]="this.data.active">
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                    <button class="remove-task" tabindex="0" (click)="removeTask($event)"
+                        (keydown.enter)="removeTask($event)">Remove</button>
                 </div>
-                <button class="remove-task" tabindex="0" (click)="removeTask($event)" (keydown.enter)="removeTask($event)">Remove</button>
             </div>
         </div>
     </div>
