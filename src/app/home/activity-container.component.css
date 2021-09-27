@@ -2,27 +2,28 @@
     position: relative;
     display: flex;
     flex-direction: column;
+    flex: 1 0 0;
     height: 100%;
 }
 
 .activity {
     position: absolute;
     top: 0;
-    visibility: hidden;
-    display: flex;
+    display: none;
+    border-radius: 2rem 2rem 0 0;
     flex-direction: column;
     flex: 1 0 0;
-    background-color: transparent;
+    background-color: white;
     width: 100%;
     height: 100%;
 }
 
 .visible {
-    visibility: visible;
+    display: flex;
 }
 
 @media only screen and (min-width: 600px) {
     .activities {
-        margin: 1ch 1ch 0 1ch;
+        margin: 0 0 0 4ch;
     }
 }

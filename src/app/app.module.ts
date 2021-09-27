@@ -38,10 +38,10 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { StatsComponent } from './home/activities/stats/stats.component';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
-import { TaskPreviewComponent } from './home/activities/timer/task-preview/task-preview.component';
-import { NotMonetizedComponent } from './home/activities/stats/not-monetized/not-monetized.component';
-import { LoadingMonetizationComponent } from './home/activities/stats/loading-monetization/loading-monetization.component';
-import { MonetizedComponent } from './home/activities/stats/monetized/monetized.component';
+import { TaskEditorPopupComponent } from './home/activities/tasks/task-editor-popup/task-editor-popup.component';
+import { TaskEditorPopupDirective } from './home/activities/tasks/task-editor-popup.directive';
+import { PlayerTooltipDirective } from './home/room/root/player/player-tooltip.directive';
+import { PlayerTooltipComponent } from './home/room/root/player/player-tooltip/player-tooltip.component';
 
 @NgModule({
   declarations: [

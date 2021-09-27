@@ -12,15 +12,17 @@
 }
 
 #activity-container {
-    flex-grow: 1;
+    flex: 5;
+    min-width: 50ch;
 }
 
 #menu {
     min-width: fit-content;
 }
 
-.room {
+#room {
     flex: 10 0 0;
+    background-color: #000000;
     display: flex;
     flex-direction: column;
 }
@@ -36,6 +38,7 @@
 
     #activity-container {
         height: 100%;
+        border-right: none;
     }
 
     #menu {
@@ -48,6 +51,6 @@
     }
 
     .visible-mobile {
-        display: flex;
+        display: inherit;
     }
 }

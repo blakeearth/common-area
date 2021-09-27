@@ -25,21 +25,6 @@ export class TasksService {
 
     this.activeTaskSource.next(data);
 
-    if (this.activeTaskId != null) {
-      document.getElementById(this.activeTaskId).classList.remove("active");
-      let children: HTMLCollection = document.getElementById(this.activeTaskId + "-active-radio-button").children;
-      for (let i = 0; i < children.length; i++) {
-        let child: Element = children.item(i);
-        (child as HTMLElement).classList.toggle("hidden");
-      }
-    }
-
     this.activeTaskId = id;
-    document.getElementById(this.activeTaskId).classList.add("active");
-    let children: HTMLCollection = document.getElementById(id + "-active-radio-button").children;
-    for (let i = 0; i < children.length; i++) {
-      let child: Element = children.item(i);
-      (child as HTMLElement).classList.toggle("hidden");
-    }
   }
 }

@@ -1,23 +1,16 @@
-<div tabindex="0" class="task" id="{{ data.task_id }}" [cdkDragDisabled]="disabled" (cdkDragStarted)="startDragging($event)" cdkDrag>
-    <div class="center" (click)="requestTask()" (focus)="requestTask()">
-      <div class="tags">
-        tags
-      </div>
-      <textarea id="{{ data.task_id }}-title" class="title" (click)="requestTask()" (focus)="requestTask()" (input)="updateTitle()" (keydown.enter)="saveTitle()" (focusout)="saveTitle()" value="{{ data.title }}"></textarea>
-      <div id="{{ data.task_id }}-full" class="full">
-        <textarea id="{{ data.task_id }}-contents" class="contents" (input)="updateContents()" tabindex="0" (focusout)="saveDescription()" placeholder="Add a description..."></textarea>
-        <button>Close</button>
-      </div>
-      <div class="extras">
-        <div class="info">extras</div><a id="{{ data.task_id }}-remove-task" class="remove-task not-displayed" (click)="removeTask()"><fa-icon [icon]="faTrash"></fa-icon></a>
-      </div>
+<a href="/home/tasks/{{ data.task_id }}" draggable="false" (click)="openTask($event)" (keydown.enter)="openTask($event)" tabindex="0"
+  [ngClass]="isListing ? 'listing' : 'task'" [class.active]="this.data.active && isListing" [cdkDragDisabled]="!isListing" id="{{ data.task_id }}" (cdkDragStarted)="startDragging($event)" cdkDrag>
+  <div class="center">
+    <div class="tags">
+      tags
     </div>
-    <div id="{{ data.task_id }}-active-radio-button" class="active-radio-button" name="active" (click)="setActive($event)" >
-      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-hourglass" viewBox="0 0 16 16">
-        <path d="M2 1.5a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-1v1a4.5 4.5 0 0 1-2.557 4.06c-.29.139-.443.377-.443.59v.7c0 .213.154.451.443.59A4.5 4.5 0 0 1 12.5 13v1h1a.5.5 0 0 1 0 1h-11a.5.5 0 1 1 0-1h1v-1a4.5 4.5 0 0 1 2.557-4.06c.29-.139.443-.377.443-.59v-.7c0-.213-.154-.451-.443-.59A4.5 4.5 0 0 1 3.5 3V2h-1a.5.5 0 0 1-.5-.5zm2.5.5v1a3.5 3.5 0 0 0 1.989 3.158c.533.256 1.011.791 1.011 1.491v.702c0 .7-.478 1.235-1.011 1.491A3.5 3.5 0 0 0 4.5 13v1h7v-1a3.5 3.5 0 0 0-1.989-3.158C8.978 9.586 8.5 9.052 8.5 8.351v-.702c0-.7.478-1.235 1.011-1.491A3.5 3.5 0 0 0 11.5 3V2h-7z"/>
-      </svg>
-      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-hourglass-split hidden" viewBox="0 0 16 16">
-        <path d="M2.5 15a.5.5 0 1 1 0-1h1v-1a4.5 4.5 0 0 1 2.557-4.06c.29-.139.443-.377.443-.59v-.7c0-.213-.154-.451-.443-.59A4.5 4.5 0 0 1 3.5 3V2h-1a.5.5 0 0 1 0-1h11a.5.5 0 0 1 0 1h-1v1a4.5 4.5 0 0 1-2.557 4.06c-.29.139-.443.377-.443.59v.7c0 .213.154.451.443.59A4.5 4.5 0 0 1 12.5 13v1h1a.5.5 0 0 1 0 1h-11zm2-13v1c0 .537.12 1.045.337 1.5h6.326c.216-.455.337-.963.337-1.5V2h-7zm3 6.35c0 .701-.478 1.236-1.011 1.492A3.5 3.5 0 0 0 4.5 13s.866-1.299 3-1.48V8.35zm1 0v3.17c2.134.181 3 1.48 3 1.48a3.5 3.5 0 0 0-1.989-3.158C8.978 9.586 8.5 9.052 8.5 8.351z"/>
-      </svg>
+    <div *ngIf="isListing; then thenBlock else elseBlock"></div>
+    <ng-template #thenBlock><div id="{{ data.task_id }}-title" class="title">{{ data.title || "Untitled task"}}</div></ng-template>
+    <ng-template #elseBlock><div id="{{ data.task_id }}-title" class="title">{{ data.title || "This user is not currently sharing an active task."}}</div></ng-template>
+    <div id="{{ data.task_id }}-full" class="full">
     </div>
-</div>
+    <div class="extras">
+      <div class="info">extras</div>
+    </div>
+  </div>
+</a>

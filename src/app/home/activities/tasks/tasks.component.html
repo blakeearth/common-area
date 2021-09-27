@@ -1,12 +1,9 @@
+<ng-template appTaskEditorPopup></ng-template>
 <div class="scroll-container">
     <app-panel-header [header]="header"></app-panel-header>
-    <div id="lists" cdkDropList cdkDropListOrientation="horizontal" (cdkDropListDropped)="dropList($event)" (mouseup)="handleMouseUp($event)" (mousedown)="handleMouseDown($event)" (mousemove)="handleMouseMovement($event)">
-        <ng-template appList></ng-template>
-        <div class="new-list">
-            <input id="new-list-checkbox" type="checkbox"/>
-            <div class="list-header">
-                <input id="new-list-title-field" type="text" placeholder="Add a new list..." (keydown.enter)="addList()"/>
-            </div>
+    <div id="list">
+        <div>
+            <ng-template appList></ng-template>
         </div>
     </div>
 </div>
