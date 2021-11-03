@@ -42,6 +42,14 @@ const routes: Routes = [
     component: HomeComponent
   },
   {
+    path: 'home/timer',
+    component: HomeComponent
+  },
+  {
+    path: 'home/chat',
+    component: HomeComponent
+  },
+  {
     path: 'home/tasks/:taskId',
     component: HomeComponent
   },

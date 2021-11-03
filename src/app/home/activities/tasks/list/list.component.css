@@ -16,6 +16,16 @@
   border-radius: 8px;
 }
 
+.filter {
+  font-weight: bold;
+  padding: 1ch;
+  border-radius: 1ch;
+}
+
+.filter:hover {
+  background-color: lightgray;
+}
+
 .center {
   display: flex;
   justify-content: space-between;

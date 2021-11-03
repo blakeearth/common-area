@@ -4,18 +4,16 @@ nav {
     align-items: left;
     height: 100%;
     background-color: white;
-    padding: 0 0.5ch 0 0.5ch;
-    box-shadow: 0 1.2ch 1ch 1ch lightgrey;
+    padding: 0.5ch;
 }
 
 svg {
+    margin-right: 1ch;
     scale: 2;
 }
 
-p {
-    font-family: 'Poppins Bold';
-    font-size: small;
-    margin: 0;
+span {
+    font-size: 0.8em
 }
 
 a {
@@ -26,10 +24,9 @@ a {
     cursor: pointer;
     font-size: 24px;
     text-decoration: none;
-    text-align: center;
+    text-align: left;
     padding: 0.2em 0.2em 0.2em 0.1em;
-    margin-left: 1ch;
-    margin-right: 1ch;
+    margin: 1ch;
 }
 
 a:hover:not(.selected), a:focus {
@@ -42,6 +39,10 @@ a:hover:not(.selected), a:focus {
     outline: none;
 }
 
+#room-nav {
+    display: none;
+}
+
 @media only screen and (max-height: 420px) {
     #settings-nav {
         position: relative;
@@ -49,6 +50,10 @@ a:hover:not(.selected), a:focus {
 }
 
 @media only screen and (max-width: 1600px) {
+    span {
+        display: none;
+    }
+
     svg {
         margin-right: 0;
     }
@@ -69,5 +74,15 @@ a:hover:not(.selected), a:focus {
 
     #settings-nav {
         position: relative;
+    }
+
+    #room-nav {
+        display: block;
+    }
+}
+
+@media only screen and (min-width: 600px) {
+    nav {
+        border-radius: 0 2rem 0 0;
     }
 }

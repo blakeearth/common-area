@@ -15,7 +15,7 @@ import { ChatComponent } from './home/activities/chat/chat.component';
 import { TimerComponent } from './home/activities/timer/timer.component';
 import { TasksComponent } from './home/activities/tasks/tasks.component';
 import { LandingPageComponent } from './landing-page/landing-page/landing-page.component';
-import { RoomComponent } from './home/activities/room/room.component';
+import { RoomComponent } from './home/room/room.component';
 import { SignInComponent } from './auth/goals/sign-in/sign-in.component';
 import { SignUpComponent } from './auth/goals/sign-up/sign-up.component';
 import { JoinRoomComponent } from './auth/goals/join-room/join-room.component';
@@ -42,6 +42,13 @@ import { TaskEditorPopupComponent } from './home/activities/tasks/task-editor-po
 import { TaskEditorPopupDirective } from './home/activities/tasks/task-editor-popup.directive';
 import { PlayerTooltipDirective } from './home/room/root/player/player-tooltip.directive';
 import { PlayerTooltipComponent } from './home/room/root/player/player-tooltip/player-tooltip.component';
+import { NotMonetizedComponent } from './home/activities/stats/not-monetized/not-monetized.component';
+import { LoadingMonetizationComponent } from './home/activities/stats/loading-monetization/loading-monetization.component';
+import { MonetizedComponent } from './home/activities/stats/monetized/monetized.component';
+import { FilterPopupComponent } from './home/activities/tasks/list/filter-popup/filter-popup.component';
+import { FilterPopupDirective } from './home/activities/tasks/list/filter-popup.directive';
+import { TagComponent } from './home/activities/tasks/list/filter-popup/tag/tag.component';
+import { TagDirective } from './home/activities/tasks/list/filter-popup/tag.directive';
 
 @NgModule({
   declarations: [
@@ -74,10 +81,17 @@ import { PlayerTooltipComponent } from './home/room/root/player/player-tooltip/p
     ListComponent,
     TaskComponent,
     TaskDirective,
-    TaskPreviewComponent,
+    TaskEditorPopupComponent,
+    TaskEditorPopupDirective,
+    PlayerTooltipComponent,
+    PlayerTooltipDirective,
     NotMonetizedComponent,
     LoadingMonetizationComponent,
     MonetizedComponent,
+    FilterPopupComponent,
+    FilterPopupDirective,
+    TagComponent,
+    TagDirective,
   ],
   imports: [
     BrowserModule,

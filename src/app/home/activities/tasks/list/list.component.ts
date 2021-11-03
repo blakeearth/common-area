@@ -4,6 +4,8 @@ import { TaskDirective } from './task.directive';
 import { TaskComponent } from './task/task.component';
 import { CdkDragDrop, CdkDragStart } from '@angular/cdk/drag-drop';
 import { ListsService } from '../lists.service';
+import { FilterPopupComponent } from './filter-popup/filter-popup.component';
+import { FilterPopupDirective } from './filter-popup.directive';
 
 @Component({
   selector: 'app-list',
@@ -13,12 +15,16 @@ import { ListsService } from '../lists.service';
 export class ListComponent implements OnInit {
 
   @ViewChild(TaskDirective, {static: true}) public taskHost: TaskDirective;
+  @ViewChild(FilterPopupDirective, { static: true }) public filterPopupHost: FilterPopupDirective;
+
 
   @Input() data: any;
 
   @Input() lists: string[];
 
-  public disabled = false;
+  public disabled: boolean = false;
+
+  filterPopupOpen: boolean = false;
 
   // string problems. passing by reference. should be passing by value. might need two arrays.
   public tasks: Map<string, TaskComponent> = new Map<string, TaskComponent>();
@@ -79,6 +85,34 @@ export class ListComponent implements OnInit {
         this.onDeleteTask(msg["task_id"]);
       }
     }
+  }
+
+  toggleTags() {
+    // request tags? or should have already requested them (probably)
+    // make them display: flex or display: none depending on whether
+    // they are already visible
+    if (!this.filterPopupOpen) this.openFilterPopup();
+    else this.closeFilterPopup();
+  }
+
+  openFilterPopup() {
+    const viewContainerRef = this.filterPopupHost.viewContainerRef;
+    viewContainerRef.clear();
+
+    const componentFactory = this.componentFactoryResolver.resolveComponentFactory(FilterPopupComponent);
+
+    let componentRef: ComponentRef<FilterPopupComponent>;
+
+    componentRef = viewContainerRef.createComponent(componentFactory);
+
+    let instance: FilterPopupComponent = <FilterPopupComponent>componentRef.instance;
+    this.filterPopupOpen = true;
+  }
+
+  closeFilterPopup() {
+    const viewContainerRef = this.filterPopupHost.viewContainerRef;
+    viewContainerRef.clear();
+    this.filterPopupOpen = false;
   }
 
   checkDisable() {

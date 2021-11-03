@@ -13,11 +13,13 @@
 
 #activity-container {
     flex: 5;
-    min-width: 50ch;
+    border-radius: 0 2rem 0 0;
+    min-width: 300px;
 }
 
 #menu {
     min-width: fit-content;
+    border-right: 2px solid lightgray;
 }
 
 #room {
