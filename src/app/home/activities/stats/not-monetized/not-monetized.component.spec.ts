@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { NotMonetizedComponent } from './not-monetized.component';
 
@@ -6,7 +6,7 @@ describe('NotMonetizedComponent', () => {
   let component: NotMonetizedComponent;
   let fixture: ComponentFixture<NotMonetizedComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ NotMonetizedComponent ]
     })
