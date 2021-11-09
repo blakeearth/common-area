@@ -49,6 +49,8 @@ import { FilterPopupComponent } from './home/activities/tasks/list/filter-popup/
 import { FilterPopupDirective } from './home/activities/tasks/list/filter-popup.directive';
 import { TagComponent } from './home/activities/tasks/list/filter-popup/tag/tag.component';
 import { TagDirective } from './home/activities/tasks/list/filter-popup/tag.directive';
+import { TagsPopupComponent } from './home/activities/tasks/task-editor-popup/tags-popup/tags-popup.component';
+import { TagsPopupDirective } from './home/activities/tasks/task-editor-popup/tags-popup.directive';
 
 @NgModule({
   declarations: [
@@ -92,6 +94,8 @@ import { TagDirective } from './home/activities/tasks/list/filter-popup/tag.dire
     FilterPopupDirective,
     TagComponent,
     TagDirective,
+    TagsPopupComponent,
+    TagsPopupDirective,
   ],
   imports: [
     BrowserModule,

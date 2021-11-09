@@ -1,20 +1,19 @@
 #not-in-session {
     flex: 1 0 0;
-    padding: 0.2em 0 0.2em 0;
+    padding: 0.2em 2ch 0.2em 2ch;
+}
+
+#consumable {
+    text-align: center;
+    font-size: 6em;
 }
 
 h2, #participants {
-    padding: 0 18px 0 18px;
     margin: 0.2em 0 0.2em 0;
 }
 
 #participants {
     text-align: center;
-}
-
-#host {
-    overflow-y: auto;
-    flex: 1 0 0;
 }
 
 #time {

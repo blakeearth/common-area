@@ -1,3 +1,3 @@
-<div class="tag" cdkDrag>
-    <span>{{ this.data.title }}</span>
+<div class="tag" [style.background-color]="this.backgroundColor">
+    <div tabindex="0" (click)="onSelect(this.data.tag_id)" (keydown.enter)="onSelect(this.data.tag_id)">{{ this.data.title }}</div>
 </div>

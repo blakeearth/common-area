@@ -1,6 +1,7 @@
 canvas {
     height: 100%;
     border-radius: 2rem 2rem 0 0;
+    background-color: #238531;
 }
 
 .room {

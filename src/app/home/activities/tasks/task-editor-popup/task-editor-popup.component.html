@@ -13,7 +13,9 @@
                         <span>A listing is your personal copy of a task. Shared versions of the task will not have this
                             information.</span>
                     </div>
-                    <p>This section will include time spent on this task, any ongoing timers, and tags.</p>
+                    <div class="tags">
+                        <ng-template appTag></ng-template>
+                    </div>
                     <h3>Task</h3>
                     <label for="event-details">Description</label>
                     <textarea id="event-details" name="event-details" rows="6" style="resize: none;"
@@ -36,6 +38,11 @@
                 </div>
                 <div [ngClass]="this.data.can_edit_settings ? 'settings' : 'hidden-settings'">
                     <h6 class="task-actions">Listing Settings</h6>
+                    <div class="tags-settings">
+                        <button tabindex="0" (click)="toggleTags()"
+                        (keydown.enter)="toggleTags()">Tags</button>
+                         <ng-template appTagsPopup></ng-template>
+                    </div>
                     <div class="toggle">
                         <span tabindex="0" class="tooltip-parent">Active<span tabindex="0">Set a listing to active if
                                 you want to work on it. You can have up to one active task at a time.</span></span>
@@ -44,6 +51,8 @@
                             <span class="slider"></span>
                         </label>
                     </div>
+                    <button class="close-button" tabindex="0" (click)="onClose($event)"
+                        (keydown.enter)="onClose($event)">Close</button>
                     <button class="remove-task" tabindex="0" (click)="removeTask($event)"
                         (keydown.enter)="removeTask($event)">Remove</button>
                 </div>

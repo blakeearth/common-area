@@ -1,17 +1,20 @@
 import { Component, ComponentFactoryResolver, ComponentRef, OnInit, ViewChild } from '@angular/core';
+import { tag } from 'ngx-bootstrap-icons';
 import { SocketService } from 'src/app/socket/socket.service';
-import { TagDirective } from './tag.directive';
-import { TagComponent } from './tag/tag.component';
+import { TagDirective } from '../../list/filter-popup/tag.directive';
+import { TagComponent } from '../../list/filter-popup/tag/tag.component';
 
 @Component({
-  selector: 'app-filter-popup',
-  templateUrl: './filter-popup.component.html',
-  styleUrls: ['./filter-popup.component.css']
+  selector: 'app-tags-popup',
+  templateUrl: './tags-popup.component.html',
+  styleUrls: ['./tags-popup.component.css']
 })
-export class FilterPopupComponent implements OnInit {
+export class TagsPopupComponent implements OnInit {
 
   socketService: SocketService;
   @ViewChild(TagDirective, { static: true }) public tagHost: TagDirective;
+
+  data: any;
   
   componentFactoryResolver: ComponentFactoryResolver;
 
@@ -55,11 +58,11 @@ export class FilterPopupComponent implements OnInit {
 
     let instance: TagComponent = <TagComponent>componentRef.instance;
     instance.data = data;
-    instance.onSelect = this.filterByTag.bind(this);
+    instance.onSelect = this.addTagToListing.bind(this);
   }
 
-  filterByTag(tagId: string) {
-
+  addTagToListing(tagId: string): void {
+    this.socketService.sendMessage({channel: "tasks", type: "add_tagging", listing_id: this.data.listing_id, tag_id: tagId});
   }
 
   addTag(): void {

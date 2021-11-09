@@ -150,7 +150,8 @@ export class TasksComponent extends Handler implements OnInit, Activity {
   closeTask(event: Event) {
     if ((event.target as HTMLElement).classList.contains("modal") ||
       (event.target as HTMLElement).classList.contains("close-task") ||
-      (event.target as HTMLElement).classList.contains("remove-task")) {
+      (event.target as HTMLElement).classList.contains("remove-task") || 
+      (event.target as HTMLElement).classList.contains("close-button")) {
       const viewContainerRef = this.taskEditorPopupHost.viewContainerRef;
       viewContainerRef.clear();
       this.location.replaceState('/home/tasks');

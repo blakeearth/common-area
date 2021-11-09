@@ -50,7 +50,7 @@ export class RoomComponent extends Handler implements OnInit {
 
     this.roomChangeService.roomId.subscribe(msg => this.onRoomChange(msg));
 
-    let { canvas, context } = init();
+    let { canvas, context } = init((document.getElementById("game") as HTMLCanvasElement));
     canvas.width = canvas.clientWidth;
     canvas.height = canvas.clientHeight;
 

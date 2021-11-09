@@ -13,6 +13,12 @@
     justify-content: space-between;
 }
 
+.tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1ch;
+}
+
 .title {
     flex: 1;
     overflow-wrap: break-word;
@@ -28,20 +34,4 @@
 h3 {
     margin: 0;
     font-size: large;
-}
-
-.close-task {
-    font-weight: bold;
-    padding: 1ch;
-    border-radius: 1ch;
-    align-self: flex-end;
-}
-
-.close-task:hover, .close-task:focus {
-    background-color: lightgray;
-    cursor: pointer;
-}
-
-app-task-preview {
-    flex: 1;
 }
