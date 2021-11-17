@@ -20,6 +20,12 @@ export class TaskEditorPopupComponent implements OnInit {
   @ViewChild(TagsPopupDirective, { static: true }) public tagsPopupHost: TagsPopupDirective;
   @ViewChild(TagDirective, { static: true }) public tagHost: TagDirective;
 
+  tags: Map<string, TagComponent> = new Map<string, TagComponent>();
+  taggings: Map<string, string> = new Map<string, string>();
+
+
+  tagViewRefs: Map<string, ViewRef> = new Map<string, ViewRef>();
+
   enteredTitle: string;
   enteredDescription: string;
 
@@ -43,7 +49,7 @@ export class TaskEditorPopupComponent implements OnInit {
     this.enteredDescription = this.data.contents;
     let modalContent: HTMLElement = document.getElementsByClassName("modal-content")[0] as HTMLElement;
     for (let tag of this.data.tags) {
-      this.loadTag(tag);
+      this.loadTagging(tag);
     }
     modalContent.focus();
     this.socketSubscription = this.socketService.channelReply.get("tasks").subscribe(msg => this.onResponseReceived(msg));
@@ -56,16 +62,30 @@ export class TaskEditorPopupComponent implements OnInit {
   onResponseReceived(msg: any): void {
     if (msg["channel"] == "tasks") {
       if (msg["type"] == "add_tagging") {
-        this.loadTag(msg);
+        this.loadTagging(msg);
+      }
+      else if (msg["type"] == "delete_tagging" || msg["type"] == "delete_tag") {
+        this.deleteTagging(msg);
       }
     }
   }
 
   onRequestTags(msg: any): void {
-    for (let tag of msg["tags"]) this.loadTag(tag);
+    for (let tag of msg["tags"]) this.loadTagging(tag);
   }
 
-  loadTag(data: any): void {
+  deleteTagging(msg: any) {
+    if (this.tags.has(msg.tag_id)) {
+      let index: number = this.tagHost.viewContainerRef.indexOf(this.tagViewRefs.get(msg.tag_id));
+      this.tagHost.viewContainerRef.remove(index);
+    }
+    else if (this.tags.has(this.taggings.get(msg.tagging_id))) {
+      let index: number = this.tagHost.viewContainerRef.indexOf(this.tagViewRefs.get(this.taggings.get(msg.tagging_id)));
+      this.tagHost.viewContainerRef.remove(index);
+    }
+  }
+
+  loadTagging(data: any): void {
     const componentFactory = this.componentFactoryResolver.resolveComponentFactory(TagComponent);
 
     const viewContainerRef = this.tagHost.viewContainerRef;
@@ -77,10 +97,13 @@ export class TaskEditorPopupComponent implements OnInit {
     let instance: TagComponent = <TagComponent>componentRef.instance;
     instance.data = data;
     instance.onSelect = this.removeTag.bind(this);
+    this.tags.set(data.tag_id, instance);
+    this.taggings.set(data.tagging_id, data.tag_id);
+    this.tagViewRefs.set(data.tag_id, componentRef.hostView);
   }
 
-  removeTag() {
-
+  removeTag(data: any) {
+    this.socketService.sendMessage({channel: "tasks", type: "delete_tagging", tagging_id: data.tagging_id});
   }
 
   toggleTags() {

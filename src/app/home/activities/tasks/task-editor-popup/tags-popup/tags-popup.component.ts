@@ -1,4 +1,4 @@
-import { Component, ComponentFactoryResolver, ComponentRef, OnInit, ViewChild } from '@angular/core';
+import { Component, ComponentFactoryResolver, ComponentRef, OnInit, ViewChild, ViewRef } from '@angular/core';
 import { tag } from 'ngx-bootstrap-icons';
 import { SocketService } from 'src/app/socket/socket.service';
 import { TagDirective } from '../../list/filter-popup/tag.directive';
@@ -13,6 +13,10 @@ export class TagsPopupComponent implements OnInit {
 
   socketService: SocketService;
   @ViewChild(TagDirective, { static: true }) public tagHost: TagDirective;
+
+  tags: Map<string, TagComponent> = new Map<string, TagComponent>();
+
+  tagViewRefs: Map<string, ViewRef> = new Map<string, ViewRef>();
 
   data: any;
   
@@ -36,11 +40,21 @@ export class TagsPopupComponent implements OnInit {
       else if (msg["type"] == "add_tag") {
         this.onAddTag(msg);
       }
+      else if (msg["type"] == "delete_tag") {
+        this.onDeleteTag(msg);
+      }
     }
   }
 
   onRequestTags(msg: any): void {
     for (let tag of msg["tags"]) this.loadTag(tag);
+  }
+
+  onDeleteTag(msg: any) {
+    if (this.tags.has(msg.tag_id)) {
+      let index: number = this.tagHost.viewContainerRef.indexOf(this.tagViewRefs.get(msg.tag_id));
+      this.tagHost.viewContainerRef.remove(index);
+    }
   }
 
   onAddTag(msg: any): void {
@@ -59,10 +73,21 @@ export class TagsPopupComponent implements OnInit {
     let instance: TagComponent = <TagComponent>componentRef.instance;
     instance.data = data;
     instance.onSelect = this.addTagToListing.bind(this);
+    instance.onDelete = this.deleteTag.bind(this);
+    this.tags.set(data.tag_id, instance);
+    this.tagViewRefs.set(data.tag_id, componentRef.hostView);
   }
 
-  addTagToListing(tagId: string): void {
-    this.socketService.sendMessage({channel: "tasks", type: "add_tagging", listing_id: this.data.listing_id, tag_id: tagId});
+  addTagToListing(data: any): void {
+    console.log("OH AM I ALSO DOING THIS LOL");
+    this.socketService.sendMessage({channel: "tasks", type: "add_tagging", listing_id: this.data.listing_id, tag_id: data.tag_id});
+  }
+
+  deleteTag(data: any, event: Event): void {
+    console.log(data.tag_id);
+    event.preventDefault();
+    event.stopPropagation();
+    this.socketService.sendMessage({channel: "tasks", type: "delete_tag", tag_id: data.tag_id});
   }
 
   addTag(): void {

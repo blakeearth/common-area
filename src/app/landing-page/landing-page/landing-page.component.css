@@ -4,14 +4,43 @@
     color: white;
 }
 
-.statement {
+.hero {
     background-color: #011638;
+}
+
+.section {
     display: flex;
     height: 90vh;
-    padding: 0 25% 0 25%;
+    padding: 0 12ch 0 12ch;
+}
+
+.statement {
+    margin-right: 6ch;
+    display: flex;
     flex-direction: column;
     align-content: center;
     justify-content: center;
+}
+
+.cta {
+    font-size: 2em;
+    align-self: flex-start;
+}
+
+.statement a {
+    text-decoration: none;
+}
+
+.demo {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+video {
+    max-width: 100%;
+    border-radius: 2em;
+    border: solid ghostwhite 4px;
 }
 
 #logo {

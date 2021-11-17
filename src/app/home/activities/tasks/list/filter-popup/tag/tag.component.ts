@@ -11,6 +11,7 @@ export class TagComponent implements OnInit {
   backgroundColor: string;
 
   onSelect: Function;
+  onDelete: Function;
 
   constructor() { }
 

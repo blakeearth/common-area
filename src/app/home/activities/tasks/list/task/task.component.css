@@ -31,6 +31,10 @@ a.listing, a.task {
   background-color: ghostwhite;
 }
 
+.active:hover {
+  background-color: #bbbbbb;
+}
+
 .tags, .extras {
   font-size: x-small;
 }

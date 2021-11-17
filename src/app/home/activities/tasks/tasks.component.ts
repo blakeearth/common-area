@@ -106,7 +106,6 @@ export class TasksComponent extends Handler implements OnInit, Activity {
       return a.index - b.index;
     });
     msg["lists"].forEach(data => {
-      console.log(data);
       this.loadList(data);
     });
   }

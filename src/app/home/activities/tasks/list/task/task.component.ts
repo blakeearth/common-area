@@ -48,7 +48,10 @@ export class TaskComponent implements OnInit {
         this.onRequestTask(msg);
       }
       if (msg["type"] == "set_listing_active") {
-        if (msg["listing_id"] == this.data.listing_id) this.data.active = msg["active"];
+        if (msg["listing_id"] == this.data.listing_id) {
+          this.data.active = msg["active"];
+          this.tasksService.setActiveTask(this.data);
+        }
         else this.data.active = false;
       }
       if (msg["type"] == "set_task_public") {
@@ -71,7 +74,7 @@ export class TaskComponent implements OnInit {
 
     let instance: TagComponent = <TagComponent>componentRef.instance;
     instance.data = data;
-    instance.onSelect = function name(tagId: string) {
+    instance.onSelect = function name(data: any) {
       this.location.replaceState('/home/tasks/' + this.data.task_id)
     }.bind(this);
   }

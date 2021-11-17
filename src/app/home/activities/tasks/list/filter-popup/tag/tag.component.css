@@ -2,6 +2,35 @@
     cursor: pointer;
     padding: 0.5em 1ch 0.5em 1ch;
     border-radius: 8px;
+    display: flex;
+    align-items: center;
+    gap: 1ch;
+}
+
+.title {
+    flex-grow: 1;
+}
+
+.placeholder {
+    display: none;
+}
+
+.delete, .placeholder {
+    visibility: hidden;
+    padding: 2px;
+}
+
+.delete {
+    display: initial;
+}
+
+.tag:hover .delete, .tag:focus .delete {
+    visibility: visible;
+}
+
+.delete:hover, .delete:focus {
+    background-color: #ffffff79;
+    border-radius: 2px;
 }
 
 .cdk-drag-preview {
