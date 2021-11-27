@@ -12,9 +12,10 @@
 
 .visible {
     flex: 1 0 0;
-    background-color: #F5F5FC;
+    background-color: white;
     display: flex;
     flex-direction: column;
+    border-radius: 2em;
 }
 
 .header {

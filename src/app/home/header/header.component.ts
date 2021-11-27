@@ -24,13 +24,15 @@ export class HeaderComponent implements OnInit {
         document.location.href = "/auth/sign-in";
       }
     }
+    if (msg["type"] == "sign_out") {
+      sessionStorage.clear();
+      document.location.href = "/";
+    }
   }
 
   signOut(): void {
     let signOutMessage = {channel: "auth", type: "sign_out"}
     this.socketService.sendMessage(signOutMessage)
-    sessionStorage.clear();
-    document.location.href = "/";
   }
 
 }
