@@ -22,7 +22,7 @@ export class Player extends Sprite.class {
             animations: {
                 walkFR: {
                     frames: '0..47',
-                    frameRate: 48
+                    frameRate: 90
                 },
                 idleFR: {
                     frames: '48..195',
@@ -30,7 +30,7 @@ export class Player extends Sprite.class {
                 },
                 walkFL: {
                     frames: '49..96',
-                    frameRate: 48
+                    frameRate: 90
                 },
                 idleFL: {
                     frames: '97..195',
@@ -38,7 +38,7 @@ export class Player extends Sprite.class {
                 },
                 walkBR: {
                     frames: '98..145',
-                    frameRate: 48
+                    frameRate: 90
                 },
                 idleBR: {
                     frames: '146...195',
@@ -46,7 +46,7 @@ export class Player extends Sprite.class {
                 },
                 walkBL: {
                     frames: '147..194',
-                    frameRate: 48
+                    frameRate: 90
                 },
                 idleBL: {
                     frames: '195..200',
