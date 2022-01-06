@@ -98,7 +98,7 @@ import { TagsPopupDirective } from './home/activities/tasks/task-editor-popup/ta
     TagsPopupDirective,
   ],
   imports: [
-    BrowserModule,
+    BrowserModule.withServerTransition({ appId: 'serverApp' }),
     FormsModule,
     AppRoutingModule,
     HttpClientModule,
