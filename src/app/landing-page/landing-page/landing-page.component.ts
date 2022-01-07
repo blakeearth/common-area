@@ -6,9 +6,6 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./landing-page.component.css']
 })
 export class LandingPageComponent implements OnInit {
-
-  loggedIn: boolean = sessionStorage.getItem("token") != null;
-
   constructor() { }
 
   ngOnInit(): void { }

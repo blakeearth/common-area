@@ -3,12 +3,22 @@ import { Routes, RouterModule } from '@angular/router';
 import { HomeComponent } from './home/home.component';
 import { LandingPageComponent } from './landing-page/landing-page/landing-page.component';
 import { AuthComponent } from './auth/auth.component';
+import { PricingComponent } from './landing-page/pricing/pricing.component';
+import { FeaturesComponent } from './landing-page/features/features.component';
 
 const routes: Routes = [
   {
     path: '',
     component: LandingPageComponent
 
+  },
+  {
+    path: 'pricing',
+    component: PricingComponent
+  },
+  {
+    path: 'features',
+    component: FeaturesComponent
   },
   {
     path: 'auth',

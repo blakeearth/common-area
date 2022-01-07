@@ -51,6 +51,10 @@ import { TagComponent } from './home/activities/tasks/list/filter-popup/tag/tag.
 import { TagDirective } from './home/activities/tasks/list/filter-popup/tag.directive';
 import { TagsPopupComponent } from './home/activities/tasks/task-editor-popup/tags-popup/tags-popup.component';
 import { TagsPopupDirective } from './home/activities/tasks/task-editor-popup/tags-popup.directive';
+import { NavbarComponent } from './landing-page/navbar/navbar.component';
+import { PricingComponent } from './landing-page/pricing/pricing.component';
+import { FeaturesComponent } from './landing-page/features/features.component';
+import { FooterComponent } from './landing-page/footer/footer.component';
 
 @NgModule({
     declarations: [
@@ -96,6 +100,10 @@ import { TagsPopupDirective } from './home/activities/tasks/task-editor-popup/ta
         TagDirective,
         TagsPopupComponent,
         TagsPopupDirective,
+        NavbarComponent,
+        PricingComponent,
+        FeaturesComponent,
+        FooterComponent,
     ],
     imports: [
         BrowserModule.withServerTransition({ appId: 'serverApp' }),

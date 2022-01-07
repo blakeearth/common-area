@@ -1,12 +1,7 @@
+<app-navbar></app-navbar>
 <div class="landing-page">
-    <nav id="options">
-        <div *ngIf="loggedIn; then thenBlock else elseBlock"></div>
-        <ng-template #thenBlock><a href="/home">Continue to Cowork</a></ng-template>
-        <ng-template #elseBlock><a href="/auth/sign-in" id="entry-link">Have an alpha account? Sign in</a></ng-template>
-    </nav>
     <div class="hero section">
         <div class="statement">
-            <img id="logo" src="../../../assets/icons/icon.png">
             <h1>Cowork</h1>
             <h2>A shared, social space to help you get your work done</h2>
             <a href="/auth/sign-in"><button class="cta">Launch</button></a>
@@ -19,3 +14,4 @@
         <p>This is supposed to appear after the rest of it.</p>
     </div>
 </div>
+<app-footer></app-footer>
