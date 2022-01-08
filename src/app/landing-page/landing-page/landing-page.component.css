@@ -76,7 +76,7 @@ h2 {
     font-size: 2em;
 }
 
-@media only screen and (max-width: 1280px) {
+@media only screen and (max-width: 600px) {
     h1 {
         font-size: 2em;
         margin: 0;
@@ -84,5 +84,20 @@ h2 {
     
     h2 {
         font-size: 1em;
+    }
+
+    .section {
+        flex-direction: column;
+        justify-content: center;
+        padding: 0 2ch;
+    }
+
+    .demo {
+        order: 0;
+        margin-bottom: 2em;
+    }
+
+    .statement {
+        order: 1;
     }
 }
