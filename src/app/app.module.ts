@@ -53,7 +53,6 @@ import { TagsPopupComponent } from './home/activities/tasks/task-editor-popup/ta
 import { TagsPopupDirective } from './home/activities/tasks/task-editor-popup/tags-popup.directive';
 import { NavbarComponent } from './landing-page/navbar/navbar.component';
 import { PricingComponent } from './landing-page/pricing/pricing.component';
-import { FeaturesComponent } from './landing-page/features/features.component';
 import { FooterComponent } from './landing-page/footer/footer.component';
 
 @NgModule({
@@ -102,7 +101,6 @@ import { FooterComponent } from './landing-page/footer/footer.component';
         TagsPopupDirective,
         NavbarComponent,
         PricingComponent,
-        FeaturesComponent,
         FooterComponent,
     ],
     imports: [

@@ -7,10 +7,10 @@
 .plan {
     display: flex;
     flex-direction: column;
-    width: 50ch;
+    width: 40ch;
     border: 2px solid #011638;
     border-radius: 2em;
-    margin: 2em 4ch;
+    margin: 2em 2ch;
     padding: 2ch;
 }
 
