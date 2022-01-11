@@ -3,12 +3,17 @@ import { Routes, RouterModule } from '@angular/router';
 import { HomeComponent } from './home/home.component';
 import { LandingPageComponent } from './landing-page/landing-page/landing-page.component';
 import { AuthComponent } from './auth/auth.component';
+import { PricingComponent } from './landing-page/pricing/pricing.component';
 
 const routes: Routes = [
   {
     path: '',
     component: LandingPageComponent
 
+  },
+  {
+    path: 'pricing',
+    component: PricingComponent
   },
   {
     path: 'auth',
@@ -68,7 +73,7 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes, { relativeLinkResolution: 'legacy' })],
+  imports: [RouterModule.forRoot(routes, { relativeLinkResolution: 'legacy', initialNavigation: 'enabledBlocking' })],
   exports: [RouterModule]
 })
 export class AppRoutingModule { }

@@ -1,16 +1,12 @@
 .landing-page {
     align-content: center;
     justify-content: center;
-    color: white;
-}
-
-.hero {
-    background-color: #011638;
+    color: #011638;
 }
 
 .section {
     display: flex;
-    height: 90vh;
+    height: 75vh;
     padding: 0 12ch 0 12ch;
 }
 
@@ -40,7 +36,7 @@
 video {
     max-width: 100%;
     border-radius: 2em;
-    border: solid ghostwhite 4px;
+    border: solid #011638 4px;
 }
 
 #logo {
@@ -80,7 +76,7 @@ h2 {
     font-size: 2em;
 }
 
-@media only screen and (max-width: 1280px) {
+@media only screen and (max-width: 600px) {
     h1 {
         font-size: 2em;
         margin: 0;
@@ -88,5 +84,20 @@ h2 {
     
     h2 {
         font-size: 1em;
+    }
+
+    .section {
+        flex-direction: column;
+        justify-content: center;
+        padding: 0 2ch;
+    }
+
+    .demo {
+        order: 0;
+        margin-bottom: 2em;
+    }
+
+    .statement {
+        order: 1;
     }
 }
