@@ -1,26 +1,24 @@
 <app-panel-header [header]="header"></app-panel-header>
 
 <div id="not-in-session">
-    <div>
-        <div id="consumable">🕯️</div>
-        <h2 [ngStyle]="{ 'display': this.participantsDisplay }">Participants:</h2>
-        <p id="participants" *ngFor="let participant of participants; let isLast=last" [ngStyle]="{ 'display': this.participantsDisplay }">{{ participant }}{{ isLast ? '' : ', ' }}</p>
-        <app-task [data]="this.activeTaskData"></app-task>
-        <div id="join">
-            <h2>Join a session</h2>
+    <div id="consumable">🕯️</div>
+    <h2 [ngStyle]="{ 'display': this.participantsDisplay }">Participants:</h2>
+    <p id="participants" *ngFor="let participant of participants; let isLast=last" [ngStyle]="{ 'display': this.participantsDisplay }">{{ participant }}{{ isLast ? '' : ', ' }}</p>
+    <app-task [data]="this.activeTaskData"></app-task>
+    <div id="join">
+        <h2>Join a session</h2>
+    </div>
+    <div id="host">
+        <h2>Start a new session</h2>
+        <div id="time">
+            <a tabindex="0" id="left-arrow" class="arrow" [ngStyle]="{ 'visibility': this.leftVisibility }" (click)="addTime($event, -5)" (keydown.enter)="addTime($event, -5)"><</a>
+            <div id="time-display">{{ this.timeRemaining | date:'mm:ss'}}</div>
+            <a tabindex="0" id="right-arrow" class="arrow" [ngStyle]="{ 'visibility': this.rightVisibility }" (click)="addTime($event, 5)" (keydown.enter)="addTime($event, 5)">></a>
         </div>
-        <div id="host">
-            <h2>Start a new session</h2>
-            <div id="time">
-                <a tabindex="0" id="left-arrow" class="arrow" [ngStyle]="{ 'visibility': this.leftVisibility }" (click)="addTime($event, -5)" (keydown.enter)="addTime($event, -5)"><</a>
-                <div id="time-display">{{ this.timeRemaining | date:'mm:ss'}}</div>
-                <a tabindex="0" id="right-arrow" class="arrow" [ngStyle]="{ 'visibility': this.rightVisibility }" (click)="addTime($event, 5)" (keydown.enter)="addTime($event, 5)">></a>
-            </div>
-            <div id="start">
-                <button id="start-button" [ngStyle]="{ 'display': this.startButtonDisplay }" (click)="start()">Start</button>
-                <button id="join-button" [ngStyle]="{ 'display': this.joinButtonDisplay }" (click)="join()">Join</button>
-                <button id="leave-button" [ngStyle]="{ 'display': this.leaveButtonDisplay }" (click)="leave()">Leave</button>
-            </div>
+        <div id="start">
+            <button id="start-button" [ngStyle]="{ 'display': this.startButtonDisplay }" (click)="start()">Start</button>
+            <button id="join-button" [ngStyle]="{ 'display': this.joinButtonDisplay }" (click)="join()">Join</button>
+            <button id="leave-button" [ngStyle]="{ 'display': this.leaveButtonDisplay }" (click)="leave()">Leave</button>
         </div>
     </div>
 </div>
