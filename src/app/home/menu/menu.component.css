@@ -25,8 +25,8 @@ a {
     font-size: 24px;
     text-decoration: none;
     text-align: left;
-    padding: 0.2em 0.2em 0.2em 0.2em;
-    margin: 1ch;
+    padding: 0.2em;
+    margin: 1ch 0 1ch 1ch;
 }
 
 a:hover:not(.selected), a:focus {
@@ -46,16 +46,6 @@ a:hover:not(.selected), a:focus {
 @media only screen and (max-height: 420px) {
     #settings-nav {
         position: relative;
-    }
-}
-
-@media only screen and (max-width: 1600px) {
-    span {
-        display: none;
-    }
-
-    svg {
-        margin-right: 0;
     }
 }
 
