@@ -53,7 +53,7 @@ export class ChatComponent implements OnInit, Activity {
       document.getElementById("retrieving-now").classList.add("hidden");
       document.getElementById("load-more").classList.remove("hidden");
       msg["messages"].forEach(data => {
-        this.loadChat(data, false);
+        if (!this.allChatsLoaded) this.loadChat(data, false);
       });
     }
     else if (msg["type"] == "send_message") {
@@ -74,9 +74,16 @@ export class ChatComponent implements OnInit, Activity {
     let list: Element = document.getElementById("list");
     document.getElementById("retrieving-now").classList.remove("hidden");
     document.getElementById("load-more").classList.add("hidden");
-    if (list.scrollTop == 0 && !this.allChatsLoaded) {
+    if (document.getElementById("retrieving-now").getBoundingClientRect().bottom > 0 && !this.allChatsLoaded) {
       this.socketService.sendMessage({channel: "chat", type: "request_messages", room_id: this.roomId, before_chat_id: this.earliestChatId});
     }
+  }
+
+  loadMore(): void {
+    let list: Element = document.getElementById("list");
+    document.getElementById("retrieving-now").classList.remove("hidden");
+    document.getElementById("load-more").classList.add("hidden");
+    this.socketService.sendMessage({channel: "chat", type: "request_messages", room_id: this.roomId, before_chat_id: this.earliestChatId});
   }
 
   loadChat(data: any, recent: boolean): void {
