@@ -92,6 +92,10 @@ a.listing, a.task {
   justify-content: space-between;
 }
 
+.complete {
+  background-color: #ecffef;
+}
+
 .cdk-drag-preview {
     box-sizing: border-box;
     border-radius: 8px;

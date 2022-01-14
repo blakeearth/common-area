@@ -6,6 +6,7 @@ import { CdkDragDrop, CdkDragStart } from '@angular/cdk/drag-drop';
 import { ListsService } from '../lists.service';
 import { FilterPopupComponent } from './filter-popup/filter-popup.component';
 import { FilterPopupDirective } from './filter-popup.directive';
+import { TasksService } from '../../tasks.service';
 
 @Component({
   selector: 'app-list',
@@ -33,11 +34,14 @@ export class ListComponent implements OnInit {
 
   socketService: SocketService;
   listsService: ListsService;
+  tasksService: TasksService;
   componentFactoryResolver: ComponentFactoryResolver;
 
-  constructor(socketService: SocketService, listsService: ListsService, componentFactoryResolver: ComponentFactoryResolver) {
+  constructor(socketService: SocketService, listsService: ListsService, tasksService: TasksService, componentFactoryResolver: ComponentFactoryResolver) {
     this.socketService = socketService;
     this.listsService = listsService;
+    this.tasksService = tasksService;
+    this.tasksService.register();
     this.componentFactoryResolver = componentFactoryResolver;
   }
 
@@ -87,7 +91,7 @@ export class ListComponent implements OnInit {
     }
   }
 
-  toggleTags() {
+  toggleTags(): void {
     // request tags? or should have already requested them (probably)
     // make them display: flex or display: none depending on whether
     // they are already visible
@@ -95,7 +99,23 @@ export class ListComponent implements OnInit {
     else this.closeFilterPopup();
   }
 
-  openFilterPopup() {
+  toggleArchive(): void {
+    if (this.data.archive) {
+      let dropArea: HTMLElement = document.getElementById(this.data.list_id) as HTMLElement;
+      if (dropArea.style.display == 'none') {
+        dropArea.style.display = 'inherit';
+        document.getElementById("archive-up-arrow").style.display = "inherit";
+        document.getElementById("archive-down-arrow").style.display = "none";
+      }
+      else {
+        dropArea.style.display = 'none';
+        document.getElementById("archive-down-arrow").style.display = "inherit";
+        document.getElementById("archive-up-arrow").style.display = "none";
+      }
+    }
+  }
+
+  openFilterPopup(): void {
     const viewContainerRef = this.filterPopupHost.viewContainerRef;
     viewContainerRef.clear();
 
@@ -109,29 +129,34 @@ export class ListComponent implements OnInit {
     this.filterPopupOpen = true;
   }
 
-  closeFilterPopup() {
+  closeFilterPopup(): void {
     const viewContainerRef = this.filterPopupHost.viewContainerRef;
     viewContainerRef.clear();
     this.filterPopupOpen = false;
   }
 
-  checkDisable() {
+  checkDisable(): void {
     this.disabled = this.listsService.disabledLists.has(this.data.list_id);
   }
 
   onRequestTasksForList(msg: any): void {
-    let initialTasksSize = this.tasks.size;
-    msg["tasks"].sort(function(a: any, b: any) {
-      return a.index - b.index;
-    });
-    msg["tasks"].forEach(data => {
-      if (data["list_id"] == this.data.list_id) {
-        this.loadTask(data);
+    if (msg.list_id == this.data.list_id) {
+      let initialTasksSize = this.tasks.size;
+      msg.tasks.sort(function(a: any, b: any): number {
+        return a.index - b.index;
+      });
+      msg.tasks.forEach(data => {
+         this.loadTask(data);
+      });
+      if (this.tasks.size > initialTasksSize) {
+        this.socketService.sendMessage({channel: "tasks", type: "request_tasks_for_list", "list_id": this.data.list_id, "index": this.tasks.size});
       }
-    });
-    if (this.tasks.size > initialTasksSize) {
-      this.socketService.sendMessage({channel: "tasks", type: "request_tasks_for_list", "list_id": this.data.list_id, "index": this.tasks.size});
+      else {
+        // report done
+        this.tasksService.listDoneLoading();
+      }
     }
+    
   }
   
   onAddTask(msg: any): void {
@@ -144,6 +169,7 @@ export class ListComponent implements OnInit {
     if (this.tasks.has(taskId)) {
       let index: number = this.taskHost.viewContainerRef.indexOf(this.taskViewRefs.get(taskId));
       this.taskHost.viewContainerRef.remove(index);
+      this.tasksService.removeListing(this.tasks.get(taskId).data.listing_id);
     }
   }
 
@@ -161,6 +187,7 @@ export class ListComponent implements OnInit {
     instance.isListing = true;
     this.tasks.set(data.task_id, instance);
     this.taskViewRefs.set(data.task_id, componentRef.hostView);
+    this.tasksService.addListing(data);
   }
 
   addTask(): void {

@@ -24,6 +24,7 @@
 
 .filter:hover {
   background-color: lightgray;
+  cursor: pointer;
 }
 
 .center {
@@ -40,4 +41,19 @@
 
 .drop-area {
     min-height: 1em;
+}
+
+.archive {
+  display: flex;
+  justify-content: space-between;
+  font-weight: bold;
+  padding-right: 1ch;
+}
+
+.archive::selection {
+  background: white;
+}
+
+.archive:hover {
+  cursor: pointer;
 }

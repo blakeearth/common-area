@@ -1,5 +1,5 @@
 <a href="/home/tasks/{{ data.task_id }}" draggable="false" (click)="openTask($event)" (keydown.enter)="openTask($event)" tabindex="0"
-  [ngClass]="isListing ? 'listing' : 'task'" [class.active]="this.data.active && isListing" [cdkDragDisabled]="!isListing" id="{{ data.task_id }}" (cdkDragStarted)="startDragging($event)" cdkDrag>
+  [ngClass]="isListing ? 'listing' : 'task'" [class.active]="this.data.active && isListing" [class.complete]="this.data.complete" [cdkDragDisabled]="!isListing" id="{{ data.task_id }}" (cdkDragStarted)="startDragging($event)" cdkDrag>
   <div class="center">
     <div class="tags">
       <ng-template appTag></ng-template>

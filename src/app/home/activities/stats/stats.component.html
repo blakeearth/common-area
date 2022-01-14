@@ -1,5 +1,18 @@
 <app-panel-header [header]="header"></app-panel-header>
 <!--Why didn't I pad all of these like this? Need serious refactoring-->
 <div class="container">
-    <canvas id="myChart" width="400" height="400"></canvas>
+    <form>
+        <span>Between </span><input id="from" type="date" (change)=onDatesChanged()><span> and </span><input id="to" type="date" (change)=onDatesChanged()><span>,</span>
+    </form>
+    <span>you've spent</span>
+    <h2 [style.display]="days > 0 ? 'inherit' : 'none'" id="days">{{ days }} days</h2>
+    <h3 [style.display]="hours > 0 ? 'inherit' : 'none'" id="hours">{{ hours }} hours</h3>
+    <h4 id="minutes">{{ minutes }} minutes</h4>
+    <span>total time focusing.</span>
+    <h3 class="insight">Top tasks by time spent:</h3>
+    <div class="task-breakdown">
+        <div class="task" *ngFor="let listing of listings"><app-task class="listing" [data]="listing"></app-task><span>{{ listing.minutes }} minutes</span></div>
+    </div>
+    <div class="task" [style.display]="minutesOnDeletedListings > 0 ? 'inherit' : 'none'"><app-task class="listing" [data]="{title: 'Deleted listings', minutes: minutesOnDeletedListings}"></app-task><span>{{ minutesOnDeletedListings }} minutes</span></div>
+    <canvas id="task-breakdown-pie"></canvas>
 </div>

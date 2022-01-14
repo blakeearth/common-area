@@ -169,6 +169,11 @@ export class TaskEditorPopupComponent implements OnInit {
     this.socketService.sendMessage({channel: "tasks", type: "set_task_public", task_id: this.data.task_id, public: !this.data.public});
   }
 
+  changeComplete(): void {
+    this.socketService.sendMessage({channel: "tasks", type: "set_task_complete", task_id: this.data.task_id, complete: !this.data.complete});
+    document.getElementById("editor").classList.toggle("complete");
+  }
+
   removeTask(event: Event): void {
     this.onClose(event);
     this.socketService.sendMessage({channel: "tasks", type: "delete_task", task_id: this.data.task_id, title: this.enteredTitle});

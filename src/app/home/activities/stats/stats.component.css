@@ -1,12 +1,49 @@
 .container {
     margin: 0 2ch 0 2ch;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+#days, #hours, #minutes {
+    margin: 0;
 }
 
 app-loading-monetization, app-monetized, app-not-monetized {
     display: none;
 }
 
+
+canvas {
+    margin: 0 10ch;
+}
+
+
+.task-breakdown {
+    align-self: stretch;
+    display: flex;
+    flex-direction: column;
+}
+
+.task {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    align-self: stretch;
+}
+
+.listing {
+    width: 75%;
+}
+
 .current-state {
     display: flex;
     flex-direction: column;
+}
+
+.insight {
+    margin: 0;
+    align-self: flex-start;
 }

@@ -1,5 +1,5 @@
 <div class="modal" (click)="onClose($event)">
-    <div class="modal-content" tabindex="0">
+    <div id="editor" class="modal-content" tabindex="0" [ngClass]="{'complete' : this.data.complete}">
         <div class="task-header">
             <textarea id="task-title-field" (focus)="editTitle()" (keydown.enter)="saveTitle()" (blur)="saveTitle()"
                 [(ngModel)]="enteredTitle" [disabled]="!this.data.can_edit_title">{{ data.title }}</textarea>
@@ -33,6 +33,13 @@
                         <label class="switch">
                             <input type="checkbox" id="public" (change)="changePublic()" [checked]="this.data.public">
                             <span class="slider"></span>
+                        </label>
+                    </div>
+                    <div class="toggle">
+                        <span>Complete</span>
+                        <label class="tick">
+                            <input type="checkbox" id="public" (change)="changeComplete()" [checked]="this.data.complete">
+                            <span class="checkbox"></span>
                         </label>
                     </div>
                 </div>
