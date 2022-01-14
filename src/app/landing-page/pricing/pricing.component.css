@@ -7,7 +7,7 @@
 .plan {
     display: flex;
     flex-direction: column;
-    width: 40ch;
+    width: 50ch;
     border: 2px solid #011638;
     border-radius: 2em;
     margin: 2em 2ch;
@@ -74,5 +74,6 @@ button {
 
     .plan {
         margin: 1em 2ch;
+        width: 35ch;
     }
 }

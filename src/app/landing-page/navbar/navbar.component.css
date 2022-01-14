@@ -13,9 +13,9 @@ img {
 ul {
     display: flex;
     align-items: center;
-    gap: 4ch;
+    gap: 2ch;
     list-style: none;
-    margin-right: 4ch;
+    margin-right: 2ch;
 }
 
 li a {
