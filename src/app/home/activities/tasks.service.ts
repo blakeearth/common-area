@@ -55,7 +55,6 @@ export class TasksService {
 
   listDoneLoading(): void {
     this.listsDoneLoading++;
-    console.log("hey boy wanna cuddle");
     console.log(this.listsDoneLoading);
 
     if (this.listsDoneLoading == 0) {

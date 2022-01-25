@@ -46,6 +46,9 @@ export class TimerComponent extends Handler implements OnInit, Activity {
 
   participantsDisplay: string = "none";
 
+  joinDisplay: string = "none";
+  sessions: any[] = [];
+
   constructor(socketService: SocketService, roomChangeService: RoomChangeService, tasksService: TasksService, timerService: TimerService) {
     super();
     this.socketService = socketService;
@@ -57,6 +60,7 @@ export class TimerComponent extends Handler implements OnInit, Activity {
   ngOnInit(): void {
     if (!this.socketService.channelIsRegistered("timer")) this.socketService.register("timer");
     this.socketService.channelReply.get("timer").subscribe(msg => {
+      console.log(msg);
       this[this.snakeToCamel(msg["type"])](msg);
     });
     this.roomChangeService.roomId.subscribe(roomId => this.changeRoom(roomId));
@@ -66,6 +70,7 @@ export class TimerComponent extends Handler implements OnInit, Activity {
 
   changeRoom(roomId: string): void {
     this.roomId = roomId;
+    this.socketService.sendMessage({channel: "timer", type: "request_active_sessions", room_id: this.roomId});
   }
 
   addTime(event: Event, time: number): void {
@@ -86,30 +91,66 @@ export class TimerComponent extends Handler implements OnInit, Activity {
   // start a session (from the server)
   // remember this can come from anyone!
   startSession(msg: any): void {
-    this.sessionId = msg["session_id"];
-    this.timeRemaining = new Date(0, 0, 0, 0, msg["duration"], 0);
-    this.timerService.startTimer();
-    if (this.timerSubscription != null) this.timerSubscription.unsubscribe();
-    this.timerSubscription = this.timerService.timerSource.subscribe(second => this.countdown());
+    if (this.participants.includes(sessionStorage.getItem("display_name"))) {
+      // I started this session
+      this.sessionId = msg["session_id"];
+      this.timeRemaining = new Date(0, 0, 0, 0, msg["duration"], 0);
+      this.timerService.startTimer();
+      if (this.timerSubscription != null) this.timerSubscription.unsubscribe();
+      this.timerSubscription = this.timerService.timerSource.subscribe(second => this.countdown());
+  
+      this.leftVisibility = "hidden";
+      this.rightVisibility = "hidden";
+      this.startButtonDisplay = "none";
+      this.joinButtonDisplay = "none";
+  
+      this.participants = msg["participants"];
+  
+      // reveal leave session button, participants
+      // TODO: the below could absolutely cause glitches if two people choose the same display name
+      this.leaveButtonDisplay = "inherit";
+  
+      this.participantsDisplay = "initial";
+    }
+    else {
+      // someone else started the session, add it to the join zone
+      this.sessions.push(msg);
+    }
+  }
 
-    this.leftVisibility = "hidden";
-    this.rightVisibility = "hidden";
-    this.startButtonDisplay = "none";
-    this.joinButtonDisplay = "none";
-
-    this.participants = msg["participants"];
-
-    // reveal leave session button, participants
-    // TODO: the below could absolutely cause glitches if two people choose the same display name
-    if (this.participants.includes(sessionStorage.getItem("display_name"))) this.leaveButtonDisplay = "inherit";
-
-    this.participantsDisplay = "initial";
-
-
+  requestActiveSessions(msg: any): void {
+    this.sessions = msg["messages"];
+    console.log(this.sessions);
+    if (this.sessions.length > 0) {
+      this.joinDisplay = "inherit";
+    }
+    else {
+      this.joinDisplay = "none";
+    }
   }
 
   joinSession(msg: any): void {
-    
+    if (this.participants.includes(sessionStorage.getItem("display_name"))) {
+      // I started this session
+      this.sessionId = msg["session_id"];
+      this.timeRemaining = new Date(0, 0, 0, 0, msg["duration"], 0);
+      this.timerService.startTimer();
+      if (this.timerSubscription != null) this.timerSubscription.unsubscribe();
+      this.timerSubscription = this.timerService.timerSource.subscribe(second => this.countdown());
+  
+      this.leftVisibility = "hidden";
+      this.rightVisibility = "hidden";
+      this.startButtonDisplay = "none";
+      this.joinButtonDisplay = "none";
+  
+      this.participants = msg["participants"];
+  
+      // reveal leave session button, participants
+      // TODO: the below could absolutely cause glitches if two people choose the same display name
+      this.leaveButtonDisplay = "inherit";
+  
+      this.participantsDisplay = "initial";
+    }
   }
 
   leaveSession(msg: any): void {
@@ -123,7 +164,17 @@ export class TimerComponent extends Handler implements OnInit, Activity {
 
   // TODO END SESSION
   endSession(msg: any) {
+    this.sessionId = msg["session_id"];
+    this.timeRemaining = new Date(0, 0, 0, 0, this.timeToSubmit, 0);
+    this.timerService.stopTimer();
+    if (this.timerSubscription != null) this.timerSubscription.unsubscribe();
 
+    this.leftVisibility = "initial";
+    this.rightVisibility = "initial";
+    this.startButtonDisplay = "initial";
+    this.joinButtonDisplay = "none";
+    this.leaveButtonDisplay = "none";
+    this.participantsDisplay = "none";
   }
 
   start(): void {
