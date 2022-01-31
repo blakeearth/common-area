@@ -81,7 +81,6 @@ export class Player extends Sprite.class {
                             this.previouslyPressed = true;
                             // open their little profile
                             // with current task etc.
-                            console.log(displayName);
                             room.openPlayerTooltip(displayName, id, Vector(getWorldRect(this).x, getWorldRect(this).y));
                         }
                     }
@@ -173,7 +172,7 @@ export class Player extends Sprite.class {
     }
 
     setTarget(msg: any): void {
-        this.target = Vector(msg["position_x"] - 128 / 2, msg["position_y"] - 128 / 2);
+        this.target = Vector(msg["position_x"] - 128 / 2, msg["position_y"] - 128);
         this.direction = Vector(this.target.x - this.x, this.target.y - this.y).normalize();
         let left: boolean = this.direction.x <= 0;
         let right: boolean = !left;

@@ -1,8 +1,6 @@
 import { TileEngine, imageAssets, initPointer, track, getPointer, GameObject, onPointerUp, onPointerDown, Button } from 'kontra';
 import { SocketService } from 'src/app/socket/socket.service';
 
-const epsilon = 0.0000000000001;
-
 export class TileMap extends GameObject.class {
     socketService: SocketService;
     tileEngine: TileEngine;
@@ -41,7 +39,7 @@ export class TileMap extends GameObject.class {
         padY: height * this.tileEngine.tileheight,
         color: "red",
         onFocus: function() {
-            // read out to the screen reader
+            // TODO: read out to the screen reader
         },
         render: function() {
             if (this.pressed) {
@@ -49,11 +47,9 @@ export class TileMap extends GameObject.class {
               this.willEnable = false;
               this.pressed = false;
               let pointer: any = getPointer();
-              // this is pretty gross, but the server typechecks for floats
-              this.socketService.sendMessage({channel: "room", type: "set_target", position_x: (pointer.x + epsilon), position_y: (pointer.y + epsilon)})
+              this.socketService.sendMessage({channel: "room", type: "set_target", position_x: Math.floor(pointer.x + this.parent.parent.sx), position_y: Math.floor(pointer.y + this.parent.parent.sy)});
             }
             else if (this.disabled && !this.willEnable) {
-              console.log("unpressed");
               this.willEnable = true;
               new Promise(resolve => setTimeout(this.enable.bind(this), 300));
             }

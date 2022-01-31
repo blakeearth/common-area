@@ -29,7 +29,6 @@ export class ObjectFactory {
             } 
             case 1: { 
                 // player
-                console.log(data);
                 object = new Player(this.room, data["id"], data["display_name"], new Vector(data["translation_x"], data["translation_y"]));
 
                 /* create the task popup

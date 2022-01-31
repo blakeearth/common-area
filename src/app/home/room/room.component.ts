@@ -1,5 +1,5 @@
 import { Component, ComponentFactoryResolver, ComponentRef, OnInit, ViewChild } from '@angular/core';
-import { init, TileEngine, load, setImagePath, imageAssets, GameLoop, GameObject, Vector } from 'kontra';
+import { init, TileEngine, load, setImagePath, imageAssets, GameLoop, GameObject, Vector, getCanvas, Scene } from 'kontra';
 import { Handler } from 'src/app/handler';
 import { SocketService } from 'src/app/socket/socket.service';
 import { RoomChangeService } from '../room-change.service';
@@ -64,6 +64,12 @@ export class RoomComponent extends Handler implements OnInit {
       canvas.height = canvas.clientHeight;
     };
 
+    this.objects.set("scene", Scene({
+      id: 'game',
+      children: [],
+      cullObjects: false
+    }));
+
   }
 
   addPersistObject(msg: any): void {
@@ -71,19 +77,34 @@ export class RoomComponent extends Handler implements OnInit {
     let object: any = this.objectFactory.makeObject(this.objects, msg["data"]);
     if (msg["data"]["parent_id"] != null) {
       this.objects.get(msg["data"]["parent_id"]).addChild(object);
+      let tileEngine: TileEngine = this.objects.get("root").tileEngine;
+      tileEngine.addObject(object);
+
+      if (msg["data"]["id"] == sessionStorage.getItem("account_id")) {
+        // this is me
+        
+        let scene: Scene = this.objects.get("scene");
+        let loop: GameLoop = GameLoop({
+          update: function() {
+            scene.update();
+          },
+          render: function() {
+            scene.render();
+            scene.lookAt({
+              x: object.x + object.width / 2,
+              y: object.y + object.height / 2, 
+            });
+          }
+        });
+      
+        // start the loop
+        loop.start();
+        
+      }
     }
     else {
-      let loop: GameLoop = GameLoop({
-        update: function() {
-          object.update();
-        },
-        render: function() {
-          object.render();
-        }
-      });
-    
-      // start the loop
-      loop.start();
+      let scene: Scene = this.objects.get("scene");
+      scene.addChild(object);
     }
     this.objects.set(msg["data"]["id"], object);
   }

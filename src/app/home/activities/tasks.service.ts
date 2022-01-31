@@ -50,13 +50,10 @@ export class TasksService {
 
   register(): void {
     this.listsDoneLoading--;
-    console.log(this.listsDoneLoading);
   }
 
   listDoneLoading(): void {
     this.listsDoneLoading++;
-    console.log("hey boy wanna cuddle");
-    console.log(this.listsDoneLoading);
 
     if (this.listsDoneLoading == 0) {
       console.log(this.listings);

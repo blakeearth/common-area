@@ -39,6 +39,7 @@ export class SocketService {
 
           if (msg["password_correct"] == true) {
             sessionStorage.setItem("username", msg["username"]);
+            sessionStorage.setItem("account_id", msg["account_id"]);
             sessionStorage.setItem("display_name", msg["display_name"]);
           }
 
