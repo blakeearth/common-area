@@ -5,8 +5,11 @@
     <h2 [ngStyle]="{ 'display': this.participantsDisplay }">Participants:</h2>
     <p id="participants" *ngFor="let participant of participants; let isLast=last" [ngStyle]="{ 'display': this.participantsDisplay }">{{ participant }}{{ isLast ? '' : ', ' }}</p>
     <app-task [data]="this.activeTaskData"></app-task>
-    <div id="join">
+    <div id="join" [ngStyle]="{ 'display': this.joinDisplay}">
         <h2>Join a session</h2>
+        <ng-template ngFor let-item [ngForOf]="this.sessions" let-i="i">
+            <li>...</li>
+        </ng-template>
     </div>
     <div id="host">
         <h2>Start a new session</h2>
