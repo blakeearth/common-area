@@ -6,10 +6,7 @@
 }
 
 #lists {
-    flex: 1 1 auto;
-    overflow-x: auto;
-    display: flex;
-    max-height: 100%;
+    overflow-y: auto;
 }
 
 .new-list {
