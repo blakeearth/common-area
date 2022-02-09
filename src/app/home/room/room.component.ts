@@ -32,6 +32,8 @@ export class RoomComponent extends Handler implements OnInit {
 
   componentFactoryResolver: ComponentFactoryResolver;
 
+  editButtonDisplay: string;
+
   constructor(socketService: SocketService, roomChangeService: RoomChangeService, componentFactoryResolver: ComponentFactoryResolver) {
     super();
     this.socketService = socketService;
@@ -131,13 +133,19 @@ export class RoomComponent extends Handler implements OnInit {
   }
 
   onRoomChange(roomId: string): void {
-  
+    this.editButtonDisplay = (sessionStorage.getItem("room_is_owner") == 'true') ? "inherit" : "none";
+    /*this.objects = new Map<string, any>();
+    this.objects.set("scene", Scene({
+      id: 'game',
+      children: [],
+      cullObjects: false
+    }));*/
   }
 
   openPlayerTooltip(displayName: string, id: string, position: Vector) {
     let roomPosition: Vector = new Vector(document.getElementById("game").offsetLeft, document.getElementById("game").offsetTop);
 
-    let playerPositionCanvas: Vector = roomPosition.add(position).add(new Vector(64, 0));
+    let playerPositionCanvas: Vector = roomPosition.add(position).add(new Vector(64, 0)).subtract(new Vector(this.objects.get("scene").sx, this.objects.get("scene").sy));
 
     const viewContainerRef = this.playerTooltipHost.viewContainerRef;
     viewContainerRef.clear();

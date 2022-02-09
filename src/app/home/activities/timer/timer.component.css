@@ -18,6 +18,11 @@ h2, #participants {
     text-align: center;
 }
 
+#join {
+    display: flex;
+    flex-direction: column;
+}
+
 #time {
     display: flex;
     flex-direction: row;

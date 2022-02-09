@@ -108,6 +108,8 @@ export class SettingsComponent implements OnInit, Activity {
           console.log("Entered a room.");
           sessionStorage.setItem("room_title", msg["room_title"]);
           sessionStorage.setItem("room_id", msg["room_id"]);
+          // TODO: use better permissioning systems
+          sessionStorage.setItem("room_is_owner", msg["is_owner"]);
           this.roomTitle = sessionStorage.getItem("room_title");
           this.roomChangeService.setRoom(msg["room_id"]);
         }

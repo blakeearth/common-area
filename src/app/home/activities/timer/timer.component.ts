@@ -66,6 +66,7 @@ export class TimerComponent extends Handler implements OnInit, Activity {
     this.roomChangeService.roomId.subscribe(roomId => this.changeRoom(roomId));
     this.tasksService.activeTask.subscribe(data => { this.activeTaskData = data; this.activeTask = true});
     this.timeRemaining = new Date(0, 0, 0, 0, this.timeToSubmit);
+    this.participants = [];
   }
 
   changeRoom(roomId: string): void {
@@ -91,6 +92,7 @@ export class TimerComponent extends Handler implements OnInit, Activity {
   // start a session (from the server)
   // remember this can come from anyone!
   startSession(msg: any): void {
+    this.participants = msg["participants"];
     if (this.participants.includes(sessionStorage.getItem("display_name"))) {
       // I started this session
       this.sessionId = msg["session_id"];
@@ -103,9 +105,7 @@ export class TimerComponent extends Handler implements OnInit, Activity {
       this.rightVisibility = "hidden";
       this.startButtonDisplay = "none";
       this.joinButtonDisplay = "none";
-  
-      this.participants = msg["participants"];
-  
+    
       // reveal leave session button, participants
       // TODO: the below could absolutely cause glitches if two people choose the same display name
       this.leaveButtonDisplay = "inherit";
@@ -115,6 +115,12 @@ export class TimerComponent extends Handler implements OnInit, Activity {
     else {
       // someone else started the session, add it to the join zone
       this.sessions.push(msg);
+      if (this.sessions.length > 0) {
+        this.joinDisplay = "inherit";
+      }
+      else {
+        this.joinDisplay = "none";
+      }
     }
   }
 

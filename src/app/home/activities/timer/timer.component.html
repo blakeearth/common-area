@@ -8,7 +8,7 @@
     <div id="join" [ngStyle]="{ 'display': this.joinDisplay}">
         <h2>Join a session</h2>
         <ng-template ngFor let-item [ngForOf]="this.sessions" let-i="i">
-            <li>...</li>
+            <li><div>{{ this.sessions[i] }}</div><div></div></li>
         </ng-template>
     </div>
     <div id="host">

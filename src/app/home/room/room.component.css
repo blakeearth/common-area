@@ -11,6 +11,15 @@ canvas {
     background-color: #011638;
 }
 
+#game-editor {
+    position: fixed;
+    right: 0;
+    bottom: 0;
+    width: 4ch;
+    height: 2em;
+    border-radius: 2em;
+}
+
 @media only screen and (min-width: 600px) {
     canvas {
         border-radius: 2rem 0 0 0;
