@@ -35,6 +35,19 @@ a.listing, a.task {
   background-color: #bbbbbb;
 }
 
+.listing:focus {
+  background-color: ghostwhite;
+}
+
+.task:focus {
+  cursor: pointer;
+  background-color: ghostwhite;
+}
+
+.active:focus {
+  background-color: #bbbbbb;
+}
+
 .tags, .extras {
   font-size: x-small;
 }
@@ -94,6 +107,10 @@ a.listing, a.task {
 
 .complete {
   background-color: #ecffef;
+}
+
+.complete:focus {
+  background-color: #d6fcdc;
 }
 
 .cdk-drag-preview {
