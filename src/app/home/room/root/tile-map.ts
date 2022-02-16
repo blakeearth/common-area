@@ -29,6 +29,8 @@ export class TileMap extends GameObject.class {
         layers: layers,
       });
 
+      console.log(layers);
+
       this.socketService = socketService;
       initPointer();
 
@@ -47,7 +49,7 @@ export class TileMap extends GameObject.class {
               this.willEnable = false;
               this.pressed = false;
               let pointer: any = getPointer();
-              this.socketService.sendMessage({channel: "room", type: "set_target", position_x: Math.floor(pointer.x + this.parent.parent.sx), position_y: Math.floor(pointer.y + this.parent.parent.sy)});
+              this.socketService.sendMessage({channel: "room", type: "set_target", position_x: Math.floor(pointer.x), position_y: Math.floor(pointer.y)});
             }
             else if (this.disabled && !this.willEnable) {
               this.willEnable = true;

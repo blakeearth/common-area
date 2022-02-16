@@ -53,8 +53,8 @@ export class RoomComponent extends Handler implements OnInit {
     this.roomChangeService.roomId.subscribe(msg => this.onRoomChange(msg));
 
     let { canvas, context } = init((document.getElementById("game") as HTMLCanvasElement));
-    canvas.width = canvas.clientWidth;
-    canvas.height = canvas.clientHeight;
+    canvas.width = 9 * 128;
+    canvas.height = 6 * 128;
 
     setImagePath('/assets/room/');
     load.apply(
@@ -62,8 +62,8 @@ export class RoomComponent extends Handler implements OnInit {
     );
 
     document.onresize = function() {
-      canvas.width = canvas.clientWidth;
-      canvas.height = canvas.clientHeight;
+      canvas.width = 9 * 128;
+      canvas.height =  6 * 128;
     };
 
     this.objects.set("scene", Scene({
@@ -79,8 +79,6 @@ export class RoomComponent extends Handler implements OnInit {
     let object: any = this.objectFactory.makeObject(this.objects, msg["data"]);
     if (msg["data"]["parent_id"] != null) {
       this.objects.get(msg["data"]["parent_id"]).addChild(object);
-      let tileEngine: TileEngine = this.objects.get("root").tileEngine;
-      tileEngine.addObject(object);
 
       if (msg["data"]["id"] == sessionStorage.getItem("account_id")) {
         // this is me
@@ -92,10 +90,6 @@ export class RoomComponent extends Handler implements OnInit {
           },
           render: function() {
             scene.render();
-            scene.lookAt({
-              x: object.x + object.width / 2,
-              y: object.y + object.height / 2, 
-            });
           }
         });
       
@@ -164,7 +158,6 @@ export class RoomComponent extends Handler implements OnInit {
   }
 
   closePlayerTooltip() {
-    console.log("working on it luv");
     const viewContainerRef = this.playerTooltipHost.viewContainerRef;
     viewContainerRef.clear();
   }
