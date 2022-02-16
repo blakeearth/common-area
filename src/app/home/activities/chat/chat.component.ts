@@ -24,6 +24,8 @@ export class ChatComponent implements OnInit, Activity {
   roomId: string;
   allChatsLoaded: boolean;
 
+  isRequesting: boolean;
+
   constructor(socketService: SocketService, roomChangeService: RoomChangeService, componentFactoryResolver: ComponentFactoryResolver) {
     this.socketService = socketService;
     this.roomChangeService = roomChangeService;
@@ -41,7 +43,10 @@ export class ChatComponent implements OnInit, Activity {
     this.allChatsLoaded = false;
     const viewContainerRef = this.chatMessageHost.viewContainerRef;
     viewContainerRef.clear();
-    if (roomId != null) this.socketService.sendMessage({channel: "chat", type: "request_initial_messages", room_id: roomId});
+    if (roomId != null) {
+      this.socketService.sendMessage({channel: "chat", type: "request_initial_messages", room_id: roomId});
+      this.isRequesting = true;
+    }
   }
 
   onResponseReceived(msg: any): void {
@@ -53,8 +58,9 @@ export class ChatComponent implements OnInit, Activity {
       document.getElementById("retrieving-now").classList.add("hidden");
       document.getElementById("load-more").classList.remove("hidden");
       msg["messages"].forEach(data => {
-        if (!this.allChatsLoaded) this.loadChat(data, false);
+        if (!this.allChatsLoaded && this.isRequesting) this.loadChat(data, false);
       });
+      this.isRequesting = false;
     }
     else if (msg["type"] == "send_message") {
       let data: any = {display_name: msg["display_name"], sent_date: msg["sent_date"], contents: msg["contents"], chat_id: msg["chat_id"]};
@@ -74,8 +80,9 @@ export class ChatComponent implements OnInit, Activity {
     let list: Element = document.getElementById("list");
     document.getElementById("retrieving-now").classList.remove("hidden");
     document.getElementById("load-more").classList.add("hidden");
-    if (document.getElementById("retrieving-now").getBoundingClientRect().bottom > 0 && !this.allChatsLoaded) {
+    if (document.getElementById("retrieving-now").getBoundingClientRect().bottom > 0 && !this.allChatsLoaded && !this.isRequesting) {
       this.socketService.sendMessage({channel: "chat", type: "request_messages", room_id: this.roomId, before_chat_id: this.earliestChatId});
+      this.isRequesting = true;
     }
   }
 
