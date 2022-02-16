@@ -23,12 +23,13 @@
 
 .form-element {
     max-width: 12ch;
+    display: flex;
     flex: 1 0 0;
+    align-items: flex-end;
 }
 
 button {
     width: 10ch;
-    margin-right: 2ch;
     padding: 0.2em 2ch 0.2em 2ch;
 }
 
@@ -38,8 +39,4 @@ input {
 
 .hidden {
     display: none;
-}
-
-.form-label {
-    margin: 0 4ch 0 2ch;
 }
