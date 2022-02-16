@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Location } from '@angular/common';
 import { faHome, faStore, faComments, faHourglass, faChartPie, faTasks, faCalendar, faCog } from '@fortawesome/free-solid-svg-icons';
+import { NotificationsService } from '../notifications/notifications.service';
 
 
 @Component({
@@ -9,6 +10,7 @@ import { faHome, faStore, faComments, faHourglass, faChartPie, faTasks, faCalend
   styleUrls: ['./menu.component.css']
 })
 export class MenuComponent implements OnInit {
+  notificationsService: NotificationsService;
   location: Location;
   faHome = faHome;
   faStore = faStore;
@@ -19,10 +21,10 @@ export class MenuComponent implements OnInit {
   faCalendar = faCalendar;
   faCog = faCog;
 
-  constructor(location: Location) {
+  constructor(notificationsService: NotificationsService, location: Location) {
+    this.notificationsService = notificationsService;
     this.location = location;
-    this.updateActivity.bind(this);
-    this.location.onUrlChange(this.updateActivity);
+    this.location.onUrlChange(this.updateActivity.bind(this));
   }
 
   navigate(s: string, event: Event): void {
@@ -33,7 +35,22 @@ export class MenuComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.notificationsService.notificationsSource.subscribe(activity => this.notifyActivity(activity));
     this.updateActivity(this.location.path(), this.location.getState());
+  }
+
+  notifyActivity(activity: string): void {
+    if (!(MenuComponent.getActivity(this.location.path()) == activity)) {
+      let notificationsActivity: Element = document.getElementById(activity + "-notification");
+      notificationsActivity.innerHTML = (Number.parseInt(notificationsActivity.innerHTML) + 1).toString();
+      if (notificationsActivity.classList.contains("hidden")) notificationsActivity.classList.remove("hidden");
+    } 
+  }
+
+  clearNotificationsForActivity(activity: string): void {
+    let notificationsActivity: Element = document.getElementById(activity + "-notification");
+    notificationsActivity.innerHTML = "0";
+    if (!notificationsActivity.classList.contains("hidden")) notificationsActivity.classList.add("hidden");
   }
 
   updateActivity(url: string, state: unknown): void {
@@ -47,6 +64,8 @@ export class MenuComponent implements OnInit {
     }
     let newVisibleActivity: Element = document.getElementById(activity + "-nav");
     newVisibleActivity.classList.add("selected");
+
+    this.clearNotificationsForActivity(activity);
   }
 
   static getActivity(path: string): string {

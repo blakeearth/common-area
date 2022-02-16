@@ -4,6 +4,7 @@ import { ChatMessageDirective } from './chat-message.directive';
 import { RoomChangeService } from '../../room-change.service';
 import { ChatMessageComponent } from './chat-message/chat-message.component';
 import { SocketService } from 'src/app/socket/socket.service';
+import { NotificationsService } from '../../notifications/notifications.service';
 
 @Component({
   selector: 'app-chat',
@@ -19,6 +20,7 @@ export class ChatComponent implements OnInit, Activity {
   roomChangeService: RoomChangeService;
   componentFactoryResolver: ComponentFactoryResolver;
   socketService: SocketService;
+  notificationsService: NotificationsService
 
   earliestChatId: string;
   roomId: string;
@@ -26,9 +28,10 @@ export class ChatComponent implements OnInit, Activity {
 
   isRequesting: boolean;
 
-  constructor(socketService: SocketService, roomChangeService: RoomChangeService, componentFactoryResolver: ComponentFactoryResolver) {
+  constructor(socketService: SocketService, roomChangeService: RoomChangeService, notificationsService: NotificationsService, componentFactoryResolver: ComponentFactoryResolver) {
     this.socketService = socketService;
     this.roomChangeService = roomChangeService;
+    this.notificationsService = notificationsService;
     this.componentFactoryResolver = componentFactoryResolver;
   }
 
@@ -64,6 +67,7 @@ export class ChatComponent implements OnInit, Activity {
     }
     else if (msg["type"] == "send_message") {
       let data: any = {display_name: msg["display_name"], sent_date: msg["sent_date"], contents: msg["contents"], chat_id: msg["chat_id"]};
+      this.notificationsService.pushNotification("chat");
       this.loadChat(data, true);
     }
   }
