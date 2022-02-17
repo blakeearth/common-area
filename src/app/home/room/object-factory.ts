@@ -29,7 +29,7 @@ export class ObjectFactory {
             } 
             case 1: { 
                 // player
-                object = new Player(this.room, data["id"], data["display_name"], new Vector(data["translation_x"], data["translation_y"]));
+                object = new Player(this.room, data["id"], data["display_name"], Vector(data["translation_x"], data["translation_y"]));
 
                 /* create the task popup
                 OMITTED FOR USER TESTS--WILL ASK USERS WHAT THEY WOULD DO INSTEAD

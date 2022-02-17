@@ -1,5 +1,5 @@
 import { Component, ComponentFactoryResolver, ComponentRef, OnInit, ViewChild } from '@angular/core';
-import { init, TileEngine, load, setImagePath, imageAssets, GameLoop, GameObject, Vector, getCanvas, Scene } from 'kontra';
+import { init, TileEngine, load, setImagePath, imageAssets, GameLoop, GameObject, Vector, getCanvas, Scene, depthSort } from 'kontra';
 import { Handler } from 'src/app/handler';
 import { SocketService } from 'src/app/socket/socket.service';
 import { RoomChangeService } from '../room-change.service';
@@ -69,7 +69,8 @@ export class RoomComponent extends Handler implements OnInit {
     this.objects.set("scene", Scene({
       id: 'game',
       children: [],
-      cullObjects: false
+      cullObjects: false,
+      sortFunction: depthSort
     }));
 
   }
@@ -78,12 +79,13 @@ export class RoomComponent extends Handler implements OnInit {
     console.log(msg);
     let object: any = this.objectFactory.makeObject(this.objects, msg["data"]);
     if (msg["data"]["parent_id"] != null) {
-      this.objects.get(msg["data"]["parent_id"]).addChild(object);
+      //this.objects.get(msg["data"]["parent_id"]).addChild(object);
+      let scene: Scene = this.objects.get("scene");
+      scene.add(object);
 
       if (msg["data"]["id"] == sessionStorage.getItem("account_id")) {
         // this is me
         
-        let scene: Scene = this.objects.get("scene");
         let loop: GameLoop = GameLoop({
           update: function() {
             scene.update();
@@ -100,7 +102,7 @@ export class RoomComponent extends Handler implements OnInit {
     }
     else {
       let scene: Scene = this.objects.get("scene");
-      scene.addChild(object);
+      scene.add(object);
     }
     this.objects.set(msg["data"]["id"], object);
   }
@@ -137,9 +139,9 @@ export class RoomComponent extends Handler implements OnInit {
   }
 
   openPlayerTooltip(displayName: string, id: string, position: Vector) {
-    let roomPosition: Vector = new Vector(document.getElementById("game").offsetLeft, document.getElementById("game").offsetTop);
+    let roomPosition: Vector = Vector(document.getElementById("game").offsetLeft, document.getElementById("game").offsetTop);
 
-    let playerPositionCanvas: Vector = roomPosition.add(position).add(new Vector(64, 0)).subtract(new Vector(this.objects.get("scene").sx, this.objects.get("scene").sy));
+    let playerPositionCanvas: Vector = roomPosition.add(position);
 
     const viewContainerRef = this.playerTooltipHost.viewContainerRef;
     viewContainerRef.clear();

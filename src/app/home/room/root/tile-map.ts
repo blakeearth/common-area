@@ -1,7 +1,7 @@
-import { TileEngine, imageAssets, initPointer, track, getPointer, GameObject, onPointerUp, onPointerDown, Button } from 'kontra';
+import { TileEngine, imageAssets, initPointer, track, getPointer, GameObject, Button, GameObjectClass } from 'kontra';
 import { SocketService } from 'src/app/socket/socket.service';
 
-export class TileMap extends GameObject.class {
+export class TileMap extends GameObjectClass {
     socketService: SocketService;
     tileEngine: TileEngine;
 
@@ -34,7 +34,7 @@ export class TileMap extends GameObject.class {
       this.socketService = socketService;
       initPointer();
 
-      this.moveButton = new Button({
+      this.moveButton = Button({
         // button properties
         socketService: socketService,
         padX: width * this.tileEngine.tilewidth,
@@ -65,16 +65,5 @@ export class TileMap extends GameObject.class {
       this.tileEngine.render();
       this.moveButton.render();
       super.render();
-    }
-
-    addChild(object: GameObject): void {
-      this.tileEngine.addObject(object);
-      super.addChild(object);
-      console.log(this.children);
-    }
-
-    removeChild(object: GameObject): void {
-      this.tileEngine.removeObject(object);
-      super.removeChild(object);
     }
   }

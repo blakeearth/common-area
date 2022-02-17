@@ -1,9 +1,9 @@
-import { imageAssets, Sprite, SpriteSheet, track, Vector, Text, Button, getCanvas, getWorldRect } from 'kontra';
+import { imageAssets, Sprite, SpriteSheet, track, Vector, Text, Button, getCanvas, getWorldRect, SpriteClass } from 'kontra';
 import { RoomComponent } from '../../room.component';
 
 const speed: number = 5;
 
-export class Player extends Sprite.class {
+export class Player extends SpriteClass {
     room: RoomComponent;
     id: string;
     displayName: string;
@@ -63,7 +63,7 @@ export class Player extends Sprite.class {
             dy: 0,
             image: spriteSheet.frame[48],
             animations: spriteSheet.animations,
-            children: [new Button({
+            children: [Button({
                 // button properties
                 
                 room: room,
@@ -156,7 +156,7 @@ export class Player extends Sprite.class {
 
         super.draw();
 
-        let nameTag: Text = new Text({
+        let nameTag: Text = Text({
             text: this.displayName,
             font: '16px Arial',
             color: 'black',
