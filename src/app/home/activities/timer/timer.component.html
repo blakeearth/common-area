@@ -14,7 +14,7 @@
             </tr>
             <tr *ngFor="let session of sessions;">
                 <th><span id="participants" *ngFor="let participant of session.participants; let isLast=last">{{ participant }}{{ isLast ? '' : ', ' }}</span></th>
-                <th>{{ session.expected_end_time | date:'hh:mm' }}</th>
+                <th>{{ session.expected_end_time | date:'h:mm a' }}</th>
                 <th><button class="join-button" (click)="join(session.session_id)">Join</button></th>
             </tr>
         </table>

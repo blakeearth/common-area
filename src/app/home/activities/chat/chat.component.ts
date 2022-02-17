@@ -61,12 +61,13 @@ export class ChatComponent implements OnInit, Activity {
       document.getElementById("retrieving-now").classList.add("hidden");
       document.getElementById("load-more").classList.remove("hidden");
       msg["messages"].forEach(data => {
+        data["sent_date"] = data["sent_date"] + "Z";
         if (!this.allChatsLoaded && this.isRequesting) this.loadChat(data, false);
       });
       this.isRequesting = false;
     }
     else if (msg["type"] == "send_message") {
-      let data: any = {display_name: msg["display_name"], sent_date: msg["sent_date"], contents: msg["contents"], chat_id: msg["chat_id"]};
+      let data: any = {display_name: msg["display_name"], sent_date: msg["sent_date"] + "Z", contents: msg["contents"], chat_id: msg["chat_id"]};
       this.notificationsService.pushNotification("chat");
       this.loadChat(data, true);
     }
