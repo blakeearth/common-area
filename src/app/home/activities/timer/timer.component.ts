@@ -41,7 +41,6 @@ export class TimerComponent extends Handler implements OnInit, Activity {
   leftVisibility: string = "inherit";
 
   startButtonDisplay: string = "inherit";
-  joinButtonDisplay: string = "none";
   leaveButtonDisplay: string = "none";
 
   participantsDisplay: string = "none";
@@ -92,9 +91,10 @@ export class TimerComponent extends Handler implements OnInit, Activity {
   // start a session (from the server)
   // remember this can come from anyone!
   startSession(msg: any): void {
-    this.participants = msg["participants"];
-    if (this.participants.includes(sessionStorage.getItem("display_name"))) {
+    console.log("got a start session");
+    if (msg["participants"].includes(sessionStorage.getItem("display_name"))) {
       // I started this session
+      this.participants = msg["participants"];
       this.sessionId = msg["session_id"];
       this.timeRemaining = new Date(0, 0, 0, 0, msg["duration"], 0);
       this.timerService.startTimer();
@@ -104,7 +104,6 @@ export class TimerComponent extends Handler implements OnInit, Activity {
       this.leftVisibility = "hidden";
       this.rightVisibility = "hidden";
       this.startButtonDisplay = "none";
-      this.joinButtonDisplay = "none";
     
       // reveal leave session button, participants
       // TODO: the below could absolutely cause glitches if two people choose the same display name
@@ -114,7 +113,11 @@ export class TimerComponent extends Handler implements OnInit, Activity {
     }
     else {
       // someone else started the session, add it to the join zone
-      this.sessions.push(msg);
+      console.log(msg);
+      let session: any = msg;
+      session.expected_end_time = msg.expected_end_time + "Z";
+      this.sessions.push(session);
+      console.log(this.sessions);
       if (this.sessions.length > 0) {
         this.joinDisplay = "inherit";
       }
@@ -125,7 +128,11 @@ export class TimerComponent extends Handler implements OnInit, Activity {
   }
 
   requestActiveSessions(msg: any): void {
-    this.sessions = msg["messages"];
+    this.sessions = [];
+    for (let session of msg["messages"]) {
+      session.expected_end_time = session.expected_end_time + "Z";
+      this.sessions.push(session);
+    }
     console.log(this.sessions);
     if (this.sessions.length > 0) {
       this.joinDisplay = "inherit";
@@ -136,10 +143,10 @@ export class TimerComponent extends Handler implements OnInit, Activity {
   }
 
   joinSession(msg: any): void {
-    if (this.participants.includes(sessionStorage.getItem("display_name"))) {
+    if (msg["display_name"].includes(sessionStorage.getItem("display_name"))) {
       // I started this session
       this.sessionId = msg["session_id"];
-      this.timeRemaining = new Date(0, 0, 0, 0, msg["duration"], 0);
+      this.timeRemaining = new Date((new Date(msg["expected_end_time"])).getTime() - Date.now());
       this.timerService.startTimer();
       if (this.timerSubscription != null) this.timerSubscription.unsubscribe();
       this.timerSubscription = this.timerService.timerSource.subscribe(second => this.countdown());
@@ -147,7 +154,8 @@ export class TimerComponent extends Handler implements OnInit, Activity {
       this.leftVisibility = "hidden";
       this.rightVisibility = "hidden";
       this.startButtonDisplay = "none";
-      this.joinButtonDisplay = "none";
+
+      this.joinDisplay = "none";
   
       this.participants = msg["participants"];
   
@@ -157,14 +165,26 @@ export class TimerComponent extends Handler implements OnInit, Activity {
   
       this.participantsDisplay = "initial";
     }
+    else if (msg["session_id"] == this.sessionId) {
+      this.participants.push(msg["display_name"]);
+    }
   }
 
   leaveSession(msg: any): void {
     if (msg["success"] == true) {
       this.sessionId = msg["session_id"];
 
-      this.joinButtonDisplay = "inherit";
+      this.socketService.sendMessage({channel: "timer", type: "request_active_sessions", room_id: this.roomId});
       this.leaveButtonDisplay = "none";
+      this.timeRemaining = new Date(0, 0, 0, 0, this.timeToSubmit, 0);
+      this.timerService.stopTimer();
+      if (this.timerSubscription != null) this.timerSubscription.unsubscribe();
+
+      this.leftVisibility = "initial";
+      this.rightVisibility = "initial";
+      this.startButtonDisplay = "initial";
+      this.leaveButtonDisplay = "none";
+      this.participantsDisplay = "none";
     }
   }
 
@@ -178,7 +198,6 @@ export class TimerComponent extends Handler implements OnInit, Activity {
     this.leftVisibility = "initial";
     this.rightVisibility = "initial";
     this.startButtonDisplay = "initial";
-    this.joinButtonDisplay = "none";
     this.leaveButtonDisplay = "none";
     this.participantsDisplay = "none";
   }
@@ -187,8 +206,9 @@ export class TimerComponent extends Handler implements OnInit, Activity {
     this.socketService.sendMessage({channel: "timer", type: "start_session", room_id: this.roomId, consumable: 0, duration: this.timeToSubmit, is_break: false});
   }
 
-  join(): void {
-
+  join(sessionId: string): void {
+    console.log(sessionId);
+    this.socketService.sendMessage({channel: "timer", type: "join_session", room_id: this.roomId, session_id: sessionId});
   }
 
   leave(): void {
@@ -199,7 +219,7 @@ export class TimerComponent extends Handler implements OnInit, Activity {
     let newDate = new Date(0, 0, 0, 0, this.timeRemaining.getMinutes(), 0);
     if (this.timeRemaining.getSeconds() == 0) {
       if (this.timeRemaining.getMinutes() == 0) {
-        this.socketService.sendMessage({channel: "timer", type: "leave_session", room_id: this.roomId, consumable: 0, duration: 25, is_break: false});
+        this.socketService.sendMessage({channel: "timer", type: "leave_session", room_id: this.roomId, session_id: this.sessionId});
         this.timeRemaining = new Date(0, 0, 0, 0, this.timeToSubmit);
         this.timerService.stopTimer();
         this.timerSubscription.unsubscribe();

@@ -10,6 +10,15 @@
     font-size: 10em;
 }
 
+th {
+    text-align: center;
+}
+
+th button {
+    font-size: 1em;
+    margin: 0 0.2ch 0 0.2ch;
+}
+
 h2, #participants {
     margin: 0.2em 0 0.2em 0;
 }
