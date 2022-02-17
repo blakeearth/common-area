@@ -33,7 +33,7 @@ export class TimerComponent extends Handler implements OnInit, Activity {
 
   timeToSubmit: number = 25;
   sessionId: string;
-  participants: any;
+  participants: any[];
   
   joinedSession: boolean = false;
 
@@ -171,7 +171,7 @@ export class TimerComponent extends Handler implements OnInit, Activity {
   }
 
   leaveSession(msg: any): void {
-    if (msg["success"] == true) {
+    if (msg["success"] == true && msg["display_name"].includes(sessionStorage.getItem("display_name"))) {
       this.sessionId = msg["session_id"];
 
       this.socketService.sendMessage({channel: "timer", type: "request_active_sessions", room_id: this.roomId});
@@ -185,6 +185,13 @@ export class TimerComponent extends Handler implements OnInit, Activity {
       this.startButtonDisplay = "initial";
       this.leaveButtonDisplay = "none";
       this.participantsDisplay = "none";
+    }
+    else if (msg["session_id"] == this.sessionId) {
+      let newParticipants: any[] = [];
+      for (let participant of this.participants) {
+        if (!participant.includes(msg["display_name"])) newParticipants.push(participant);
+      }
+      this.participants = newParticipants;
     }
   }
 
