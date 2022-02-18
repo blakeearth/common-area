@@ -54,10 +54,6 @@ export class ChatComponent implements OnInit, Activity {
 
   onResponseReceived(msg: any): void {
     if (msg["type"] == "request_messages") {
-      if (msg["messages"].length < 10) {
-        document.getElementById("retrieving").classList.add("hidden");
-        this.allChatsLoaded = true;
-      }
       document.getElementById("retrieving-now").classList.add("hidden");
       document.getElementById("load-more").classList.remove("hidden");
       msg["messages"].forEach(data => {
@@ -65,6 +61,10 @@ export class ChatComponent implements OnInit, Activity {
         if (!this.allChatsLoaded && this.isRequesting) this.loadChat(data, false);
       });
       this.isRequesting = false;
+      if (msg["messages"].length < 10) {
+        document.getElementById("retrieving").classList.add("hidden");
+        this.allChatsLoaded = true;
+      }
     }
     else if (msg["type"] == "send_message") {
       let data: any = {display_name: msg["display_name"], sent_date: msg["sent_date"] + "Z", contents: msg["contents"], chat_id: msg["chat_id"]};

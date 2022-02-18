@@ -7,6 +7,7 @@ import { TileMap } from './root/tile-map'
 import { SocketService } from 'src/app/socket/socket.service';
 import { GameObject, Vector } from 'kontra';
 import { RoomComponent } from './room.component';
+import { Tree } from './root/tree/tree';
 
 export class ObjectFactory {
     socketService: SocketService;
@@ -48,6 +49,11 @@ export class ObjectFactory {
                 this.taskViewRefs.set(data.task_id, componentRef.hostView);
                 */
                 break; 
+            }
+            case 2:
+                {
+                    object = new Tree(data["id"], Vector(data["translation_x"], data["translation_y"]), data["rotation_degrees"]);
+                    break;
             }
         }
         return object;

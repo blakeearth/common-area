@@ -1,5 +1,5 @@
 import { Component, ComponentFactoryResolver, ComponentRef, OnInit, ViewChild } from '@angular/core';
-import { init, TileEngine, load, setImagePath, imageAssets, GameLoop, GameObject, Vector, getCanvas, Scene, depthSort } from 'kontra';
+import { init, TileEngine, load, setImagePath, imageAssets, GameLoop, GameObject, Vector, getCanvas, Scene, depthSort, Sprite, getWorldRect } from 'kontra';
 import { Handler } from 'src/app/handler';
 import { SocketService } from 'src/app/socket/socket.service';
 import { RoomChangeService } from '../room-change.service';
@@ -66,13 +66,17 @@ export class RoomComponent extends Handler implements OnInit {
       canvas.height =  6 * 128;
     };
 
+    let sort = function(obj1, obj2) {
+      [obj1, obj2] = [obj1, obj2].map(getWorldRect);
+      return (obj1.y + obj1.height / 2) - (obj2.y + obj2.height / 2);
+    }
+
     this.objects.set("scene", Scene({
       id: 'game',
       children: [],
       cullObjects: false,
-      sortFunction: depthSort
+      sortFunction: sort
     }));
-
   }
 
   addPersistObject(msg: any): void {
@@ -124,7 +128,7 @@ export class RoomComponent extends Handler implements OnInit {
   removePersistObject(msg: any): void {
     if (this.objects.has(msg["id"])) {
       let object: GameObject = this.objects.get(msg["id"]);
-      object.parent.removeChild(object);
+      this.objects.get("scene").remove(object);
     }
   }
 
@@ -162,5 +166,9 @@ export class RoomComponent extends Handler implements OnInit {
   closePlayerTooltip() {
     const viewContainerRef = this.playerTooltipHost.viewContainerRef;
     viewContainerRef.clear();
+  }
+
+  toggleEditMode() {
+    this.objects.get("root").toggleEditMode();
   }
 }

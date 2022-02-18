@@ -3,7 +3,7 @@
 <div id="not-in-session">
     <div id="consumable">⏳</div>
     <h2 [ngStyle]="{ 'display': this.participantsDisplay }">Participants:</h2>
-    <p id="participants" *ngFor="let participant of participants; let isLast=last" [ngStyle]="{ 'display': this.participantsDisplay }">{{ participant }}{{ isLast ? '' : ', ' }}</p>
+    <p id="participants"><span id="participants" *ngFor="let participant of participants; let isLast=last" [ngStyle]="{ 'display': this.participantsDisplay }">{{ participant }}{{ isLast ? '' : ', ' }}</span></p>
     <app-task [data]="this.activeTaskData"></app-task>
     <div id="join" [ngStyle]="{ 'display': this.joinDisplay}">
         <h2>Join a session</h2>
@@ -15,7 +15,7 @@
             <tr *ngFor="let session of sessions;">
                 <th><span id="participants" *ngFor="let participant of session.participants; let isLast=last">{{ participant }}{{ isLast ? '' : ', ' }}</span></th>
                 <th>{{ session.expected_end_time | date:'h:mm a' }}</th>
-                <th><button class="join-button" (click)="join(session.session_id)">Join</button></th>
+                <th class="join"><button class="join-button" (click)="join(session.session_id)">Join</button></th>
             </tr>
         </table>
     </div>

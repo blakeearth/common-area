@@ -6,6 +6,8 @@ export class TileMap extends GameObjectClass {
     tileEngine: TileEngine;
 
     moveButton: Button;
+
+    editMode: boolean = false;
   
     constructor(width: number, height: number, layers: object[], socketService: SocketService) {
       super();
@@ -37,6 +39,7 @@ export class TileMap extends GameObjectClass {
       this.moveButton = Button({
         // button properties
         socketService: socketService,
+        getEditMode: this.getEditMode.bind(this),
         padX: width * this.tileEngine.tilewidth,
         padY: height * this.tileEngine.tileheight,
         color: "red",
@@ -49,7 +52,9 @@ export class TileMap extends GameObjectClass {
               this.willEnable = false;
               this.pressed = false;
               let pointer: any = getPointer();
-              this.socketService.sendMessage({channel: "room", type: "set_target", position_x: Math.floor(pointer.x), position_y: Math.floor(pointer.y)});
+              console.log(this.getEditMode());
+              if (!this.getEditMode()) this.socketService.sendMessage({channel: "room", type: "set_target", position_x: Math.floor(pointer.x), position_y: Math.floor(pointer.y)});
+              else this.socketService.sendMessage({channel: "room", type: "add_persist_object", scene_id: 2, parent_id: "root", rotation_degrees_y: 0, position_x: Math.floor(pointer.x), position_y: Math.floor(pointer.y)});
             }
             else if (this.disabled && !this.willEnable) {
               this.willEnable = true;
@@ -65,5 +70,14 @@ export class TileMap extends GameObjectClass {
       this.tileEngine.render();
       this.moveButton.render();
       super.render();
+    }
+
+    getEditMode(): boolean {
+      return this.editMode;
+    }
+
+    toggleEditMode(): void {
+      this.editMode = !this.editMode;
+      console.log(this.editMode);
     }
   }

@@ -10,13 +10,26 @@
     font-size: 10em;
 }
 
+#participants {
+    text-align: center;
+}
+
 th {
     text-align: center;
 }
 
 th button {
     font-size: 1em;
-    margin: 0 0.2ch 0 0.2ch;
+    margin: 0.2em auto 0.2em auto;
+}
+
+.join-button {
+    margin-left: auto;
+}
+
+.join {
+    display: flex;
+    align-items: flex-end;
 }
 
 h2, #participants {

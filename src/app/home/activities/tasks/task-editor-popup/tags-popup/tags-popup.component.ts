@@ -79,7 +79,6 @@ export class TagsPopupComponent implements OnInit {
   }
 
   addTagToListing(data: any): void {
-    console.log("OH AM I ALSO DOING THIS LOL");
     this.socketService.sendMessage({channel: "tasks", type: "add_tagging", listing_id: this.data.listing_id, tag_id: data.tag_id});
   }
 
@@ -97,6 +96,7 @@ export class TagsPopupComponent implements OnInit {
     let max = Math.floor(4);
     let color: number = Math.floor(Math.random() * (max - min) + min);
     this.socketService.sendMessage({channel: "tasks", type: "add_tag", color: color, title: title});
+    titleField.value = "";
   }
 
 }
