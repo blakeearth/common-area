@@ -197,16 +197,21 @@ export class TimerComponent extends Handler implements OnInit, Activity {
 
   // TODO END SESSION
   endSession(msg: any) {
-    this.sessionId = msg["session_id"];
-    this.timeRemaining = new Date(0, 0, 0, 0, this.timeToSubmit, 0);
-    this.timerService.stopTimer();
-    if (this.timerSubscription != null) this.timerSubscription.unsubscribe();
-
-    this.leftVisibility = "initial";
-    this.rightVisibility = "initial";
-    this.startButtonDisplay = "initial";
-    this.leaveButtonDisplay = "none";
-    this.participantsDisplay = "none";
+    if (msg["session_id"] == this.sessionId) {
+      this.timeRemaining = new Date(0, 0, 0, 0, this.timeToSubmit, 0);
+      this.timerService.stopTimer();
+      if (this.timerSubscription != null) this.timerSubscription.unsubscribe();
+  
+      this.leftVisibility = "initial";
+      this.rightVisibility = "initial";
+      this.startButtonDisplay = "initial";
+      this.leaveButtonDisplay = "none";
+      this.participantsDisplay = "none";
+    }
+    else {
+      // TODO
+      
+    }
   }
 
   start(): void {
