@@ -5,6 +5,7 @@ import { NotificationsService } from '../notifications/notifications.service';
 import { UpdateNotesPopupComponent } from '../update-notes-popup/update-notes-popup.component';
 import { UpdateNotesPopupDirective } from '../update-notes-popup.directive';
 import { SocketService } from 'src/app/socket/socket.service';
+import { Handler } from 'src/app/handler';
 
 
 @Component({
@@ -13,7 +14,7 @@ import { SocketService } from 'src/app/socket/socket.service';
   styleUrls: ['./menu.component.css']
 })
 
-export class MenuComponent implements OnInit {
+export class MenuComponent extends Handler implements OnInit{
   @ViewChild(UpdateNotesPopupDirective, { static: true }) public updateNotesPopupHost: UpdateNotesPopupDirective;
 
   notificationsService: NotificationsService;
@@ -28,9 +29,14 @@ export class MenuComponent implements OnInit {
   faCalendar = faCalendar;
   faCog = faCog;
 
+  updateNotesDisplay: string = "none";
+  updateNotesData: string[];
+
   componentFactoryResolver: ComponentFactoryResolver;
 
   constructor(notificationsService: NotificationsService, location: Location, componentFactoryResolver: ComponentFactoryResolver, socketService: SocketService) {
+    super();
+    
     this.notificationsService = notificationsService;
     this.componentFactoryResolver = componentFactoryResolver;
     this.socketService = socketService;
@@ -48,6 +54,16 @@ export class MenuComponent implements OnInit {
   ngOnInit(): void {
     this.notificationsService.notificationsSource.subscribe(activity => this.notifyActivity(activity));
     this.updateActivity(this.location.path(), this.location.getState());
+
+    this.socketService.setOnUpdateNotes(this.onUpdateNotes.bind(this));
+  }
+
+  onUpdateNotes(updateNotesData: any[]): void {
+    this.updateNotesData = updateNotesData;
+    for (let i = 0; i < updateNotesData.length; i++) this.notificationsService.pushNotification('update-notes');
+    if (this.updateNotesData.length > 0) {
+      this.updateNotesDisplay = "inherit";
+    }
   }
 
   notifyActivity(activity: string): void {
@@ -87,13 +103,7 @@ export class MenuComponent implements OnInit {
   }
 
 
-  requestUpdateNotes(): void {
-    //this.socketService.sendMessage({});
-    this.openUpdateNotes({});
-  }
-
-
-  openUpdateNotes(updateNotesData: any) {
+  openUpdateNotes() {
     const componentFactory = this.componentFactoryResolver.resolveComponentFactory(UpdateNotesPopupComponent);
 
     const viewContainerRef = this.updateNotesPopupHost.viewContainerRef;
@@ -103,7 +113,7 @@ export class MenuComponent implements OnInit {
     componentRef = viewContainerRef.createComponent(componentFactory);
 
     let instance: UpdateNotesPopupComponent = <UpdateNotesPopupComponent>componentRef.instance;
-    instance.data = updateNotesData;
+    instance.data = this.updateNotesData;
     instance.onClose = this.closeUpdateNotes.bind(this);
   }
 
@@ -113,6 +123,8 @@ export class MenuComponent implements OnInit {
       (event.target as HTMLElement).classList.contains("close-button")) {
       const viewContainerRef = this.updateNotesPopupHost.viewContainerRef;
       viewContainerRef.clear();
+      this.clearNotificationsForActivity("update-notes");
+      this.updateNotesDisplay = "none";
     }
   }
 

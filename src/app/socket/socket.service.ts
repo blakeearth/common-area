@@ -20,6 +20,9 @@ export class SocketService {
   httpClient: HttpClient;
 
   unsentMessages: Array<any> = [];
+
+  updateNotes: any[];
+  onUpdateNotes: Function;
   
   constructor(httpClient: HttpClient) {
     this.httpClient = httpClient;
@@ -41,6 +44,8 @@ export class SocketService {
             sessionStorage.setItem("username", msg["username"]);
             sessionStorage.setItem("account_id", msg["account_id"]);
             sessionStorage.setItem("display_name", msg["display_name"]);
+            this.updateNotes = msg["update_notes"];
+            if (this.onUpdateNotes != undefined) this.onUpdateNotes(msg["update_notes"]);
           }
 
           this.setResponse(msg);
@@ -61,6 +66,11 @@ export class SocketService {
         this.sendMessage(this.unsentMessages.pop());
       }
     });
+  }
+
+  setOnUpdateNotes(f: Function) {
+    this.onUpdateNotes = f;
+    if (this.updateNotes != undefined) this.onUpdateNotes(this.updateNotes);
   }
 
   setResponse(msg: any) {

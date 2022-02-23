@@ -1,6 +1,5 @@
-import { Component, ComponentFactoryResolver, ComponentRef, OnInit, ViewChild, ViewRef } from '@angular/core';
-import { Subscription } from 'rxjs';
-import { SocketService } from 'src/app/socket/socket.service';
+import { Component, OnInit } from '@angular/core';
+import { DomSanitizer, SafeUrl} from '@angular/platform-browser';
 
 @Component({
   selector: 'app-update-notes-popup',
@@ -9,36 +8,17 @@ import { SocketService } from 'src/app/socket/socket.service';
 })
 export class UpdateNotesPopupComponent implements OnInit {
   
-
-  data: any;
+  sanitizer: DomSanitizer;
+  data: string[];
   onClose: Function;
 
-  socketService: SocketService;
-
-  socketSubscription: Subscription;
-  
-
-  constructor(socketService: SocketService) {
-    this.socketService = socketService;
+  constructor(sanitizer: DomSanitizer) {
+    this.sanitizer = sanitizer;
   }
 
   ngOnInit(): void {
     let modalContent: HTMLElement = document.getElementsByClassName("modal-content")[0] as HTMLElement;
 
     modalContent.focus();
-    this.socketSubscription = this.socketService.channelReply.get("tasks").subscribe(msg => this.onResponseReceived(msg));
   }
-
-  ngOnDestroy(): void {
-    this.socketSubscription.unsubscribe();
-  }
-
-  onResponseReceived(msg: any): void {
-    if (msg["channel"] == "tasks") {
-      if (msg["type"] == "add_tagging") {
-
-      }
-    }
-  }
-
 }
