@@ -68,14 +68,30 @@
 
 .update-notes-content {
     display: flex;
+    align-items: center;
 }
 
 .update-notes-main {
     display: flex;
 }
 
-h2, h3, h4, h5, h6 {
+h1, h2, h3, h4, h5, h6 {
     margin: 0;
+}
+
+.arrow {
+    font-size: 2em;
+    margin: 0 0.2ch 0 0.2ch;
+    cursor: pointer;
+    color: #adbbd3;
+}
+
+.arrow::selection {
+    background: white;
+}
+
+.arrow:hover, .arrow:active {
+    color: #011638;
 }
 
 #post {
