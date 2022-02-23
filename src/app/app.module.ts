@@ -54,6 +54,8 @@ import { TagsPopupDirective } from './home/activities/tasks/task-editor-popup/ta
 import { NavbarComponent } from './landing-page/navbar/navbar.component';
 import { PricingComponent } from './landing-page/pricing/pricing.component';
 import { FooterComponent } from './landing-page/footer/footer.component';
+import { UpdateNotesPopupComponent } from './home/update-notes-popup/update-notes-popup.component';
+import { UpdateNotesPopupDirective } from './home/update-notes-popup.directive';
 
 @NgModule({
     declarations: [
@@ -102,6 +104,8 @@ import { FooterComponent } from './landing-page/footer/footer.component';
         NavbarComponent,
         PricingComponent,
         FooterComponent,
+        UpdateNotesPopupComponent,
+        UpdateNotesPopupDirective,
     ],
     imports: [
         BrowserModule.withServerTransition({ appId: 'serverApp' }),

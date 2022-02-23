@@ -59,6 +59,10 @@ a:hover:not(.selected), a:focus {
     display: none;
 }
 
+#update-notes-nav {
+    margin-top: auto;
+}
+
 @media only screen and (max-height: 420px) {
     #settings-nav {
         position: relative;
