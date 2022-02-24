@@ -170,6 +170,7 @@ export class ListComponent implements OnInit {
       let index: number = this.taskHost.viewContainerRef.indexOf(this.taskViewRefs.get(taskId));
       this.taskHost.viewContainerRef.remove(index);
       this.tasksService.removeListing(this.tasks.get(taskId).data.listing_id);
+      this.tasks.delete(taskId);
     }
   }
 
@@ -193,7 +194,9 @@ export class ListComponent implements OnInit {
   addTask(): void {
     let newTaskTitleField: HTMLInputElement = <HTMLInputElement> document.getElementById(this.data.list_id  + "-new-task-title-field");
     let title: string = newTaskTitleField.value;
-    this.socketService.sendMessage({channel: "tasks", type: "add_task", public: true, active: false, title: title, contents: "", list_id: this.data.list_id, index: 0});
+    let active: boolean = false;
+    if (this.tasks.size == 0) active = true;
+    this.socketService.sendMessage({channel: "tasks", type: "add_task", public: true, active: active, title: title, contents: "", list_id: this.data.list_id, index: 0});
     newTaskTitleField.value = "";
   }
 
