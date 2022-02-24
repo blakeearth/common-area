@@ -62,6 +62,10 @@ export class SocketService {
         () => console.log('complete')
       );
 
+      window.setInterval(() => {
+        this.sendMessage({channel: "auth", type: "ping"});
+      }, 3000);
+
       while (this.unsentMessages.length > 0) {
         this.sendMessage(this.unsentMessages.pop());
       }
