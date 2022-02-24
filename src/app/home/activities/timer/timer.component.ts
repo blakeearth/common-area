@@ -213,8 +213,9 @@ export class TimerComponent extends Handler implements OnInit, Activity {
       this.participantsDisplay = "none";
     }
     else {
-      // TODO
-      
+      let newSessions: any[] = [];
+      for (let session of this.sessions) if (session.session_id != msg["session_id"]) newSessions.push(session);
+      this.sessions = newSessions;
     }
   }
 
