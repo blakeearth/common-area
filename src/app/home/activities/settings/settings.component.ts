@@ -53,7 +53,6 @@ export class SettingsComponent implements OnInit, Activity {
   }
 
   onResponseReceived(msg: any): void {
-    console.log("Incoming message of type: " + msg["type"]);
     if (msg["channel"] == "settings") {
       if (msg["type"] == "request_rooms") {
         const viewContainerRef = this.roomLinkHost.viewContainerRef;
@@ -105,16 +104,12 @@ export class SettingsComponent implements OnInit, Activity {
       }
       else if (msg["type"] == "enter_room") {
         if (msg["success"] == true) {
-          console.log("Entered a room.");
           sessionStorage.setItem("room_title", msg["room_title"]);
           sessionStorage.setItem("room_id", msg["room_id"]);
           // TODO: use better permissioning systems
           sessionStorage.setItem("room_is_owner", msg["is_owner"]);
           this.roomTitle = sessionStorage.getItem("room_title");
           this.roomChangeService.setRoom(msg["room_id"]);
-        }
-        else {
-          console.error("Failed to enter the room.");
         }
       }
       else if (msg["type"] == "join_room") {
@@ -146,8 +141,6 @@ export class SettingsComponent implements OnInit, Activity {
         if (msg["success"] == true) {
           sessionStorage.removeItem("room_title");
           sessionStorage.removeItem("room_id");
-          console.log(sessionStorage.removeItem("room_title"));
-          console.log(sessionStorage.removeItem("room_id"));
           this.reloadRooms();
         }
       }

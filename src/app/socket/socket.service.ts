@@ -53,7 +53,6 @@ export class SocketService {
           // in the future, the below should be the only way to get messages.
           // classes should subscribe to individual channels.
           let channel: string = msg["channel"];
-          console.log(msg, this.channelIsRegistered("timer"));
           if (this.channelIsRegistered(channel)) {
             this.replySources.get(channel).next(msg);
           }
