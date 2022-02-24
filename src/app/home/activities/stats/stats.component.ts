@@ -101,7 +101,6 @@ export class StatsComponent extends Handler implements OnInit, Activity {
 
   updateData(): void {
     let millisecondsInDuration: number = 0;
-    console.log(this.sessions);
     this.tags = [];
     this.listings = [];
     this.millisecondsPerListing = new Map<string, number>();
@@ -155,10 +154,9 @@ export class StatsComponent extends Handler implements OnInit, Activity {
       return this.millisecondsPerListing.get(b.listing_id) - this.millisecondsPerListing.get(a.listing_id);
     }.bind(this));
 
-    this.barChart.data.labels = [];
+    if (this.listings.length == 1) this.listings[0].minutes = Math.floor(this.millisecondsPerListing.get(this.listings[0].listing_id) / 60000)
 
-    console.log(this.listings);
-    console.log(this.millisecondsPerListing);
+    this.barChart.data.labels = [];
 
     this.barChart.destroy();
     const ctx = (document.getElementById('task-breakdown-pie') as HTMLCanvasElement).getContext('2d');
