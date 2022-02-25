@@ -1,7 +1,8 @@
 import { Component, ComponentFactoryResolver, ComponentRef, OnInit, ViewChild } from '@angular/core';
-import { init, TileEngine, load, setImagePath, imageAssets, GameLoop, GameObject, Vector, getCanvas, Scene, depthSort, Sprite, getWorldRect } from 'kontra';
+import { init, TileEngine, load, setImagePath, imageAssets, GameLoop, GameObject, Vector, getCanvas, Scene, depthSort, Sprite, getWorldRect, getPointer, initPointer } from 'kontra';
 import { Handler } from 'src/app/handler';
 import { SocketService } from 'src/app/socket/socket.service';
+import { MembersService } from '../members.service';
 import { RoomChangeService } from '../room-change.service';
 
 import { images } from "./images";
@@ -24,22 +25,26 @@ export class RoomComponent extends Handler implements OnInit {
   @ViewChild(PlayerTooltipDirective, { static: true }) public playerTooltipHost: PlayerTooltipDirective;
 
   objects: Map<string, any>;
+  me: Player;
 
   objectFactory: ObjectFactory;
 
   roomChangeService: RoomChangeService;
   socketService: SocketService;
+  membersService: MembersService;
 
   componentFactoryResolver: ComponentFactoryResolver;
 
   editButtonDisplay: string;
 
-  members: Player[];
+  loop: GameLoop;
 
-  constructor(socketService: SocketService, roomChangeService: RoomChangeService, componentFactoryResolver: ComponentFactoryResolver) {
+  constructor(socketService: SocketService, roomChangeService: RoomChangeService, membersService: MembersService, componentFactoryResolver: ComponentFactoryResolver) {
     super();
     this.socketService = socketService;
     this.roomChangeService = roomChangeService;
+    this.membersService = membersService;
+    this.membersService.setRoom(this);
     this.objects = new Map<string, any>();
     this.objectFactory = new ObjectFactory(this, socketService);
     this.componentFactoryResolver = componentFactoryResolver;
@@ -73,14 +78,20 @@ export class RoomComponent extends Handler implements OnInit {
       return (obj1.y + obj1.height / 2) - (obj2.y + obj2.height / 2);
     }
 
+    initPointer();
+
     this.objects.set("scene", Scene({
       id: 'game',
       children: [],
       cullObjects: false,
       sortFunction: sort
     }));
+  }
 
-    this.members = [];
+  requestSetTarget(): void {
+    let pointer: any = getPointer();
+    /*if (!this.getEditMode())*/ this.socketService.sendMessage({channel: "room", type: "set_target", position_x: Math.floor(this.me.x + pointer.x - getCanvas().width / 2), position_y: Math.floor(this.me.y + pointer.y - getCanvas().height / 2)});
+    //else this.socketService.sendMessage({channel: "room", type: "add_persist_object", scene_id: 2, parent_id: "root", rotation_degrees_y: 0, position_x: Math.floor(pointer.x), position_y: Math.floor(pointer.y)});
   }
 
   addPersistObject(msg: any): void {
@@ -97,16 +108,31 @@ export class RoomComponent extends Handler implements OnInit {
       if (msg["data"]["scene_id"] == 1) {
         // this is a player
         // add to online members
-        console.log("working on adding a player");
-        let objectA: Player[] = [object];
-        this.members = this.members.concat(objectA);
+        this.membersService.addMember(object);
+        if (this.objects.has(msg["data"]["id"])) {
+          // if this is me, reset the game loop as well
+          this.objects.get("scene").remove(this.objects.get(msg["data"]["id"]))
+          this.loop.stop();
+          this.loop = GameLoop({
+            update: function() {
+              scene.update();
+            },
+            render: function() {
+              scene.render();
+              scene.lookAt({
+                x: object.x + object.width / 2,
+                y: object.y + object.height / 2, 
+              });
+            }
+          });
+        }
       }
 
       if (msg["data"]["id"] == sessionStorage.getItem("account_id")) {
         // this is me
-        
+        this.me = object;
         let scene: Scene = this.objects.get("scene");
-        let loop: GameLoop = GameLoop({
+        this.loop = GameLoop({
           update: function() {
             scene.update();
           },
@@ -120,7 +146,7 @@ export class RoomComponent extends Handler implements OnInit {
         });
       
         // start the loop
-        loop.start();
+        this.loop.start();
         
       }
     }
@@ -148,17 +174,26 @@ export class RoomComponent extends Handler implements OnInit {
     if (this.objects.has(msg["id"])) {
       let object: GameObject = this.objects.get(msg["id"]);
       this.objects.get("scene").remove(object);
+      if (object instanceof Player) this.membersService.removeMember(object);
     }
   }
 
   onRoomChange(roomId: string): void {
     this.editButtonDisplay = (sessionStorage.getItem("room_is_owner") == 'true') ? "inherit" : "none";
-    /*this.objects = new Map<string, any>();
+    (this.objects.get("scene") as Scene).destroy();
+    this.objects = new Map<string, any>();
+
+    let sort = function(obj1, obj2) {
+      [obj1, obj2] = [obj1, obj2].map(getWorldRect);
+      return (obj1.y + obj1.height / 2) - (obj2.y + obj2.height / 2);
+    }
+
     this.objects.set("scene", Scene({
       id: 'game',
       children: [],
-      cullObjects: false
-    }));*/
+      cullObjects: false,
+      sortFunction: sort
+    }));
   }
 
   openPlayerTooltip(displayName: string, id: string, position: Vector) {
