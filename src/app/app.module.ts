@@ -57,6 +57,7 @@ import { PricingComponent } from './landing-page/pricing/pricing.component';
 import { FooterComponent } from './landing-page/footer/footer.component';
 import { UpdateNotesPopupComponent } from './home/update-notes-popup/update-notes-popup.component';
 import { UpdateNotesPopupDirective } from './home/update-notes-popup.directive';
+import { MemberListComponent } from './home/room/member-list/member-list.component';
 
 @NgModule({
     declarations: [
@@ -107,6 +108,7 @@ import { UpdateNotesPopupDirective } from './home/update-notes-popup.directive';
         FooterComponent,
         UpdateNotesPopupComponent,
         UpdateNotesPopupDirective,
+        MemberListComponent,
     ],
     imports: [
         BrowserModule.withServerTransition({ appId: 'serverApp' }),

@@ -5,6 +5,7 @@ import { RoomChangeService } from '../../room-change.service';
 import { ChatMessageComponent } from './chat-message/chat-message.component';
 import { SocketService } from 'src/app/socket/socket.service';
 import { NotificationsService } from '../../notifications/notifications.service';
+import { MembersService } from '../../members.service';
 
 @Component({
   selector: 'app-chat',
@@ -20,7 +21,8 @@ export class ChatComponent implements OnInit, Activity {
   roomChangeService: RoomChangeService;
   componentFactoryResolver: ComponentFactoryResolver;
   socketService: SocketService;
-  notificationsService: NotificationsService
+  notificationsService: NotificationsService;
+  membersService: MembersService;
 
   earliestChatId: string;
   roomId: string;
@@ -28,10 +30,11 @@ export class ChatComponent implements OnInit, Activity {
 
   isRequesting: boolean;
 
-  constructor(socketService: SocketService, roomChangeService: RoomChangeService, notificationsService: NotificationsService, componentFactoryResolver: ComponentFactoryResolver) {
+  constructor(socketService: SocketService, roomChangeService: RoomChangeService, notificationsService: NotificationsService, membersService: MembersService, componentFactoryResolver: ComponentFactoryResolver) {
     this.socketService = socketService;
     this.roomChangeService = roomChangeService;
     this.notificationsService = notificationsService;
+    this.membersService = membersService;
     this.componentFactoryResolver = componentFactoryResolver;
   }
 

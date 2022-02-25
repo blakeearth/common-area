@@ -10,6 +10,13 @@ canvas {
     flex-direction: column;
     flex: 1 0 0;
     background-color: #011638;
+    position: relative;
+}
+
+app-member-list {
+    position: absolute;
+    top: 0;
+    right: 0;
 }
 
 #game-editor {

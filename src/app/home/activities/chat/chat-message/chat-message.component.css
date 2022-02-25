@@ -10,6 +10,11 @@
     font-weight: bold;
 }
 
+.author:hover {
+    text-decoration: underline;
+    cursor: pointer;
+}
+
 .meta {
     display: flex;
     justify-content: space-between;
