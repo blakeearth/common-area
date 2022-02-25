@@ -1,4 +1,4 @@
-import { imageAssets, Sprite, SpriteSheet, track, Vector, Text, Button, getCanvas, getWorldRect, SpriteClass } from 'kontra';
+import { imageAssets, Sprite, SpriteSheet, track, Vector, Text, Button, getCanvas, getWorldRect, SpriteClass, getPointer } from 'kontra';
 import { RoomComponent } from '../../room.component';
 
 const speed: number = 5;
@@ -9,6 +9,8 @@ export class Player extends SpriteClass {
     displayName: string;
     target: Vector;
     direction: Vector;
+
+    me: boolean;
 
     playingAnimation: string;
 
@@ -76,6 +78,10 @@ export class Player extends SpriteClass {
         this.target = Vector(this.x, this.y);
         track(this);
 
+        if (this.id == sessionStorage.getItem("account_id")) {
+            this.me = true;
+        }
+
         this.shadow = Sprite({
             image: imageAssets["bear-shadow"],
             opacity: 0.5,
@@ -104,6 +110,29 @@ export class Player extends SpriteClass {
         this.addChild(this.shadow);
         this.shadow.render();
         this.removeChild(this.shadow);
+
+        if (this.me && this.dx == 0 && this.dy == 0) {
+            let pointer: any = getPointer();
+            let lookTarget: Vector = Vector(pointer.x, pointer.y - 128 / 2);
+            let lookDirection: Vector = Vector(lookTarget.x - getCanvas().width / 2, lookTarget.y - getCanvas().height / 2).normalize();
+            let left: boolean = lookDirection.x <= 0;
+            let right: boolean = !left;
+            let backward: boolean = lookDirection.y <= 0;
+            let forward: boolean = !backward;
+            if (forward && right) {
+                this.playingAnimation = 'idleFR';
+            }
+            if (forward && left) {
+                this.playingAnimation = 'idleFL';
+            }
+            if (backward && right) {
+                this.playingAnimation = 'idleBR';
+            }
+            if (backward && left) {
+                this.playingAnimation = 'idleBL';
+            }
+            this.playAnimation(this.playingAnimation);
+        }
 
         super.draw();
 

@@ -1,5 +1,5 @@
 import { Component, ComponentFactoryResolver, ComponentRef, OnInit, ViewChild } from '@angular/core';
-import { init, TileEngine, load, setImagePath, imageAssets, GameLoop, GameObject, Vector, getCanvas, Scene, depthSort, Sprite, getWorldRect, getPointer, initPointer } from 'kontra';
+import { init, TileEngine, load, setImagePath, imageAssets, GameLoop, GameObject, Vector, getCanvas, Scene, depthSort, Sprite, getWorldRect, getPointer, initPointer, lerp } from 'kontra';
 import { Handler } from 'src/app/handler';
 import { SocketService } from 'src/app/socket/socket.service';
 import { MembersService } from '../members.service';
@@ -26,6 +26,7 @@ export class RoomComponent extends Handler implements OnInit {
 
   objects: Map<string, any>;
   me: Player;
+  target: {x: number, y: number};
 
   objectFactory: ObjectFactory;
 
@@ -104,6 +105,7 @@ export class RoomComponent extends Handler implements OnInit {
       scene.add(object);
 
       this.objects.get("root").setPlayer(object);
+      this.target = {x: object.x, y: object.y};
 
       if (msg["data"]["scene_id"] == 1) {
         // this is a player
@@ -119,11 +121,12 @@ export class RoomComponent extends Handler implements OnInit {
             },
             render: function() {
               scene.render();
-              scene.lookAt({
-                x: object.x + object.width / 2,
-                y: object.y + object.height / 2, 
-              });
-            }
+              this.target = {
+                x: lerp(this.target.x, object.x + object.width / 2, 0.1),
+                y: lerp(this.target.y, object.y + object.height / 2, 0.1)
+              };
+              scene.lookAt(this.target);
+            }.bind(this)
           });
         }
       }
@@ -138,11 +141,12 @@ export class RoomComponent extends Handler implements OnInit {
           },
           render: function() {
             scene.render();
-            scene.lookAt({
-              x: object.x + object.width / 2,
-              y: object.y + object.height / 2, 
-            });
-          }
+            this.target = {
+              x: lerp(this.target.x, object.x + object.width / 2, 0.1),
+              y: lerp(this.target.y, object.y + object.height / 2, 0.1)
+            };
+            scene.lookAt(this.target);
+          }.bind(this)
         });
       
         // start the loop

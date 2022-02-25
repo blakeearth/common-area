@@ -11,8 +11,12 @@ import { Player } from '../root/player/player';
 })
 export class MemberListComponent implements OnInit {
 
-  members: Set<Player> = new Set<Player>();
-  membersList: Player[] = [];
+  onlineMembers: Set<Player> = new Set<Player>();
+  onlineMembersList: Player[] = [];
+
+  offlineMembers: Set<{displayName: string, id: string}> = new Set<{displayName: string, id: string}>();
+  offlineMembersList: {displayName: string, id: string}[] = [];
+
   @Input() room: RoomComponent;
 
   membersService: MembersService;
@@ -23,36 +27,39 @@ export class MemberListComponent implements OnInit {
 
   ngOnInit(): void {
     this.membersService.addedMember.subscribe(member => {
-      this.members.add(member);
-      this.membersList = Array.from(this.members.values());
+      this.onlineMembers.add(member);
+      this.onlineMembersList = Array.from(this.onlineMembers.values());
     });
     this.membersService.removedMember.subscribe(member => {
-      this.members.delete(member);
-      this.membersList = Array.from(this.members.values());
+      this.onlineMembers.delete(member);
+      this.onlineMembersList = Array.from(this.onlineMembers.values());
+    });
+    this.membersService.offlineMembers.subscribe(members => {
+      this.offlineMembers = members;
+      this.offlineMembersList = Array.from(this.offlineMembers.values());
+      console.log(this.offlineMembersList);
     });
   }
 
   ngOnChanges(changes: SimpleChanges) {
   }
 
-  openTooltip(event: Event, player: Player) {
+  openTooltip(event: Event, member: {displayName: string, id: string}) {
     (event.target as HTMLElement).blur();
-    this.membersService.openTooltip(player.displayName, player.id);
+    this.membersService.openTooltip(member.displayName, member.id);
   }
 
   toggleMembers(): void {
-    if (this.members) {
-      let dropArea: HTMLElement = document.getElementById("members") as HTMLElement;
-      if (dropArea.style.display == 'none') {
-        dropArea.style.display = 'inherit';
-        document.getElementById("members-up-arrow").style.display = "inherit";
-        document.getElementById("members-down-arrow").style.display = "none";
-      }
-      else {
-        dropArea.style.display = 'none';
-        document.getElementById("members-down-arrow").style.display = "inherit";
-        document.getElementById("members-up-arrow").style.display = "none";
-      }
+    let dropArea: HTMLElement = document.getElementById("members") as HTMLElement;
+    if (dropArea.style.display == 'none') {
+      dropArea.style.display = 'inherit';
+      document.getElementById("members-up-arrow").style.display = "inherit";
+      document.getElementById("members-down-arrow").style.display = "none";
+    }
+    else {
+      dropArea.style.display = 'none';
+      document.getElementById("members-down-arrow").style.display = "inherit";
+      document.getElementById("members-up-arrow").style.display = "none";
     }
   }
 

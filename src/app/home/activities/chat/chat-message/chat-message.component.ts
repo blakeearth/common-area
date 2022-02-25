@@ -20,7 +20,6 @@ export class ChatMessageComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    console.log(this.data);
   }
 
   openTooltip(): void {
