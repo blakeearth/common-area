@@ -34,6 +34,8 @@ export class RoomComponent extends Handler implements OnInit {
 
   editButtonDisplay: string;
 
+  members: Player[];
+
   constructor(socketService: SocketService, roomChangeService: RoomChangeService, componentFactoryResolver: ComponentFactoryResolver) {
     super();
     this.socketService = socketService;
@@ -77,25 +79,43 @@ export class RoomComponent extends Handler implements OnInit {
       cullObjects: false,
       sortFunction: sort
     }));
+
+    this.members = [];
   }
 
   addPersistObject(msg: any): void {
-    console.log(msg);
     let object: any = this.objectFactory.makeObject(this.objects, msg["data"]);
+    let scene: Scene = this.objects.get("scene");
     if (msg["data"]["parent_id"] != null) {
       //this.objects.get(msg["data"]["parent_id"]).addChild(object);
-      let scene: Scene = this.objects.get("scene");
+      let tileEngine: TileEngine = this.objects.get("root").tileEngine;
+      
       scene.add(object);
+
+      this.objects.get("root").setPlayer(object);
+
+      if (msg["data"]["scene_id"] == 1) {
+        // this is a player
+        // add to online members
+        console.log("working on adding a player");
+        let objectA: Player[] = [object];
+        this.members = this.members.concat(objectA);
+      }
 
       if (msg["data"]["id"] == sessionStorage.getItem("account_id")) {
         // this is me
         
+        let scene: Scene = this.objects.get("scene");
         let loop: GameLoop = GameLoop({
           update: function() {
             scene.update();
           },
           render: function() {
             scene.render();
+            scene.lookAt({
+              x: object.x + object.width / 2,
+              y: object.y + object.height / 2, 
+            });
           }
         });
       
@@ -105,7 +125,6 @@ export class RoomComponent extends Handler implements OnInit {
       }
     }
     else {
-      let scene: Scene = this.objects.get("scene");
       scene.add(object);
     }
     this.objects.set(msg["data"]["id"], object);

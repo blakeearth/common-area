@@ -63,56 +63,7 @@ export class Player extends SpriteClass {
             dy: 0,
             image: spriteSheet.frame[48],
             animations: spriteSheet.animations,
-            children: [Button({
-                // button properties
-                
-                room: room,
-                persistObjectId: id,
-                
-                padX: 64,
-                padY: 64,
-                color: "transparent",
-                onFocus: function() {
-                    // read out to the screen reader
-                },
-                render: function() {
-                    if (this.pressed) {
-                        if (!(this.previouslyPressed == true)) {
-                            this.previouslyPressed = true;
-                            // open their little profile
-                            // with current task etc.
-                            room.openPlayerTooltip(displayName, id, Vector(getWorldRect(this).x, getWorldRect(this).y));
-                        }
-                    }
-                    else {
-                        if (this.previouslyPressed == true) {
-                            this.previouslyPressed = false;
-                            // close the tooltip specifically (must be THIS one--what about othr players?)
-                        }
-                    }
-
-
-                    if (this.hovered) {
-                        if (!(this.previouslyHovered == true)) {
-                            this.previouslyHovered = true;
-                            getCanvas().style.cursor = "pointer";
-                        }
-                    }
-                    else {
-                        if (this.previouslyHovered == true) {
-                            this.previouslyHovered = false;
-                            getCanvas().style.cursor = "initial";
-                        }
-                    }
-
-                    if (this.focused) {
-                        this.context.setLineDash([8,10]);
-                        this.context.lineWidth = 3;
-                        this.context.strokeStyle = 'red';
-                        this.context.strokeRect(0, 0, this.width, this.height);
-                      }
-                }
-            })]
+            children: []
         });
 
         this.room = room;
@@ -158,7 +109,7 @@ export class Player extends SpriteClass {
 
         let nameTag: Text = Text({
             text: this.displayName,
-            font: '16px Arial',
+            font: '32px Arial',
             color: 'black',
             width: 128,
             x: 0,
@@ -172,7 +123,7 @@ export class Player extends SpriteClass {
     }
 
     setTarget(msg: any): void {
-        this.target = Vector(msg["position_x"] - 128 / 2, msg["position_y"] - 128);
+        this.target = Vector(msg["position_x"], msg["position_y"] - 128 / 2);
         this.direction = Vector(this.target.x - this.x, this.target.y - this.y).normalize();
         let left: boolean = this.direction.x <= 0;
         let right: boolean = !left;

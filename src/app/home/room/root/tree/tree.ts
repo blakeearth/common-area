@@ -5,9 +5,6 @@ export class Tree extends SpriteClass {
 
     constructor(id: string, position: Vector, rotationDegrees: number) {
 
-        console.log(imageAssets);
-        console.log(imageAssets["tree"]);
-
         let spriteSheet = SpriteSheet({
             image: imageAssets["tree"],
             frameWidth: 128,
