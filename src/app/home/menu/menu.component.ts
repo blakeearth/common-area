@@ -34,6 +34,8 @@ export class MenuComponent extends Handler implements OnInit{
 
   componentFactoryResolver: ComponentFactoryResolver;
 
+  audio: HTMLAudioElement;
+
   constructor(notificationsService: NotificationsService, location: Location, componentFactoryResolver: ComponentFactoryResolver, socketService: SocketService) {
     super();
     
@@ -42,6 +44,10 @@ export class MenuComponent extends Handler implements OnInit{
     this.socketService = socketService;
     this.location = location;
     this.location.onUrlChange(this.updateActivity.bind(this));
+
+    this.audio = new Audio();
+    this.audio.src = "../../../assets/notifications/notification.ogg";
+    this.audio.load();
   }
 
   navigate(s: string, event: Event): void {
@@ -71,6 +77,7 @@ export class MenuComponent extends Handler implements OnInit{
       let notificationsActivity: Element = document.getElementById(activity + "-notification");
       notificationsActivity.innerHTML = (Number.parseInt(notificationsActivity.innerHTML) + 1).toString();
       if (notificationsActivity.classList.contains("hidden")) notificationsActivity.classList.remove("hidden");
+      this.audio.play();
     } 
   }
 
