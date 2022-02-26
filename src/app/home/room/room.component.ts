@@ -99,13 +99,8 @@ export class RoomComponent extends Handler implements OnInit {
     let object: any = this.objectFactory.makeObject(this.objects, msg["data"]);
     let scene: Scene = this.objects.get("scene");
     if (msg["data"]["parent_id"] != null) {
-      //this.objects.get(msg["data"]["parent_id"]).addChild(object);
-      let tileEngine: TileEngine = this.objects.get("root").tileEngine;
       
       scene.add(object);
-
-      this.objects.get("root").setPlayer(object);
-      this.target = {x: object.x, y: object.y};
 
       if (msg["data"]["scene_id"] == 1) {
         // this is a player
@@ -113,28 +108,19 @@ export class RoomComponent extends Handler implements OnInit {
         this.membersService.addMember(object);
         if (this.objects.has(msg["data"]["id"])) {
           // if this is me, reset the game loop as well
-          this.objects.get("scene").remove(this.objects.get(msg["data"]["id"]))
-          this.loop.stop();
-          this.loop = GameLoop({
-            update: function() {
-              scene.update();
-            },
-            render: function() {
-              scene.render();
-              this.target = {
-                x: lerp(this.target.x, object.x + object.width / 2, 0.1),
-                y: lerp(this.target.y, object.y + object.height / 2, 0.1)
-              };
-              scene.lookAt(this.target);
-            }.bind(this)
-          });
+          this.objects.get("scene").remove(this.objects.get(msg["data"]["id"]));
         }
       }
 
       if (msg["data"]["id"] == sessionStorage.getItem("account_id")) {
         // this is me
         this.me = object;
+        this.objects.get("root").setPlayer(object);
+        this.target = {x: object.x, y: object.y};
         let scene: Scene = this.objects.get("scene");
+
+        if (this.loop != undefined) this.loop.stop();
+
         this.loop = GameLoop({
           update: function() {
             scene.update();
