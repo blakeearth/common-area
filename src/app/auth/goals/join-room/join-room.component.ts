@@ -43,7 +43,6 @@ export class JoinRoomComponent implements OnInit, Goal {
   }
 
   onResponseReceived(msg: any): void {
-    console.log(msg);
     if (msg["type"] == "request_room") {
       let hiddens: HTMLCollectionOf<Element> = document.getElementsByClassName("hidden-form");
         for (let i: number = 0; i < hiddens.length; i++) {

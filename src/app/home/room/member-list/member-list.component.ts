@@ -37,7 +37,6 @@ export class MemberListComponent implements OnInit {
     this.membersService.offlineMembers.subscribe(members => {
       this.offlineMembers = members;
       this.offlineMembersList = Array.from(this.offlineMembers.values());
-      console.log(this.offlineMembersList);
     });
   }
 

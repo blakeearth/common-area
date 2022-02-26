@@ -49,6 +49,5 @@ export class TileMap extends GameObjectClass {
 
     toggleEditMode(): void {
       this.editMode = !this.editMode;
-      console.log(this.editMode);
     }
   }

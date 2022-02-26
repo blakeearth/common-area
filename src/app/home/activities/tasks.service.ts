@@ -56,7 +56,6 @@ export class TasksService {
     this.listsDoneLoading++;
 
     if (this.listsDoneLoading == 0) {
-      console.log(this.listings);
       this.onListsDoneLoading();
     }
   }

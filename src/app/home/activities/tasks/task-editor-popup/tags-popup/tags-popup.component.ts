@@ -83,7 +83,6 @@ export class TagsPopupComponent implements OnInit {
   }
 
   deleteTag(data: any, event: Event): void {
-    console.log(data.tag_id);
     event.preventDefault();
     event.stopPropagation();
     this.socketService.sendMessage({channel: "tasks", type: "delete_tag", tag_id: data.tag_id});
