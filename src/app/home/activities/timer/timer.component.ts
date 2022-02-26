@@ -197,7 +197,6 @@ export class TimerComponent extends Handler implements OnInit, Activity {
       this.joinDisplay = "none";
   
       this.participants = msg["participants"];
-      console.log(this.participants);
   
       // reveal leave session button, participants
       // TODO: the below could absolutely cause glitches if two people choose the same display name
@@ -265,7 +264,7 @@ export class TimerComponent extends Handler implements OnInit, Activity {
   }
 
   join(sessionId: string): void {
-    this.socketService.sendMessage({channel: "timer", type: "join_session", room_id: this.roomId, session_id: sessionId});
+    if (this.activeTask) this.socketService.sendMessage({channel: "timer", type: "join_session", room_id: this.roomId, session_id: sessionId});
   }
 
   leave(): void {
