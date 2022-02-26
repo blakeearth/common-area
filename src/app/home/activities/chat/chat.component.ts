@@ -98,6 +98,7 @@ export class ChatComponent implements OnInit, Activity {
     let list: Element = document.getElementById("list");
     document.getElementById("retrieving-now").classList.remove("hidden");
     document.getElementById("load-more").classList.add("hidden");
+    this.isRequesting = true;
     this.socketService.sendMessage({channel: "chat", type: "request_messages", room_id: this.roomId, before_chat_id: this.earliestChatId});
   }
 
