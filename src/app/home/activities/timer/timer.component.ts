@@ -2,6 +2,7 @@ import { Component, ComponentFactoryResolver, ComponentRef, OnInit, ViewChild } 
 import { Subscription } from 'rxjs';
 import { Handler } from 'src/app/handler';
 import { SocketService } from 'src/app/socket/socket.service';
+import { NotificationsService } from '../../notifications/notifications.service';
 import { RoomChangeService } from '../../room-change.service';
 import { Activity } from '../activity';
 import { TasksService } from '../tasks.service';
@@ -36,6 +37,8 @@ export class TimerComponent extends Handler implements OnInit, Activity {
   timeRemaining: Date;
   timerSubscription: Subscription;
 
+  notificationsService: NotificationsService;
+
   timeToSubmit: number = 25;
   sessionId: string;
   participants: any[];
@@ -53,12 +56,13 @@ export class TimerComponent extends Handler implements OnInit, Activity {
   joinDisplay: string = "none";
   sessions: any[] = [];
 
-  constructor(socketService: SocketService, roomChangeService: RoomChangeService, tasksService: TasksService, timerService: TimerService, componentFactoryResolver: ComponentFactoryResolver) {
+  constructor(socketService: SocketService, roomChangeService: RoomChangeService, tasksService: TasksService, timerService: TimerService, notificationsService: NotificationsService, componentFactoryResolver: ComponentFactoryResolver) {
     super();
     this.socketService = socketService;
     this.roomChangeService = roomChangeService;
     this.tasksService = tasksService;
     this.timerService = timerService;
+    this.notificationsService = notificationsService;
     this.componentFactoryResolver = componentFactoryResolver;
   }
 
@@ -228,6 +232,7 @@ export class TimerComponent extends Handler implements OnInit, Activity {
   endSession(msg: any) {
     if (msg["session_id"] == this.sessionId) {
       this.socketService.sendMessage({channel: "stats", type: "request_sessions"});
+      this.notificationsService.pushNotification("timer");
 
       this.timeRemaining = new Date(0, 0, 0, 0, this.timeToSubmit, 0);
       this.timerService.stopTimer();
