@@ -3,7 +3,7 @@
 <div id="not-in-session">
     <div id="consumable">⏳</div>
     <h2 [ngStyle]="{ 'display': this.participantsDisplay }">Participants:</h2>
-    <p id="participants"><span id="participants" *ngFor="let participant of participants; let isLast=last" [ngStyle]="{ 'display': this.participantsDisplay }">{{ participant }}{{ isLast ? '' : ', ' }}</span></p>
+    <p id="participants"><span id="participants" *ngFor="let participant of participants; let isLast=last" [ngStyle]="{ 'display': this.participantsDisplay }"><a class="participant" tabindex="0" (click)="openTooltip(participant.display_name, participant.account_id)" (keyboard.down)="openTooltip(participant.display_name, participant.account_id)">{{ participant.display_name }}</a>{{ isLast ? '' : ', ' }}</span></p>
     <app-task [data]="this.activeTaskData" [onClick]="this.changeActiveTask.bind(this)"></app-task>
     <div id="join" [ngStyle]="{ 'display': this.joinDisplay}">
         <h2>Join a session</h2>
@@ -13,7 +13,7 @@
                 <th>End time</th>
             </tr>
             <tr *ngFor="let session of sessions;">
-                <th><span id="participants" *ngFor="let participant of session.participants; let isLast=last">{{ participant }}{{ isLast ? '' : ', ' }}</span></th>
+                <th><span id="participants" *ngFor="let participant of session.participants; let isLast=last"><a class="participant" tabindex="0" (click)="openTooltip(participant.display_name, participant.account_id)" (keyboard.down)="openTooltip(participant.display_name, participant.account_id)">{{ participant.display_name }}</a>{{ isLast ? '' : ', ' }}</span></th>
                 <th>{{ session.expected_end_time | date:'h:mm a' }}</th>
                 <th class="join"><button class="join-button" (click)="join(session.session_id)">Join</button></th>
             </tr>
@@ -31,8 +31,4 @@
             <button id="leave-button" [ngStyle]="{ 'display': this.leaveButtonDisplay }" (click)="leave()">Leave</button>
         </div>
     </div>
-</div>
-
-<div id="in-session">
-
 </div>

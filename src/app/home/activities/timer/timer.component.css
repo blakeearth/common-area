@@ -3,6 +3,8 @@
     padding: 0.2em 2ch 0.2em 2ch;
     display: flex;
     flex-direction: column;
+    overflow-y: auto;
+    overflow-x: hidden;
 }
 
 #consumable {
@@ -12,6 +14,11 @@
 
 #participants {
     text-align: center;
+}
+
+.participant:hover {
+    cursor: pointer;
+    text-decoration: underline;
 }
 
 th {

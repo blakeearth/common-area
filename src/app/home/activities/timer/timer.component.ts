@@ -2,6 +2,7 @@ import { Component, ComponentFactoryResolver, ComponentRef, OnInit, ViewChild } 
 import { Subscription } from 'rxjs';
 import { Handler } from 'src/app/handler';
 import { SocketService } from 'src/app/socket/socket.service';
+import { MembersService } from '../../members.service';
 import { NotificationsService } from '../../notifications/notifications.service';
 import { RoomChangeService } from '../../room-change.service';
 import { Activity } from '../activity';
@@ -39,6 +40,8 @@ export class TimerComponent extends Handler implements OnInit, Activity {
 
   notificationsService: NotificationsService;
 
+  membersService: MembersService;
+
   timeToSubmit: number = 25;
   sessionId: string;
   participants: any[];
@@ -56,13 +59,14 @@ export class TimerComponent extends Handler implements OnInit, Activity {
   joinDisplay: string = "none";
   sessions: any[] = [];
 
-  constructor(socketService: SocketService, roomChangeService: RoomChangeService, tasksService: TasksService, timerService: TimerService, notificationsService: NotificationsService, componentFactoryResolver: ComponentFactoryResolver) {
+  constructor(socketService: SocketService, roomChangeService: RoomChangeService, tasksService: TasksService, timerService: TimerService, notificationsService: NotificationsService, membersService: MembersService, componentFactoryResolver: ComponentFactoryResolver) {
     super();
     this.socketService = socketService;
     this.roomChangeService = roomChangeService;
     this.tasksService = tasksService;
     this.timerService = timerService;
     this.notificationsService = notificationsService;
+    this.membersService = membersService;
     this.componentFactoryResolver = componentFactoryResolver;
   }
 
@@ -126,7 +130,9 @@ export class TimerComponent extends Handler implements OnInit, Activity {
   // start a session (from the server)
   // remember this can come from anyone!
   startSession(msg: any): void {
-    if (msg["participants"].includes(sessionStorage.getItem("display_name"))) {
+    let mySession: boolean = false;
+    for (let participant of msg["participants"]) if (participant.account_id == sessionStorage.getItem("account_id")) mySession = true;
+    if (mySession) {
       // I started this session
       this.participants = msg["participants"];
       this.sessionId = msg["session_id"];
@@ -174,7 +180,9 @@ export class TimerComponent extends Handler implements OnInit, Activity {
   }
 
   joinSession(msg: any): void {
-    if (msg["display_name"].includes(sessionStorage.getItem("display_name"))) {
+    let mySession: boolean = false;
+    for (let participant of msg["participants"]) if (participant.account_id == sessionStorage.getItem("account_id")) mySession = true;
+    if (mySession) {
       // I started this session
       this.sessionId = msg["session_id"];
       this.timeRemaining = new Date((new Date(msg["expected_end_time"])).getTime() - Date.now());
@@ -189,6 +197,7 @@ export class TimerComponent extends Handler implements OnInit, Activity {
       this.joinDisplay = "none";
   
       this.participants = msg["participants"];
+      console.log(this.participants);
   
       // reveal leave session button, participants
       // TODO: the below could absolutely cause glitches if two people choose the same display name
@@ -261,6 +270,10 @@ export class TimerComponent extends Handler implements OnInit, Activity {
 
   leave(): void {
     this.socketService.sendMessage({channel: "timer", type: "leave_session", room_id: this.roomId, session_id: this.sessionId});
+  }
+
+  openTooltip(displayName: string, accountId: string): void {
+    this.membersService.openTooltip(displayName, accountId);
   }
 
   countdown(): void {
