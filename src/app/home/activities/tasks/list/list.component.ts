@@ -23,6 +23,8 @@ export class ListComponent implements OnInit {
 
   @Input() lists: string[];
 
+  @Input() onTaskClick: Function;
+
   public disabled: boolean = false;
 
   filterPopupOpen: boolean = false;
@@ -185,6 +187,7 @@ export class ListComponent implements OnInit {
 
     let instance: TaskComponent = <TaskComponent>componentRef.instance;
     instance.data = data;
+    if (this.onTaskClick != undefined) instance.onClick = this.onTaskClick;
     instance.isListing = true;
     this.tasks.set(data.task_id, instance);
     this.taskViewRefs.set(data.task_id, componentRef.hostView);

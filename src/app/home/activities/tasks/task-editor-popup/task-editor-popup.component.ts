@@ -161,10 +161,6 @@ export class TaskEditorPopupComponent implements OnInit {
     }
   }
 
-  changeActive(): void {
-    this.socketService.sendMessage({channel: "tasks", type: "set_listing_active", listing_id: this.data.listing_id, active: !this.data.active});
-  }
-
   changePublic(): void {
     this.socketService.sendMessage({channel: "tasks", type: "set_task_public", task_id: this.data.task_id, public: !this.data.public});
   }

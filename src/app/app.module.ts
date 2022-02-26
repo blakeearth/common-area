@@ -58,6 +58,8 @@ import { FooterComponent } from './landing-page/footer/footer.component';
 import { UpdateNotesPopupComponent } from './home/update-notes-popup/update-notes-popup.component';
 import { UpdateNotesPopupDirective } from './home/update-notes-popup.directive';
 import { MemberListComponent } from './home/room/member-list/member-list.component';
+import { ActiveTaskPickerPopupComponent } from './home/activities/timer/active-task-picker-popup/active-task-picker-popup.component';
+import { ActiveTaskPickerPopupDirective } from './home/activities/timer/active-task-picker-popup.directive';
 
 @NgModule({
     declarations: [
@@ -109,6 +111,8 @@ import { MemberListComponent } from './home/room/member-list/member-list.compone
         UpdateNotesPopupComponent,
         UpdateNotesPopupDirective,
         MemberListComponent,
+        ActiveTaskPickerPopupComponent,
+        ActiveTaskPickerPopupDirective,
     ],
     imports: [
         BrowserModule.withServerTransition({ appId: 'serverApp' }),

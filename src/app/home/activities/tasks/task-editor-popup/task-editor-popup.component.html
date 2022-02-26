@@ -50,14 +50,6 @@
                         (keydown.enter)="toggleTags()">Tags</button>
                          <ng-template appTagsPopup></ng-template>
                     </div>
-                    <div class="toggle">
-                        <span tabindex="0" class="tooltip-parent">Active<span tabindex="0">Set a listing to active if
-                                you want to work on it. You can have up to one active task at a time.</span></span>
-                        <label class="switch">
-                            <input type="checkbox" id="active" (change)="changeActive()" [checked]="this.data.active">
-                            <span class="slider"></span>
-                        </label>
-                    </div>
                     <button class="close-button" tabindex="0" (click)="onClose($event)"
                         (keydown.enter)="onClose($event)">Close</button>
                     <button class="remove-task" tabindex="0" (click)="removeTask($event)"

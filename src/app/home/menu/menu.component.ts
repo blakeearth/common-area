@@ -103,7 +103,7 @@ export class MenuComponent extends Handler implements OnInit{
   }
 
 
-  openUpdateNotes() {
+  openUpdateNotes(): void {
     const componentFactory = this.componentFactoryResolver.resolveComponentFactory(UpdateNotesPopupComponent);
 
     const viewContainerRef = this.updateNotesPopupHost.viewContainerRef;
@@ -117,7 +117,7 @@ export class MenuComponent extends Handler implements OnInit{
     instance.onClose = this.closeUpdateNotes.bind(this);
   }
 
-  closeUpdateNotes(event: Event) {
+  closeUpdateNotes(event: Event): void {
     if ((event.target as HTMLElement).classList.contains("modal") ||
       (event.target as HTMLElement).classList.contains("close-update-notes") ||
       (event.target as HTMLElement).classList.contains("close-button")) {

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ComponentFactoryResolver, ComponentRef, OnInit, ViewChild } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { Handler } from 'src/app/handler';
 import { SocketService } from 'src/app/socket/socket.service';
@@ -6,6 +6,8 @@ import { RoomChangeService } from '../../room-change.service';
 import { Activity } from '../activity';
 import { TasksService } from '../tasks.service';
 import { TimerService } from '../timer.service';
+import { ActiveTaskPickerPopupDirective } from './active-task-picker-popup.directive';
+import { ActiveTaskPickerPopupComponent } from './active-task-picker-popup/active-task-picker-popup.component';
 
 @Component({
   selector: 'app-timer',
@@ -14,6 +16,9 @@ import { TimerService } from '../timer.service';
 })
 export class TimerComponent extends Handler implements OnInit, Activity {
   header: string = "Timer";
+
+  @ViewChild(ActiveTaskPickerPopupDirective, { static: true }) public activeTaskPickerPopupHost: ActiveTaskPickerPopupDirective;
+  componentFactoryResolver: ComponentFactoryResolver;
 
   tabs: Array<string> = ["host"];
 
@@ -24,7 +29,7 @@ export class TimerComponent extends Handler implements OnInit, Activity {
   roomId: string;
 
   tasksService: TasksService;
-  activeTaskData: any = {"task_id": null, "title": "You need an active task to participate. Select one from the tasks tab."};
+  activeTaskData: any = {"task_id": null, "title": "You need an active task to participate. Select this to pick one."};
   activeTask: boolean = false;
 
   timerService: TimerService;
@@ -48,25 +53,51 @@ export class TimerComponent extends Handler implements OnInit, Activity {
   joinDisplay: string = "none";
   sessions: any[] = [];
 
-  constructor(socketService: SocketService, roomChangeService: RoomChangeService, tasksService: TasksService, timerService: TimerService) {
+  constructor(socketService: SocketService, roomChangeService: RoomChangeService, tasksService: TasksService, timerService: TimerService, componentFactoryResolver: ComponentFactoryResolver) {
     super();
     this.socketService = socketService;
     this.roomChangeService = roomChangeService;
     this.tasksService = tasksService;
     this.timerService = timerService;
+    this.componentFactoryResolver = componentFactoryResolver;
   }
 
   ngOnInit(): void {
     if (!this.socketService.channelIsRegistered("timer")) this.socketService.register("timer");
     this.socketService.channelReply.get("timer").subscribe(msg => {
-      console.log(msg);
       this[this.snakeToCamel(msg["type"])](msg);
     });
     this.roomChangeService.roomId.subscribe(roomId => this.changeRoom(roomId));
-    this.tasksService.activeTask.subscribe(data => { this.activeTaskData = data; this.activeTask = true});
+    this.tasksService.activeTask.subscribe(data => {
+      this.activeTaskData = data; this.activeTask = true;
+    });
     this.timeRemaining = new Date(0, 0, 0, 0, this.timeToSubmit);
     this.participants = [];
   }
+
+  changeActiveTask(): void {
+    const componentFactory = this.componentFactoryResolver.resolveComponentFactory(ActiveTaskPickerPopupComponent);
+
+    const viewContainerRef = this.activeTaskPickerPopupHost.viewContainerRef;
+
+    let componentRef: ComponentRef<ActiveTaskPickerPopupComponent>;
+
+    componentRef = viewContainerRef.createComponent(componentFactory);
+
+    let instance: ActiveTaskPickerPopupComponent = <ActiveTaskPickerPopupComponent>componentRef.instance;
+    //instance.data = this.activeTaskData;
+    instance.onClose = this.closeActiveTaskPopupPicker.bind(this);
+  }
+
+  closeActiveTaskPopupPicker(event?: Event): void {
+    if (event == undefined || (event.target as HTMLElement).classList.contains("modal") ||
+      (event.target as HTMLElement).classList.contains("close-active-task-picker") ||
+      (event.target as HTMLElement).classList.contains("close-button")) {
+      const viewContainerRef = this.activeTaskPickerPopupHost.viewContainerRef;
+      viewContainerRef.clear();
+    }
+  }
+
 
   changeRoom(roomId: string): void {
     this.roomId = roomId;
@@ -91,7 +122,6 @@ export class TimerComponent extends Handler implements OnInit, Activity {
   // start a session (from the server)
   // remember this can come from anyone!
   startSession(msg: any): void {
-    console.log("got a start session");
     if (msg["participants"].includes(sessionStorage.getItem("display_name"))) {
       // I started this session
       this.participants = msg["participants"];
@@ -113,11 +143,9 @@ export class TimerComponent extends Handler implements OnInit, Activity {
     }
     else {
       // someone else started the session, add it to the join zone
-      console.log(msg);
       let session: any = msg;
       session.expected_end_time = msg.expected_end_time + "Z";
       this.sessions.push(session);
-      console.log(this.sessions);
       if (this.sessions.length > 0) {
         this.joinDisplay = "inherit";
       }
@@ -133,7 +161,6 @@ export class TimerComponent extends Handler implements OnInit, Activity {
       session.expected_end_time = session.expected_end_time + "Z";
       this.sessions.push(session);
     }
-    console.log(this.sessions);
     if (this.sessions.length > 0) {
       this.joinDisplay = "inherit";
     }
@@ -220,11 +247,10 @@ export class TimerComponent extends Handler implements OnInit, Activity {
   }
 
   start(): void {
-    this.socketService.sendMessage({channel: "timer", type: "start_session", room_id: this.roomId, consumable: 0, duration: this.timeToSubmit, is_break: false});
+    if (this.activeTask) this.socketService.sendMessage({channel: "timer", type: "start_session", room_id: this.roomId, consumable: 0, duration: this.timeToSubmit, is_break: false});
   }
 
   join(sessionId: string): void {
-    console.log(sessionId);
     this.socketService.sendMessage({channel: "timer", type: "join_session", room_id: this.roomId, session_id: sessionId});
   }
 

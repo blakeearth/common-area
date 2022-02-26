@@ -1,10 +1,10 @@
 <app-panel-header [header]="header"></app-panel-header>
-
+<ng-template appActiveTaskPickerPopup></ng-template>
 <div id="not-in-session">
     <div id="consumable">⏳</div>
     <h2 [ngStyle]="{ 'display': this.participantsDisplay }">Participants:</h2>
     <p id="participants"><span id="participants" *ngFor="let participant of participants; let isLast=last" [ngStyle]="{ 'display': this.participantsDisplay }">{{ participant }}{{ isLast ? '' : ', ' }}</span></p>
-    <app-task [data]="this.activeTaskData"></app-task>
+    <app-task [data]="this.activeTaskData" [onClick]="this.changeActiveTask.bind(this)"></app-task>
     <div id="join" [ngStyle]="{ 'display': this.joinDisplay}">
         <h2>Join a session</h2>
         <table>

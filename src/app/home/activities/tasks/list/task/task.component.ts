@@ -16,6 +16,7 @@ import { TagComponent } from '../filter-popup/tag/tag.component';
 export class TaskComponent implements OnInit {
 
   @Input() data: any;
+  @Input() onClick: Function;
   @Input() isListing: boolean;
 
   @ViewChild(TagDirective, { static: true }) public tagHost: TagDirective;
@@ -86,7 +87,8 @@ export class TaskComponent implements OnInit {
 
   openTask(event: Event): void {
     event.preventDefault();
-    if (!(this.data.task_id == undefined)) this.location.replaceState('/home/tasks/' + this.data.task_id);
+    if (this.data.task_id != undefined && this.onClick == undefined) this.location.replaceState('/home/tasks/' + this.data.task_id);
+    else if (this.onClick != undefined) this.onClick(this.data);
   }
 
   removeTask() {
