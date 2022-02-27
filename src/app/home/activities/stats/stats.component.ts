@@ -6,6 +6,7 @@ import { SocketService } from 'src/app/socket/socket.service';
 import { WebMonetizationService } from 'src/app/web-monetization/web-monetization.service';
 import { Activity } from '../activity';
 import { TasksService } from '../tasks.service';
+import { randInt } from 'kontra';
 
 @Component({
   selector: 'app-stats',
@@ -19,11 +20,13 @@ export class StatsComponent extends Handler implements OnInit, Activity {
   socketService: SocketService;
   tasksService: TasksService;
 
-  barChart: Chart;
+  tagBreakdownStackedBar: Chart;
+  taskBreakdownPieChart: Chart;
 
   sessions: any;
 
-  tags: any[];
+  tags: Map<string, any>;
+  millisecondsPerTagPerDay: Map<string, number[]>;
 
   listings: any[];
   millisecondsPerListing: Map<string, number>;
@@ -50,8 +53,9 @@ export class StatsComponent extends Handler implements OnInit, Activity {
       this.handleState(state);
     });
 
-    this.fromDate = new Date(new Date().setFullYear(new Date().getFullYear() - 1));
-    this.toDate = new Date(new Date().setFullYear(new Date().getFullYear()));
+    this.fromDate = new Date(new Date().setDate(new Date().getDate() - 6));
+    this.toDate = new Date(new Date().setDate(new Date().getDate()));
+    this.toDate.setHours(23, 59);
 
     (document.getElementById("from") as HTMLInputElement).value = this.fromDate.toLocaleDateString("fr-CA", {'year': 'numeric', 'month': 'numeric', 'day': 'numeric'});
     (document.getElementById("to") as HTMLInputElement).value = this.toDate.toLocaleDateString("fr-CA", {'year': 'numeric', 'month': 'numeric', 'day': 'numeric'});
@@ -62,9 +66,38 @@ export class StatsComponent extends Handler implements OnInit, Activity {
     });
     
     this.socketService.sendMessage({channel: "stats", type: "request_sessions"});
-    
-    const ctx = (document.getElementById('task-breakdown-pie') as HTMLCanvasElement).getContext('2d');
-    this.barChart = new Chart(ctx, {
+
+    const ctx = (document.getElementById('tag-breakdown-stacked-bar') as HTMLCanvasElement).getContext('2d');
+    this.tagBreakdownStackedBar = new Chart(ctx, {
+      type: 'pie',
+      data: {
+        labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+        datasets: [{
+          label: '# of Votes',
+          data: [12, 19, 3, 5, 2, 3],
+          backgroundColor: [
+            'rgba(255, 99, 132, 0.2)',
+            'rgba(54, 162, 235, 0.2)',
+            'rgba(255, 206, 86, 0.2)',
+            'rgba(75, 192, 192, 0.2)',
+            'rgba(153, 102, 255, 0.2)',
+            'rgba(255, 159, 64, 0.2)'
+          ],
+          borderColor: [
+            'rgba(255, 99, 132, 1)',
+            'rgba(54, 162, 235, 1)',
+            'rgba(255, 206, 86, 1)',
+            'rgba(75, 192, 192, 1)',
+            'rgba(153, 102, 255, 1)',
+            'rgba(255, 159, 64, 1)'
+          ],
+          borderWidth: 2
+        }]
+      }
+    });
+
+    const ctx2 = (document.getElementById('task-breakdown-pie') as HTMLCanvasElement).getContext('2d');
+    this.taskBreakdownPieChart = new Chart(ctx2, {
       type: 'pie',
       data: {
         labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
@@ -96,15 +129,22 @@ export class StatsComponent extends Handler implements OnInit, Activity {
   onDatesChanged(): void {
     this.fromDate = new Date((document.getElementById("from") as HTMLInputElement).value);
     this.toDate = new Date((document.getElementById("to") as HTMLInputElement).value);
+    this.toDate.setHours(23, 59);
     this.updateData();
   }
 
   updateData(): void {
     let millisecondsInDuration: number = 0;
-    this.tags = [];
+    this.tags = new Map<string, any>();
+    this.millisecondsPerTagPerDay = new Map<string, number[]>();
     this.listings = [];
     this.millisecondsPerListing = new Map<string, number>();
     this.minutesOnDeletedListings = 0;
+
+    const oneDay = 24 * 60 * 60 * 1000;
+    let daysInSelection: number = Math.ceil((this.toDate.getTime() - this.fromDate.getTime()) / oneDay);
+    console.log(daysInSelection);
+
     for (let session in this.sessions) {
       for (let span of this.sessions[session].spans) {
         // check that span ended
@@ -115,7 +155,8 @@ export class StatsComponent extends Handler implements OnInit, Activity {
 
         let convertedEndTime: Date = new Date(span.end_time);
         convertedEndTime.setHours(convertedEndTime.getHours() - 5);
-        if (convertedStartTime >= this.fromDate && convertedEndTime <= this.toDate && span.end_time != null) {
+        if (convertedStartTime >= this.fromDate && convertedEndTime <= (this.toDate) && span.end_time != null) {
+          console.log(span);
           let ms: number = ((new Date(span.end_time)).valueOf() - (new Date(span.start_time).valueOf()));
           millisecondsInDuration += ms;
           let listing: any = this.tasksService.getListing(span.listing_id);
@@ -131,6 +172,23 @@ export class StatsComponent extends Handler implements OnInit, Activity {
           else {
             this.minutesOnDeletedListings += ms / 60000;
           }
+
+          let tags: any = span.tags;
+          let spanDay: number = Math.floor((new Date(span.end_time).getTime() - this.fromDate.getTime()) / oneDay);
+          
+          for (let tag of tags) {
+            if (this.tags.has(tag.tag_id)) {
+              this.millisecondsPerTagPerDay.get(tag.tag_id)[spanDay] += ms / 60000;
+            }
+            else {
+              this.tags.set(tag.tag_id, tag);
+              this.millisecondsPerTagPerDay.set(tag.tag_id, Array(daysInSelection).fill(0));
+              this.millisecondsPerTagPerDay.get(tag.tag_id)[spanDay] += ms / 60000;
+            }
+          }
+
+          console.log(spanDay);
+          console.log(tags);
         }
       }
     }
@@ -156,29 +214,29 @@ export class StatsComponent extends Handler implements OnInit, Activity {
 
     if (this.listings.length == 1) this.listings[0].minutes = Math.floor(this.millisecondsPerListing.get(this.listings[0].listing_id) / 60000)
 
-    this.barChart.data.labels = [];
+    this.taskBreakdownPieChart.data.labels = [];
 
-    this.barChart.destroy();
-    const ctx = (document.getElementById('task-breakdown-pie') as HTMLCanvasElement).getContext('2d');
+    this.taskBreakdownPieChart.destroy();
 
-    let labels: string[] = [];
-    let data: number[] = [];
+    let taskLabels: string[] = [];
+    let taskData: number[] = [];
 
     for (let listing of this.listings) {
       let title: string;
       if (listing.title.length > 25) title = listing.title.substr(0, 24) + "...";
       else title = listing.title;
-      labels.push("Minutes spent on \"" + title + "\"");
-      data.push(listing.minutes);
+      taskLabels.push("Minutes spent on \"" + title + "\"");
+      taskData.push(listing.minutes);
     }
 
-    this.barChart = new Chart(ctx, {
+    const ctx2 = (document.getElementById('task-breakdown-pie') as HTMLCanvasElement).getContext('2d');
+    this.taskBreakdownPieChart = new Chart(ctx2, {
       type: 'pie',
       data: {
-        labels: labels,
+        labels: taskLabels,
         datasets: [{
           label: 'Minutes',
-          data: data,
+          data: taskData,
           backgroundColor: [
             'rgba(255, 99, 132, 0.2)',
             'rgba(54, 162, 235, 0.2)',
@@ -198,6 +256,52 @@ export class StatsComponent extends Handler implements OnInit, Activity {
           borderWidth: 2
         }]
       },
+    });
+
+    this.tagBreakdownStackedBar.destroy();
+
+    let tagLabels: string[] = [];
+    let tagDatasets: any[] = [];
+
+    for (let tagId of this.tags.keys()) {
+      let color: string = "rgba(" + randInt(0, 255) + ", " + randInt(0, 255) + ", " + randInt(0, 255) + ", 1.0)";
+      console.log(color);
+      tagDatasets.push({
+        label: this.tags.get(tagId).title,
+        data: this.millisecondsPerTagPerDay.get(tagId),
+        backgroundColor: color
+      });
+    }
+
+    for (let i = 0; i < daysInSelection; i++) {
+      tagLabels.push(new Date(new Date().setDate(this.fromDate.getDate() + i)).toDateString());
+    }
+
+    const ctx = (document.getElementById('tag-breakdown-stacked-bar') as HTMLCanvasElement).getContext('2d');
+    this.tagBreakdownStackedBar = new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels: tagLabels,
+        datasets: tagDatasets
+      },
+      options: {
+        plugins: {
+          title: {
+            display: true,
+            text: 'Chart.js Bar Chart - Stacked'
+          },
+        },
+        responsive: true,
+        maintainAspectRatio: false,
+        scales: {
+          x: {
+            stacked: true,
+          },
+          y: {
+            stacked: true
+          }
+        }
+      }
     });
   }
 
