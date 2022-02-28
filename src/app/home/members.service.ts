@@ -4,7 +4,7 @@ import { Observable, Subject } from 'rxjs';
 import { SocketService } from '../socket/socket.service';
 import { RoomChangeService } from './room-change.service';
 import { RoomComponent } from './room/room.component';
-import { Player } from './room/root/player/player';
+import { Player } from './room/root/character/player/player';
 
 /*
 

@@ -1,9 +1,10 @@
 import { imageAssets, Sprite, SpriteSheet, track, Vector, Text, Button, getCanvas, getWorldRect, SpriteClass, getPointer } from 'kontra';
-import { RoomComponent } from '../../room.component';
+import { RoomComponent } from '../../../room.component';
+import { Character } from '../character';
 
 const speed: number = 5;
 
-export class Player extends SpriteClass {
+export class Player extends Character {
     room: RoomComponent;
     id: string;
     displayName: string;
@@ -17,6 +18,7 @@ export class Player extends SpriteClass {
     shadow: Sprite;
 
     constructor(room: RoomComponent, id: string, displayName: string, position: Vector) {
+
         let spriteSheet = SpriteSheet({
             image: imageAssets["bear"],
             frameWidth: 128,
@@ -57,7 +59,8 @@ export class Player extends SpriteClass {
             }
         });
 
-        super({
+
+        super(id, displayName, position, {
             type: 'player',
             x: position.x,
             y: position.y,

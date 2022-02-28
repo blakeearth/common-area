@@ -8,11 +8,9 @@ import { RoomChangeService } from '../room-change.service';
 import { images } from "./images";
 
 import { ObjectFactory } from './object-factory'
-import { Player } from './root/player/player';
-import { PlayerTooltipDirective } from './root/player/player-tooltip.directive';
-import { PlayerTooltipComponent } from './root/player/player-tooltip/player-tooltip.component';
-
-import { TileMap } from './root/tile-map'
+import { Player } from './root/character/player/player';
+import { PlayerTooltipDirective } from './root/character/player/player-tooltip.directive';
+import { PlayerTooltipComponent } from './root/character/player/player-tooltip/player-tooltip.component';
 
 @Component({
   selector: 'app-room',
@@ -29,6 +27,8 @@ export class RoomComponent extends Handler implements OnInit {
   target: {x: number, y: number};
 
   objectFactory: ObjectFactory;
+
+  editMode: boolean = false;
 
   roomChangeService: RoomChangeService;
   socketService: SocketService;
@@ -55,6 +55,7 @@ export class RoomComponent extends Handler implements OnInit {
     // register and observe socket channels
     if (!this.socketService.channelIsRegistered("room")) this.socketService.register("room");
     this.socketService.channelReply.get("room").subscribe(msg => {
+      console.log(msg);
       if (this[this.snakeToCamel(msg["type"])] != undefined) this[this.snakeToCamel(msg["type"])](msg);
     });
 
@@ -91,8 +92,8 @@ export class RoomComponent extends Handler implements OnInit {
 
   requestSetTarget(): void {
     let pointer: any = getPointer();
-    /*if (!this.getEditMode())*/ this.socketService.sendMessage({channel: "room", type: "set_target", position_x: Math.floor(this.me.x + pointer.x - getCanvas().width / 2), position_y: Math.floor(this.me.y + pointer.y - getCanvas().height / 2)});
-    //else this.socketService.sendMessage({channel: "room", type: "add_persist_object", scene_id: 2, parent_id: "root", rotation_degrees_y: 0, position_x: Math.floor(pointer.x), position_y: Math.floor(pointer.y)});
+    if (!this.editMode) this.socketService.sendMessage({channel: "room", type: "set_target", position_x: Math.floor(this.me.x + pointer.x - getCanvas().width / 2), position_y: Math.floor(this.me.y + pointer.y - getCanvas().height / 2)});
+    else this.socketService.sendMessage({channel: "room", type: "add_persist_object", scene_id: 2, parent_id: "root", rotation_degrees_y: 0, position_x: Math.floor(this.me.x + pointer.x - getCanvas().width / 2), position_y: Math.floor(this.me.y + pointer.y - getCanvas().height / 2)});
   }
 
   addPersistObject(msg: any): void {
@@ -213,6 +214,7 @@ export class RoomComponent extends Handler implements OnInit {
   }
 
   toggleEditMode() {
+    this.editMode = !this.editMode;
     this.objects.get("root").toggleEditMode();
   }
 }

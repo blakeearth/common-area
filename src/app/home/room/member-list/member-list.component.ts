@@ -2,7 +2,7 @@ import { Component, Input, OnInit, SimpleChanges } from '@angular/core';
 import { Vector } from 'kontra';
 import { MembersService } from '../../members.service';
 import { RoomComponent } from '../room.component';
-import { Player } from '../root/player/player';
+import { Player } from '../root/character/player/player';
 
 @Component({
   selector: 'app-member-list',

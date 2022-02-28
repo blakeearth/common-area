@@ -25,7 +25,7 @@ export class StatsComponent extends Handler implements OnInit, Activity {
 
   sessions: any;
 
-  tags: Map<string, any>;
+  tags: Map<string, any> = new Map<string, any>();
   millisecondsPerTagPerDay: Map<string, number[]>;
 
   listings: any[];

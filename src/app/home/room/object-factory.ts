@@ -2,12 +2,13 @@
 // simply exists to return object that matches server's id
 // variant on factory pattern. May result in duplicate code; beware!
 
-import { Player } from './root/player/player';
+import { Player } from './root/character/player/player';
 import { TileMap } from './root/tile-map'
 import { SocketService } from 'src/app/socket/socket.service';
 import { GameObject, Vector } from 'kontra';
 import { RoomComponent } from './room.component';
 import { Tree } from './root/tree/tree';
+import { Chicken } from './root/character/chicken/chicken';
 
 export class ObjectFactory {
     socketService: SocketService;
@@ -50,10 +51,12 @@ export class ObjectFactory {
                 */
                 break; 
             }
-            case 2:
-                {
-                    object = new Tree(data["id"], Vector(data["translation_x"], data["translation_y"]), data["rotation_degrees"]);
-                    break;
+            case 2: {
+                object = new Tree(data["id"], Vector(data["translation_x"], data["translation_y"]), data["rotation_degrees"]);
+                break;
+            }
+            case 3: {
+                object = new Chicken(data["id"], data["display_name"], Vector(data["translation_x"], data["translation_y"]));
             }
         }
         return object;
