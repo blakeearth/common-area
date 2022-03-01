@@ -148,7 +148,7 @@ export class ListComponent implements OnInit {
         return a.index - b.index;
       });
       msg.tasks.forEach(data => {
-         this.loadTask(data);
+         if (!this.tasks.has(data.task_id)) this.loadTask(data);
       });
       if (this.tasks.size > initialTasksSize) {
         this.socketService.sendMessage({channel: "tasks", type: "request_tasks_for_list", "list_id": this.data.list_id, "index": this.tasks.size});

@@ -55,7 +55,6 @@ export class RoomComponent extends Handler implements OnInit {
     // register and observe socket channels
     if (!this.socketService.channelIsRegistered("room")) this.socketService.register("room");
     this.socketService.channelReply.get("room").subscribe(msg => {
-      console.log(msg);
       if (this[this.snakeToCamel(msg["type"])] != undefined) this[this.snakeToCamel(msg["type"])](msg);
     });
 

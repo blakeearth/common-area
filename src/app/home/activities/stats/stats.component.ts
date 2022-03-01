@@ -143,7 +143,6 @@ export class StatsComponent extends Handler implements OnInit, Activity {
 
     const oneDay = 24 * 60 * 60 * 1000;
     let daysInSelection: number = Math.ceil((this.toDate.getTime() - this.fromDate.getTime()) / oneDay);
-    console.log(daysInSelection);
 
     for (let session in this.sessions) {
       for (let span of this.sessions[session].spans) {
@@ -156,7 +155,6 @@ export class StatsComponent extends Handler implements OnInit, Activity {
         let convertedEndTime: Date = new Date(span.end_time);
         convertedEndTime.setHours(convertedEndTime.getHours() - 5);
         if (convertedStartTime >= this.fromDate && convertedEndTime <= (this.toDate) && span.end_time != null) {
-          console.log(span);
           let ms: number = ((new Date(span.end_time)).valueOf() - (new Date(span.start_time).valueOf()));
           millisecondsInDuration += ms;
           let listing: any = this.tasksService.getListing(span.listing_id);
@@ -186,9 +184,6 @@ export class StatsComponent extends Handler implements OnInit, Activity {
               this.millisecondsPerTagPerDay.get(tag.tag_id)[spanDay] += ms / 60000;
             }
           }
-
-          console.log(spanDay);
-          console.log(tags);
         }
       }
     }
@@ -265,7 +260,6 @@ export class StatsComponent extends Handler implements OnInit, Activity {
 
     for (let tagId of this.tags.keys()) {
       let color: string = "rgba(" + randInt(0, 255) + ", " + randInt(0, 255) + ", " + randInt(0, 255) + ", 1.0)";
-      console.log(color);
       tagDatasets.push({
         label: this.tags.get(tagId).title,
         data: this.millisecondsPerTagPerDay.get(tagId),

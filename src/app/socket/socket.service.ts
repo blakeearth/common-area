@@ -63,7 +63,7 @@ export class SocketService {
 
       window.setInterval(() => {
         this.sendMessage({channel: "auth", type: "pong"});
-      }, 20000);
+      }, 3000);
 
       while (this.unsentMessages.length > 0) {
         this.sendMessage(this.unsentMessages.pop());
