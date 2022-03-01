@@ -169,6 +169,11 @@ export class TimerComponent extends Handler implements OnInit, Activity {
     this.sessions = [];
     for (let session of msg["messages"]) {
       session.expected_end_time = session.expected_end_time + "Z";
+      for (let participant of session.participants) {
+        if (participant.account_id == sessionStorage.getItem("account_id")) {
+          this.socketService.sendMessage({channel: "timer", type: "join_session", room_id: this.roomId, session_id: session.session_id});
+        }
+      }
       this.sessions.push(session);
     }
     if (this.sessions.length > 0) {
