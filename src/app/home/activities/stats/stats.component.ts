@@ -144,8 +144,6 @@ export class StatsComponent extends Handler implements OnInit, Activity {
     const oneDay = 24 * 60 * 60 * 1000;
     let daysInSelection: number = Math.ceil((this.toDate.getTime() - this.fromDate.getTime()) / oneDay);
 
-    console.log(this.fromDate, this.toDate);
-
     for (let session in this.sessions) {
       for (let span of this.sessions[session].spans) {
         // check that span ended
@@ -175,7 +173,6 @@ export class StatsComponent extends Handler implements OnInit, Activity {
           let spanDay: number = Math.floor((new Date(span.end_time).getTime() - this.fromDate.getTime()) / oneDay);
           
           for (let tag of tags) {
-            if (tag.title == "Computer Combat") console.log(span, convertedEndTime);
             if (this.tags.has(tag.tag_id)) {
               this.millisecondsPerTagPerDay.get(tag.tag_id)[spanDay] += ms / 60000;
             }
