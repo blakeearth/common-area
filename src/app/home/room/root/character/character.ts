@@ -13,6 +13,8 @@ export class Character extends SpriteClass {
 
     shadow: Sprite;
 
+    lastDistance: number;
+
     constructor(id: string, displayName: string, position: Vector, data?: {
         type: string,
         x: number,
@@ -87,8 +89,9 @@ export class Character extends SpriteClass {
     update(): void {
         let distance: number = this.target.distance(Vector(this.x, this.y));
         // also cancel movement upon collision! maybe upon collision, set target to position?
-        if (distance > 4) {
+        if (distance > 0 && (this.lastDistance == undefined || distance < this.lastDistance)) {
             this.velocity = Vector(this.direction.x * speed, this.direction.y * speed);
+            this.lastDistance = distance;
         }
         else if (!this.playingAnimation.includes('idle')) {
             this.playingAnimation = this.playingAnimation.replace('walk', 'idle');
@@ -149,6 +152,7 @@ export class Character extends SpriteClass {
     setTarget(msg: any): void {
         this.target = Vector(msg["position_x"], msg["position_y"] - 128 / 2);
         this.direction = Vector(this.target.x - this.x, this.target.y - this.y).normalize();
+        this.lastDistance = undefined;
         let left: boolean = this.direction.x <= 0;
         let right: boolean = !left;
         let backward: boolean = this.direction.y <= 0;
