@@ -144,16 +144,16 @@ export class StatsComponent extends Handler implements OnInit, Activity {
     const oneDay = 24 * 60 * 60 * 1000;
     let daysInSelection: number = Math.ceil((this.toDate.getTime() - this.fromDate.getTime()) / oneDay);
 
+    console.log(this.fromDate, this.toDate);
+
     for (let session in this.sessions) {
       for (let span of this.sessions[session].spans) {
         // check that span ended
 
-        // DOES NOT ACCOUNT FOR TIME ZONES CORRECTLY YET!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         let convertedStartTime: Date = new Date(span.start_time);
-        convertedStartTime.setHours(convertedStartTime.getHours() - 5);
 
         let convertedEndTime: Date = new Date(span.end_time);
-        convertedEndTime.setHours(convertedEndTime.getHours() - 5);
+
         if (convertedStartTime >= this.fromDate && convertedEndTime <= (this.toDate) && span.end_time != null) {
           let ms: number = ((new Date(span.end_time)).valueOf() - (new Date(span.start_time).valueOf()));
           millisecondsInDuration += ms;
@@ -175,6 +175,7 @@ export class StatsComponent extends Handler implements OnInit, Activity {
           let spanDay: number = Math.floor((new Date(span.end_time).getTime() - this.fromDate.getTime()) / oneDay);
           
           for (let tag of tags) {
+            if (tag.title == "Computer Combat") console.log(span, convertedEndTime);
             if (this.tags.has(tag.tag_id)) {
               this.millisecondsPerTagPerDay.get(tag.tag_id)[spanDay] += ms / 60000;
             }
@@ -268,7 +269,9 @@ export class StatsComponent extends Handler implements OnInit, Activity {
     }
 
     for (let i = 0; i < daysInSelection; i++) {
-      tagLabels.push(new Date(new Date().setDate(this.fromDate.getDate() + i)).toDateString());
+      var date: Date = new Date(this.fromDate);
+      date.setDate(date.getDate() + i);
+      tagLabels.push(date.toDateString());
     }
 
     const ctx = (document.getElementById('tag-breakdown-stacked-bar') as HTMLCanvasElement).getContext('2d');
@@ -282,11 +285,11 @@ export class StatsComponent extends Handler implements OnInit, Activity {
         plugins: {
           title: {
             display: true,
-            text: 'Chart.js Bar Chart - Stacked'
+            text: 'Time per Tag per Day'
           },
         },
         responsive: true,
-        maintainAspectRatio: false,
+        maintainAspectRatio: true,
         scales: {
           x: {
             stacked: true,
