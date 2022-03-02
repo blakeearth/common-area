@@ -94,6 +94,7 @@ a.listing, a.task {
   display: flex;
   flex-direction: column;
   justify-content: top;
+  gap: 0.2em;
 }
 
 .open {
@@ -109,7 +110,7 @@ a.listing, a.task {
   background-color: #ecffef;
 }
 
-.complete:focus {
+.complete:focus, .complete:hover {
   background-color: #d6fcdc;
 }
 
