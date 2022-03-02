@@ -144,6 +144,10 @@ export class SettingsComponent implements OnInit, Activity {
           this.reloadRooms();
         }
       }
+      else if (msg["type"] == "edit_display_name") {
+        sessionStorage.setItem("display_name", msg["display_name"]);
+        location.reload();
+      }
     }
   }
 
