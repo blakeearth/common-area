@@ -37,6 +37,7 @@
   overflow-wrap: break-word;
   background-color: white;
   border: none;
+  padding: 1ch 0.2em;
 }
 
 .drop-area {
