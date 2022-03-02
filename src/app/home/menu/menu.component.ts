@@ -73,7 +73,7 @@ export class MenuComponent extends Handler implements OnInit{
   }
 
   notifyActivity(activity: string): void {
-    if (!(MenuComponent.getActivity(this.location.path()) == activity)) {
+    if (!(MenuComponent.getActivity(this.location.path()) == activity) || document.hidden) {
       let notificationsActivity: Element = document.getElementById(activity + "-notification");
       notificationsActivity.innerHTML = (Number.parseInt(notificationsActivity.innerHTML) + 1).toString();
       if (notificationsActivity.classList.contains("hidden")) notificationsActivity.classList.remove("hidden");
