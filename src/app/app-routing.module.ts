@@ -28,6 +28,14 @@ const routes: Routes = [
     component: AuthComponent
   },
   {
+    path: 'auth/forgot-password',
+    component: AuthComponent
+  },
+  {
+    path: 'auth/reset-password/:token',
+    component: AuthComponent
+  },
+  {
     path: 'home',
     component: HomeComponent
 

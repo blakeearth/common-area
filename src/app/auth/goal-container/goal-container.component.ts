@@ -35,10 +35,14 @@ export class GoalContainerComponent implements OnInit {
     if (url.includes('/auth')) {
       goal = url.replace('/auth', '');
       goal = goal.replace('/', '');
+      if (goal.split('/').length > 1) {
+        goal = goal.split('/')[0];
+      }
     }
     else {
       goal = "join-room";
     }
+    console.log(goal);
     let visibleGoals: HTMLCollection = document.getElementsByClassName("visible");
     let i: number = 0;
     for (let i: number = 0; i < visibleGoals.length; i++) {
@@ -47,6 +51,7 @@ export class GoalContainerComponent implements OnInit {
     }
     if (goals.includes(goal)) {
       let newVisibleGoal: Element = document.getElementById(goal);
+      console.log(newVisibleGoal);
       newVisibleGoal.classList.add("visible");
     }
   }
