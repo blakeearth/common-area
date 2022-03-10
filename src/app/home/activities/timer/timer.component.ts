@@ -251,9 +251,9 @@ export class TimerComponent extends Handler implements OnInit, Activity {
       this.timerService.stopTimer();
       if (this.timerSubscription != null) this.timerSubscription.unsubscribe();
   
-      this.leftVisibility = "initial";
-      this.rightVisibility = "initial";
-      this.startButtonDisplay = "initial";
+      this.leftVisibility = "inherit";
+      this.rightVisibility = "inherit";
+      this.startButtonDisplay = "inherit";
       this.leaveButtonDisplay = "none";
       this.participantsDisplay = "none";
     }
