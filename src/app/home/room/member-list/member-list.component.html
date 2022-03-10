@@ -14,7 +14,7 @@
         <div class="member" *ngFor="let member of onlineMembersList;" tabindex="0" (click)="openTooltip($event, member)" (keydown.enter)="openTooltip($event, member)">
             <span>{{ member.displayName }}</span>
             <div class="icons">
-                <span class="online">⬤</span>
+                <span class="online" title="{{ member.displayName }} is online.">⬤</span>
             </div>
         </div>
         <div class="member" *ngFor="let member of offlineMembersList;" tabindex="0" (click)="openTooltip($event, member)" (keydown.enter)="openTooltip($event, member)">
