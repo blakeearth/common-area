@@ -11,9 +11,18 @@
   cursor: pointer;
   justify-content: space-between;
   background-color: white;
-  margin: 0.5em 0 0.5em 0;
   box-sizing: border-box;
   border-radius: 8px;
+  padding: 0.5em 0 0.5em 0;
+}
+
+.new-task:hover, .new-task:hover .title, .new-task:focus, .new-task:focus .title {
+  background-color: lightgray;
+}
+
+#add-task-button svg {
+  transform: scale(2);
+  margin: 6px 0 0 12px;
 }
 
 .filter {
@@ -34,10 +43,12 @@
   
 .title {
   flex: 1;
+  cursor: pointer;
   overflow-wrap: break-word;
   background-color: white;
   border: none;
   padding: 1ch 0.2em;
+  margin: 0 2ch;
 }
 
 .drop-area {

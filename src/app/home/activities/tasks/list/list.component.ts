@@ -117,6 +117,10 @@ export class ListComponent implements OnInit {
     }
   }
 
+  focusNewTaskTitleField(): void {
+    document.getElementById(this.data.list_id + "-new-task-title-field").focus();
+  }
+
   openFilterPopup(): void {
     const viewContainerRef = this.filterPopupHost.viewContainerRef;
     viewContainerRef.clear();
