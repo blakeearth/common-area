@@ -19,6 +19,7 @@ export class TagsPopupComponent implements OnInit {
   tagViewRefs: Map<string, ViewRef> = new Map<string, ViewRef>();
 
   data: any;
+  onClose: Function;
   
   componentFactoryResolver: ComponentFactoryResolver;
 

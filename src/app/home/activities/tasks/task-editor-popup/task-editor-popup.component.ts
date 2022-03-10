@@ -126,6 +126,7 @@ export class TaskEditorPopupComponent implements OnInit {
 
     let instance: TagsPopupComponent = <TagsPopupComponent>componentRef.instance;
     instance.data = this.data;
+    instance.onClose = this.closeTagsPopup.bind(this);
     this.tagsPopupOpen = true;
   }
 
