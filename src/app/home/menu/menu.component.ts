@@ -6,6 +6,7 @@ import { UpdateNotesPopupComponent } from '../update-notes-popup/update-notes-po
 import { UpdateNotesPopupDirective } from '../update-notes-popup.directive';
 import { SocketService } from 'src/app/socket/socket.service';
 import { Handler } from 'src/app/handler';
+import { RoomChangeService } from '../room-change.service';
 
 
 @Component({
@@ -18,7 +19,8 @@ export class MenuComponent extends Handler implements OnInit{
   @ViewChild(UpdateNotesPopupDirective, { static: true }) public updateNotesPopupHost: UpdateNotesPopupDirective;
 
   notificationsService: NotificationsService;
-  socketService: SocketService
+  socketService: SocketService;
+  roomChangeService: RoomChangeService;
   location: Location;
   faHome = faHome;
   faStore = faStore;
@@ -36,12 +38,13 @@ export class MenuComponent extends Handler implements OnInit{
 
   audio: HTMLAudioElement;
 
-  constructor(notificationsService: NotificationsService, location: Location, componentFactoryResolver: ComponentFactoryResolver, socketService: SocketService) {
+  constructor(notificationsService: NotificationsService, location: Location, componentFactoryResolver: ComponentFactoryResolver, socketService: SocketService, roomChangeService: RoomChangeService) {
     super();
     
     this.notificationsService = notificationsService;
     this.componentFactoryResolver = componentFactoryResolver;
     this.socketService = socketService;
+    this.roomChangeService = roomChangeService;
     this.location = location;
     this.location.onUrlChange(this.updateActivity.bind(this));
 
@@ -60,6 +63,13 @@ export class MenuComponent extends Handler implements OnInit{
   ngOnInit(): void {
     this.notificationsService.notificationsSource.subscribe(activity => this.notifyActivity(activity));
     this.updateActivity(this.location.path(), this.location.getState());
+
+    this.roomChangeService.roomId.subscribe(roomId => {
+      if (roomId == undefined) {
+        // there are no rooms, so start the onboarding/tutorial process
+        this.openOnboarding();
+      }
+    });
 
     this.socketService.setOnUpdateNotes(this.onUpdateNotes.bind(this));
   }
@@ -107,6 +117,21 @@ export class MenuComponent extends Handler implements OnInit{
     let activity: string = splitPath[2];
     activity = activity.replace('/', '');
     return activity;
+  }
+
+
+  openOnboarding(): void {
+    const componentFactory = this.componentFactoryResolver.resolveComponentFactory(UpdateNotesPopupComponent);
+
+    const viewContainerRef = this.updateNotesPopupHost.viewContainerRef;
+
+    let componentRef: ComponentRef<UpdateNotesPopupComponent>;
+
+    componentRef = viewContainerRef.createComponent(componentFactory);
+
+    let instance: UpdateNotesPopupComponent = <UpdateNotesPopupComponent>componentRef.instance;
+    instance.data = this.updateNotesData;
+    instance.onClose = this.closeUpdateNotes.bind(this);
   }
 
 
