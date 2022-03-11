@@ -33,6 +33,11 @@
       var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
       g.async=true; g.src='//cdn.matomo.cloud/cowork.matomo.cloud/matomo.js'; s.parentNode.insertBefore(g,s);
     })();
+
+    window.addEventListener('hashchange', function() {
+        _paq.push(['setCustomUrl', '/' + window.location.hash.substr(1)]);
+        _paq.push(['trackPageView']);
+    });
   </script>
 </head>
 <body>

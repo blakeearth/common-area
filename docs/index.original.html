@@ -31,6 +31,11 @@
       var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
       g.async=true; g.src='//cdn.matomo.cloud/cowork.matomo.cloud/matomo.js'; s.parentNode.insertBefore(g,s);
     })();
+
+    window.addEventListener('hashchange', function() {
+        _paq.push(['setCustomUrl', '/' + window.location.hash.substr(1)]);
+        _paq.push(['trackPageView']);
+    });
   </script>
 <style>body,html{color:#011638;margin:0;height:100%}*{font-family:Noto Sans,sans-serif}</style><link rel="stylesheet" href="styles.a2197f0418d216fa.css" media="print" onload="this.media='all'"><noscript><link rel="stylesheet" href="styles.a2197f0418d216fa.css"></noscript></head>
 <body>
