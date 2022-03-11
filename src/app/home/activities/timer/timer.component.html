@@ -4,6 +4,10 @@
     <div id="consumable">⏳</div>
     <h2 [ngStyle]="{ 'display': this.participantsDisplay }">Participants:</h2>
     <p id="participants"><span id="participants" *ngFor="let participant of participants; let isLast=last" [ngStyle]="{ 'display': this.participantsDisplay }"><a class="participant" tabindex="0" (click)="openTooltip(participant.display_name, participant.account_id)" (keyboard.down)="openTooltip(participant.display_name, participant.account_id)">{{ participant.display_name }}</a>{{ isLast ? '' : ', ' }}</span></p>
+    <div tabindex="0" class="tooltip-parent">
+        <h2>Task:</h2>
+        <span>As you work with a timer, your time will be logged to the task below. Select it to change it out!</span>
+    </div>
     <app-task [data]="this.activeTaskData" [onClick]="this.changeActiveTask.bind(this)"></app-task>
     <div id="join" [ngStyle]="{ 'display': this.joinDisplay}">
         <h2>Join a session</h2>
