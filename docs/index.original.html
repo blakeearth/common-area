@@ -19,6 +19,18 @@
       var e = document.getElementsByTagName('script')[0];
       e.parentNode.insertBefore(s, e);
     })(window);
+
+    var _paq = window._paq = window._paq || [];
+    /* tracker methods like "setCustomDimension" should be called before "trackPageView" */
+    _paq.push(['trackPageView']);
+    _paq.push(['enableLinkTracking']);
+    (function() {
+      var u="https://cowork.matomo.cloud/";
+      _paq.push(['setTrackerUrl', u+'matomo.php']);
+      _paq.push(['setSiteId', '1']);
+      var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
+      g.async=true; g.src='//cdn.matomo.cloud/cowork.matomo.cloud/matomo.js'; s.parentNode.insertBefore(g,s);
+    })();
   </script>
 <style>body,html{color:#011638;margin:0;height:100%}*{font-family:Noto Sans,sans-serif}</style><link rel="stylesheet" href="styles.a2197f0418d216fa.css" media="print" onload="this.media='all'"><noscript><link rel="stylesheet" href="styles.a2197f0418d216fa.css"></noscript></head>
 <body>
