@@ -37,7 +37,7 @@ export class ForgotPasswordComponent implements Goal, OnInit {
   onResponseReceived(msg: any): void {
     if (msg["type"] == "request_reset_password") {
       if (msg["success"]) {
-        this.navigate('/');
+        document.getElementsByClassName("message")[0].classList.add("visible");
       }
     }
   }
