@@ -7,6 +7,7 @@ import { WebMonetizationService } from 'src/app/web-monetization/web-monetizatio
 import { Activity } from '../activity';
 import { TasksService } from '../tasks.service';
 import { randInt } from 'kontra';
+import { NotificationsService } from '../../notifications/notifications.service';
 
 @Component({
   selector: 'app-stats',
@@ -19,11 +20,13 @@ export class StatsComponent extends Handler implements OnInit, Activity {
   webMonetizationService: WebMonetizationService;
   socketService: SocketService;
   tasksService: TasksService;
+  notificationsService: NotificationsService;
 
   tagBreakdownStackedBar: Chart;
   taskBreakdownPieChart: Chart;
 
   sessions: any;
+  achievements: any[];
 
   tags: Map<string, any> = new Map<string, any>();
   millisecondsPerTagPerDay: Map<string, number[]>;
@@ -39,12 +42,13 @@ export class StatsComponent extends Handler implements OnInit, Activity {
   hours: number;
   minutes: number = 0;
 
-  constructor(webMonetizationService: WebMonetizationService, socketService: SocketService, tasksService: TasksService) {
+  constructor(webMonetizationService: WebMonetizationService, socketService: SocketService, tasksService: TasksService, notificationsService: NotificationsService) {
     super();
     this.webMonetizationService = webMonetizationService;
     this.socketService = socketService;
     this.tasksService = tasksService;
     this.tasksService.setOnListsDoneLoading(this.updateData.bind(this));
+    this.notificationsService = notificationsService;
     this.millisecondsPerListing = new Map<string, number>();
   }
 
@@ -64,6 +68,8 @@ export class StatsComponent extends Handler implements OnInit, Activity {
     this.socketService.channelReply.get("stats").subscribe(msg => {
       this[this.snakeToCamel(msg["type"])](msg);
     });
+
+    this.socketService.sendMessage({channel: "stats", type: "request_achievements"});
     
     this.socketService.sendMessage({channel: "stats", type: "request_sessions"});
 
@@ -147,7 +153,6 @@ export class StatsComponent extends Handler implements OnInit, Activity {
     for (let session in this.sessions) {
       for (let span of this.sessions[session].spans) {
         // check that span ended
-
         let convertedStartTime: Date = new Date(span.start_time);
 
         let convertedEndTime: Date = new Date(span.end_time);
@@ -297,6 +302,27 @@ export class StatsComponent extends Handler implements OnInit, Activity {
         }
       }
     });
+  }
+
+  requestAchievements(msg: any): void {
+    console.log(msg);
+    this.achievements = [];
+    for (let achievement of msg["achievements"]) {
+      if (achievement.just_completed) this.notificationsService.pushNotification('stats');
+      achievement.progress = Math.min(achievement.progress * 100, 100);
+    }
+    this.achievements = msg["achievements"];
+  }
+
+  completeAhievement(msg: any): void {
+    if (this.achievements != undefined){
+      for (let achievement of this.achievements) {
+        if (achievement.achievement_id == msg["achievement_id"]) {
+          this.notificationsService.pushNotification('stats');
+          achievement.just_completed = true;
+        }
+      }
+    }
   }
 
   requestSessions(msg: any): void {

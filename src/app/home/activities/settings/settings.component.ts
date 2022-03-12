@@ -24,6 +24,8 @@ export class SettingsComponent implements OnInit, Activity {
   roomId: string = sessionStorage.getItem("room_id");
   roomLink: string = "https://cowork.ac/j/" + this.roomId;
 
+  sent: boolean;
+
   socketService: SocketService;
   roomChangeService: RoomChangeService;
   componentFactoryResolver: ComponentFactoryResolver;
@@ -196,6 +198,8 @@ export class SettingsComponent implements OnInit, Activity {
   onSubmitInvite(f: NgForm): void {
     let submission = {channel: "settings", type: "create_invitation", room_id: sessionStorage.getItem("room_id"), invitee: <string> f.value["username"]};
     this.socketService.sendMessage(submission);
+    f.resetForm();
+    this.sent = true;
   }
 
   onSubmitJoin(f: NgForm): void {

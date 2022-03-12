@@ -13,4 +13,5 @@
     <button id="game-editor" [ngStyle]="{ 'display': this.editButtonDisplay }" (click)="toggleEditMode()" (keydown.enter)="toggleEditMode()">
         📝
     </button>
+    <span id="wealth">{{ this.wealth || 0}} 🪙</span>
 </div>

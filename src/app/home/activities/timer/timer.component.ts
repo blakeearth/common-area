@@ -220,6 +220,7 @@ export class TimerComponent extends Handler implements OnInit, Activity {
 
       this.socketService.sendMessage({channel: "timer", type: "request_active_sessions", room_id: this.roomId});
       this.socketService.sendMessage({channel: "stats", type: "request_sessions"});
+      this.socketService.sendMessage({channel: "stats", type: "request_achievements"});
 
       this.leaveButtonDisplay = "none";
       this.timeRemaining = new Date(0, 0, 0, 0, this.timeToSubmit, 0);
@@ -245,6 +246,8 @@ export class TimerComponent extends Handler implements OnInit, Activity {
   endSession(msg: any) {
     if (msg["session_id"] == this.sessionId) {
       this.socketService.sendMessage({channel: "stats", type: "request_sessions"});
+      this.socketService.sendMessage({channel: "stats", type: "request_achievements"});
+      
       this.notificationsService.pushNotification("timer");
 
       this.timeRemaining = new Date(0, 0, 0, 0, this.timeToSubmit, 0);

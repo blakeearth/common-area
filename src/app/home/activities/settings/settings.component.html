@@ -43,7 +43,7 @@
                     </div>
                 </form>
                 <h3>Invite Another User to {{ roomTitle }}</h3>
-                <form class="form" #i="ngForm" (ngSubmit)="onSubmitInvite(i)" novalidate>
+                <form class="form" #k="ngForm" (ngSubmit)="onSubmitInvite(k)" novalidate>
                     <div class="form-element">
                         <input type="text" placeholder="Email address" name="username" ngModel required>
                     </div>
@@ -51,6 +51,7 @@
                         <button type="submit">Invite</button>
                     </div>
                 </form>
+                <span [style.display]="this.sent ? 'inherit' : 'none'">Thanks! We'll send them an invite.</span>
                 <h3>Leave {{ roomTitle }}</h3>
                 <form class="form" novalidate>
                     <div class="form-element">

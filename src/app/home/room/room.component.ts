@@ -22,6 +22,9 @@ export class RoomComponent extends Handler implements OnInit {
 
   @ViewChild(PlayerTooltipDirective, { static: true }) public playerTooltipHost: PlayerTooltipDirective;
 
+  wealth: number = 0;
+  newWealth: number = 0;
+
   objects: Map<string, any>;
   me: Player;
   target: {x: number, y: number};
@@ -60,6 +63,8 @@ export class RoomComponent extends Handler implements OnInit {
 
     this.roomChangeService.roomId.subscribe(msg => this.onRoomChange(msg));
 
+    this.socketService.sendMessage({channel: "room", type: "request_wealth"});
+
     let { canvas, context } = init((document.getElementById("game") as HTMLCanvasElement));
     canvas.width = 9 * 128;
     canvas.height = 6 * 128;
@@ -87,6 +92,10 @@ export class RoomComponent extends Handler implements OnInit {
       cullObjects: false,
       sortFunction: sort
     }));
+  }
+
+  requestWealth(msg: any): void {
+    this.newWealth = msg["wealth"];
   }
 
   requestSetTarget(): void {
@@ -127,6 +136,9 @@ export class RoomComponent extends Handler implements OnInit {
           },
           render: function() {
             scene.render();
+
+            this.wealth = Math.ceil(lerp(this.wealth, this.newWealth, 0.02));
+
             this.target = {
               x: lerp(this.target.x, object.x + object.width / 2, 0.1),
               y: lerp(this.target.y, object.y + object.height / 2, 0.1)
