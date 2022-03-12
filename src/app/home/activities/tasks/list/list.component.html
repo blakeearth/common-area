@@ -15,6 +15,7 @@
                     </svg>
                 </a>
             </div>
+            <span class="tip" [style.display]="tasks.size > 0 ? 'none' : 'inherit'">You don't have any tasks yet! Add one using the field above.</span>
         </div>
         <ng-template #archiveBlock>
             <a class="archive" tabindex="0" (click)="toggleArchive()" (keydown.enter)="toggleArchive()">Archive 

@@ -20,6 +20,15 @@
   background-color: lightgray;
 }
 
+.tip {
+  margin-top: 0.5em;
+  text-align: center;
+  background-color: white;
+  padding: 4px;
+  border: 1px solid black;
+  border-radius: 8px;
+}
+
 #add-task-button svg {
   transform: scale(2);
   margin: 6px 0 0 12px;

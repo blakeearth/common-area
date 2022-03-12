@@ -22,6 +22,9 @@ export class RoomComponent extends Handler implements OnInit {
 
   @ViewChild(PlayerTooltipDirective, { static: true }) public playerTooltipHost: PlayerTooltipDirective;
 
+  roomTitle: string;
+  roomDescription: string;
+
   wealth: number = 0;
   newWealth: number = 0;
 
@@ -59,6 +62,16 @@ export class RoomComponent extends Handler implements OnInit {
     if (!this.socketService.channelIsRegistered("room")) this.socketService.register("room");
     this.socketService.channelReply.get("room").subscribe(msg => {
       if (this[this.snakeToCamel(msg["type"])] != undefined) this[this.snakeToCamel(msg["type"])](msg);
+    });
+
+    if (!this.socketService.channelIsRegistered("settings")) this.socketService.register("settings");
+    this.socketService.channelReply.get("settings").subscribe(msg => {
+      if (msg["type"] == "edit_room_description") {
+        this.roomDescription = msg["room_description"]
+      }
+      else if (msg["type"] == "edit_room_title") {
+        this.roomTitle = msg["room_title"]
+      }
     });
 
     this.roomChangeService.roomId.subscribe(msg => this.onRoomChange(msg));
@@ -184,6 +197,12 @@ export class RoomComponent extends Handler implements OnInit {
     this.editButtonDisplay = (sessionStorage.getItem("room_is_owner") == 'true') ? "inherit" : "none";
     (this.objects.get("scene") as Scene).destroy();
     this.objects = new Map<string, any>();
+
+    if (!(roomId == undefined)) {
+      let data: any = this.roomChangeService.getRoomData();
+      this.roomTitle = data["room_title"];
+      this.roomDescription = data["room_description"];
+    }
 
     let sort = function(obj1, obj2) {
       [obj1, obj2] = [obj1, obj2].map(getWorldRect);

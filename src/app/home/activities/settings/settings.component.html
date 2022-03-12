@@ -33,7 +33,23 @@
                         <button (click)="onToggleRoomPrivacy()" type="submit">Make public</button>
                     </div>
                 </form>
-                <h3 class="form privacy-form hidden">Share an invite link for {{ roomTitle }}</h3>
+                <h3>Update room title</h3>
+                <form class="form" #l="ngForm" (ngSubmit)="onSubmitRoomTitle(l)" novalidate>
+                    <div class="form-element">
+                        <input type="text" placeholder="{{ roomTitle }}" name="room_title" ngModel required>
+                    </div>
+                    <div class="form-element">
+                        <button type="submit">Save</button>
+                    </div>
+                </form>
+                <h3>Update room description</h3>
+                <form class="description-form" #k="ngForm" (ngSubmit)="onSubmitRoomDescription(k)" novalidate>
+                    <textarea placeholder="{{ roomDescription }}" name="room_description" ngModel required></textarea>
+                    <div class="description-save">
+                        <button type="submit">Save</button>
+                    </div>
+                </form>
+                <h3 class="privacy-form hidden">Share an invite link for {{ roomTitle }}</h3>
                 <form class="form privacy-form hidden">
                     <div class="form-element">
                         <input readonly value="cowork.ac/j/{{ roomId }}"/>

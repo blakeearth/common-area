@@ -10,6 +10,8 @@ import { NgForm } from '@angular/forms'
 export class RoomLinkComponent implements OnInit {
 
   @Input() data: any;
+  @Input() join: boolean
+  descriptionDisplay: string = "none";
 
   socketService: SocketService
 
@@ -18,10 +20,12 @@ export class RoomLinkComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    if (this.data.room_description != null && this.data.room_description.length > 0) this.descriptionDisplay = "inherit";
   }
 
   enterRoom(roomId: string, title: string): void {
-    this.socketService.sendMessage({channel: "settings", type: "enter_room", room_id: roomId, as_player: false});
+    if (!this.join) this.socketService.sendMessage({channel: "settings", type: "enter_room", room_id: roomId});
+    else this.socketService.sendMessage({channel: "settings", type: "join_room", room_id: roomId})
     sessionStorage.setItem("room_id", roomId);
     sessionStorage.setItem("room_title", title);
   }

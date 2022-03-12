@@ -62,6 +62,8 @@ import { ActiveTaskPickerPopupComponent } from './home/activities/timer/active-t
 import { ActiveTaskPickerPopupDirective } from './home/activities/timer/active-task-picker-popup.directive';
 import { ForgotPasswordComponent } from './auth/goals/forgot-password/forgot-password.component';
 import { ResetPasswordComponent } from './auth/goals/reset-password/reset-password.component';
+import { OnboardingPopupDirective } from './home/menu/onboarding-popup.directive';
+import { OnboardingPopupComponent } from './home/menu/onboarding-popup/onboarding-popup.component';
 
 @NgModule({
     declarations: [
@@ -117,6 +119,8 @@ import { ResetPasswordComponent } from './auth/goals/reset-password/reset-passwo
         ActiveTaskPickerPopupDirective,
         ForgotPasswordComponent,
         ResetPasswordComponent,
+        OnboardingPopupDirective,
+        OnboardingPopupComponent,
     ],
     imports: [
         BrowserModule.withServerTransition({ appId: 'serverApp' }),

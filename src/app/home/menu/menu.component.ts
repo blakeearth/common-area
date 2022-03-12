@@ -7,6 +7,8 @@ import { UpdateNotesPopupDirective } from '../update-notes-popup.directive';
 import { SocketService } from 'src/app/socket/socket.service';
 import { Handler } from 'src/app/handler';
 import { RoomChangeService } from '../room-change.service';
+import { OnboardingPopupDirective } from './onboarding-popup.directive';
+import { OnboardingPopupComponent } from './onboarding-popup/onboarding-popup.component';
 
 
 @Component({
@@ -17,6 +19,7 @@ import { RoomChangeService } from '../room-change.service';
 
 export class MenuComponent extends Handler implements OnInit{
   @ViewChild(UpdateNotesPopupDirective, { static: true }) public updateNotesPopupHost: UpdateNotesPopupDirective;
+  @ViewChild(OnboardingPopupDirective, { static: true }) public onboardingPopupHost: OnboardingPopupDirective;
 
   notificationsService: NotificationsService;
   socketService: SocketService;
@@ -121,19 +124,22 @@ export class MenuComponent extends Handler implements OnInit{
 
 
   openOnboarding(): void {
-    const componentFactory = this.componentFactoryResolver.resolveComponentFactory(UpdateNotesPopupComponent);
+    const componentFactory = this.componentFactoryResolver.resolveComponentFactory(OnboardingPopupComponent);
 
-    const viewContainerRef = this.updateNotesPopupHost.viewContainerRef;
+    const viewContainerRef = this.onboardingPopupHost.viewContainerRef;
 
-    let componentRef: ComponentRef<UpdateNotesPopupComponent>;
+    let componentRef: ComponentRef<OnboardingPopupComponent>;
 
     componentRef = viewContainerRef.createComponent(componentFactory);
 
-    let instance: UpdateNotesPopupComponent = <UpdateNotesPopupComponent>componentRef.instance;
-    instance.data = this.updateNotesData;
-    instance.onClose = this.closeUpdateNotes.bind(this);
+    let instance: OnboardingPopupComponent = <OnboardingPopupComponent>componentRef.instance;
+    instance.onClose = this.closeOnboarding.bind(this);
   }
 
+  closeOnboarding(): void {
+    const viewContainerRef = this.onboardingPopupHost.viewContainerRef;
+    viewContainerRef.clear();
+  }
 
   openUpdateNotes(): void {
     const componentFactory = this.componentFactoryResolver.resolveComponentFactory(UpdateNotesPopupComponent);

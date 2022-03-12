@@ -21,8 +21,11 @@ export class SettingsComponent implements OnInit, Activity {
   header: string = "Settings";
   roomPrivate: boolean = true;
   roomTitle: string = sessionStorage.getItem("room_title");
+  roomDescription: string = sessionStorage.getItem("room_description") || "";
   roomId: string = sessionStorage.getItem("room_id");
   roomLink: string = "https://cowork.ac/j/" + this.roomId;
+
+  rooms: Set<string> = new Set<string>();
 
   sent: boolean;
 
@@ -42,9 +45,10 @@ export class SettingsComponent implements OnInit, Activity {
     this.socketService.reply.subscribe(msg => this.onResponseReceived(msg));
     this.roomChangeService.roomId.subscribe(msg => this.onRoomChange(msg));
     this.socketService.sendMessage({channel: "settings", type: "request_rooms"});
+    this.socketService.sendMessage({channel: "settings", type: "request_listed_rooms"});
     this.socketService.sendMessage({channel: "settings", type: "request_invitations"});
     if (sessionStorage.getItem("room_id") != undefined) {
-      this.socketService.sendMessage({channel: "settings", type: "enter_room", room_id: sessionStorage.getItem("room_id"), as_player: false});
+      this.socketService.sendMessage({channel: "settings", type: "enter_room", room_id: sessionStorage.getItem("room_id")});
     }
     if (sessionStorage.getItem("joinRoomId") != undefined) {
       this.socketService.sendMessage({channel: "settings", type: "join_room", room_id: sessionStorage.getItem("joinRoomId")});
@@ -57,8 +61,6 @@ export class SettingsComponent implements OnInit, Activity {
   onResponseReceived(msg: any): void {
     if (msg["channel"] == "settings") {
       if (msg["type"] == "request_rooms") {
-        const viewContainerRef = this.roomLinkHost.viewContainerRef;
-        viewContainerRef.clear();
         let numRooms = Object.keys(msg["rooms"]).length;
         if (numRooms == 0) {
           this.roomChangeService.setRoom(undefined);
@@ -73,14 +75,23 @@ export class SettingsComponent implements OnInit, Activity {
           document.getElementById("room-settings").classList.remove("hidden");
           document.getElementById("enter-room").classList.remove("hidden");
         }
-        for (let name in msg["rooms"]) {
+        for (let room_id in msg["rooms"]) {
           if (sessionStorage.getItem("room_id") == null || sessionStorage.getItem("room_title") == null) {
-            sessionStorage.setItem("room_id", msg["rooms"][name]);
-            sessionStorage.setItem("room_title", name);
-            this.socketService.sendMessage({channel: "settings", type: "enter_room", room_id: msg["rooms"][name], as_player: false});
+            sessionStorage.setItem("room_id", room_id);
+            sessionStorage.setItem("room_title", msg["rooms"][room_id]["room_title"]);
+            sessionStorage.setItem("room_description", msg["rooms"][room_id]["room_description"]);
+            this.socketService.sendMessage({channel: "settings", type: "enter_room", room_id: room_id});
           }
-          if (!(msg["rooms"][name] == sessionStorage.getItem("room_id"))) {
-            let data: any = {title: name, room_id: msg["rooms"][name]};
+          if (!(room_id == sessionStorage.getItem("room_id"))) {
+            let data: any = msg["rooms"][room_id];
+            this.loadRoomLink(data);
+          }
+        }
+      }
+      else if (msg["type"] == "request_listed_rooms") {
+        for (let room_id in msg["listed_rooms"]) {
+          if (!(room_id == sessionStorage.getItem("room_id"))) {
+            let data: any = msg["listed_rooms"][room_id];
             this.loadRoomLink(data);
           }
         }
@@ -108,10 +119,13 @@ export class SettingsComponent implements OnInit, Activity {
       else if (msg["type"] == "enter_room") {
         if (msg["success"] == true) {
           sessionStorage.setItem("room_title", msg["room_title"]);
+          sessionStorage.setItem("room_description", msg["room_description"]);
           sessionStorage.setItem("room_id", msg["room_id"]);
           // TODO: use better permissioning systems
           sessionStorage.setItem("room_is_owner", msg["is_owner"]);
           this.roomTitle = sessionStorage.getItem("room_title");
+          this.roomDescription = sessionStorage.getItem("room_description");
+          this.roomChangeService.setRoomData({"room_title": msg["room_title"], "room_description": msg["room_description"]});
           this.roomChangeService.setRoom(msg["room_id"]);
         }
       }
@@ -148,27 +162,58 @@ export class SettingsComponent implements OnInit, Activity {
         }
       }
       else if (msg["type"] == "edit_display_name") {
+        this.displayName = msg["display_name"];
         sessionStorage.setItem("display_name", msg["display_name"]);
         location.reload();
+      }
+      else if (msg["type"] == "edit_room_title") {
+        this.roomTitle = msg["room_title"];
+        sessionStorage.setItem("room_title", msg["room_title"]);
+      }
+      else if (msg["type"] == "edit_room_description") {
+        this.roomDescription = msg["room_description"];
+        sessionStorage.setItem("room_description", msg["room_description"]);
       }
     }
   }
 
   onSubmitDisplayName(f: NgForm) {
     let submission = {channel: "settings", type: "edit_display_name", display_name: <string> f.value["display_name"]};
+    f.resetForm();
+    this.socketService.sendMessage(submission);
+  }
+
+  onSubmitRoomTitle(f: NgForm) {
+    let submission = {channel: "settings", type: "edit_room_title", room_id: this.roomId, room_title: <string> f.value["room_title"]};
+    f.resetForm();
+    this.socketService.sendMessage(submission);
+  }
+
+
+  onSubmitRoomDescription(f: NgForm) {
+    let submission = {channel: "settings", type: "edit_room_description", room_id: this.roomId, room_description: <string> f.value["room_description"]};
+    f.resetForm();
     this.socketService.sendMessage(submission);
   }
 
   loadRoomLink(data: any): void {
-    const componentFactory = this.componentFactoryResolver.resolveComponentFactory(RoomLinkComponent);
+    console.log(this.rooms.has(data.room_id));
+    if (!(this.rooms.has(data.room_id))) {
+      const componentFactory = this.componentFactoryResolver.resolveComponentFactory(RoomLinkComponent);
 
-    const viewContainerRef = this.roomLinkHost.viewContainerRef;
+      const viewContainerRef = this.roomLinkHost.viewContainerRef;
+  
+      const componentRef = viewContainerRef.createComponent(componentFactory);
+      (<RoomLinkComponent>componentRef.instance).data = data;
 
-    const componentRef = viewContainerRef.createComponent(componentFactory);
-    (<RoomLinkComponent>componentRef.instance).data = data;
+      this.rooms.add(data.room_id);
+    }
   }
 
   reloadRooms(): void {
+    const viewContainerRef = this.roomLinkHost.viewContainerRef;
+    viewContainerRef.clear();
+    this.rooms.clear();
     this.socketService.sendMessage({channel: "settings", type: "request_rooms"});
   }
 
@@ -204,6 +249,7 @@ export class SettingsComponent implements OnInit, Activity {
 
   onSubmitJoin(f: NgForm): void {
     let submission = {channel: "settings", type: "join_room", room_id: <string> f.value["joinCode"]};
+    f.resetForm();
     this.socketService.sendMessage(submission);
   }
 
@@ -214,6 +260,7 @@ export class SettingsComponent implements OnInit, Activity {
 
   onSubmitCreate(f: NgForm): void {
     let submission = {channel: "settings", type: "create_room", title: <string> f.value["title"]};
+    f.resetForm();
     this.socketService.sendMessage(submission);
   }
 

@@ -17,18 +17,31 @@
 
 .form {
     display: flex;
-    flex-direction: row;
     justify-content: space-between;
+    padding: 0 2ch;
+}
+
+.description-form {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: flex-end;
+    gap: 1em;
+    padding: 0 2ch;
+}
+
+.description-save {
+    display: flex;
+    justify-content: flex-end;
 }
 
 .form-element {
-    max-width: 12ch;
     display: flex;
     flex: 1 0 0;
-    align-items: flex-end;
 }
 
 button {
+    margin-left: auto;
     width: 10ch;
     padding: 0.2em 2ch 0.2em 2ch;
 }
