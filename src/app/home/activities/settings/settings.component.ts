@@ -138,7 +138,7 @@ export class SettingsComponent implements OnInit, Activity {
         this.reloadInvitations();
       }
       else if (msg["type"] == "create_room") {
-        this.socketService.sendMessage({channel: "settings", type: "enter_room", room_id: msg["room_id"], as_player: false});
+        this.socketService.sendMessage({channel: "settings", type: "enter_room", room_id: msg["room_id"]});
       }
       else if (msg["type"] == "leave_room") {
         if (msg["success"] == true) {
