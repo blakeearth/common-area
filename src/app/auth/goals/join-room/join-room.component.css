@@ -16,10 +16,9 @@ input {
 }
 
 .join-form-element {
-    align-self: center;
-    text-align: center;
     flex: 1;
     flex-direction: column;
+    align-items: center;
     justify-content: center;
     display: flex;
     margin: 0.5em 0 0.5em 0;
@@ -28,7 +27,6 @@ input {
 .users {
     font-size: 1.5em;
     margin-bottom: 0.25em;
-    align-self: flex-end;
 }
 
 button {

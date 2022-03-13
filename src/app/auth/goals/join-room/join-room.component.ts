@@ -12,7 +12,7 @@ import { Goal } from '../goal';
 })
 export class JoinRoomComponent implements OnInit, Goal {
 
-  header: string = "Join the Party!";
+  header: string = "Join the room!";
   roomId: string;
   roomTitle: string;
   faUsers = faUsers;
