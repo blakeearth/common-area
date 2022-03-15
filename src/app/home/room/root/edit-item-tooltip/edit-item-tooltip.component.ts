@@ -10,12 +10,16 @@ export class EditItemTooltipComponent implements OnInit {
   onMove: Function;
   onErase: Function;
 
+  ownerAccountId: string;
+  accountId: string;
+
   x: string;
   y: string;
 
   constructor() { }
 
   ngOnInit(): void {
+    this.accountId = sessionStorage.getItem("account_id");
   }
 
 }

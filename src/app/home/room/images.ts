@@ -1,1 +1,1 @@
-export const images: Array<string> = ['floor.png', 'bear.png', 'bear-shadow.png', 'shrub.png', 'tree.png'];
+export const images: Array<string> = ['floor.png', 'bear.png', 'chicken.png', 'bear-shadow.png', 'shrub.png', 'tree.png'];

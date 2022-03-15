@@ -1,10 +1,12 @@
-import { imageAssets, Sprite, SpriteSheet, track, Vector, Text, Button, getCanvas, getWorldRect, SpriteClass, getPointer, initPointer } from 'kontra';
+import { imageAssets, Sprite, SpriteSheet, track, Vector, Text, Button, getCanvas, getWorldRect, SpriteClass, getPointer, initPointer, untrack } from 'kontra';
 
 const speed: number = 5;
 
 export class Chicken extends SpriteClass {
     id: string;
-    displayName: string;
+    sceneId: number;
+    ownerAccountId: string;
+
     target: Vector;
     direction: Vector;
 
@@ -12,44 +14,44 @@ export class Chicken extends SpriteClass {
 
     shadow: Sprite;
 
-    constructor(id: string, displayName: string, position: Vector) {
+    constructor(id: string, sceneId: number, ownerAccountId: string, position: Vector, onDown: Function) {
         initPointer();
 
         let spriteSheet = SpriteSheet({
-            image: imageAssets["bear"],
+            image: imageAssets["chicken"],
             frameWidth: 128,
             frameHeight: 128,
             animations: {
-                walkFR: {
+                walkBL: {
                     frames: '0..47',
-                    frameRate: 90
+                    frameRate: 24
                 },
                 idleFR: {
-                    frames: '48..195',
-                    frameRate: 0
-                },
-                walkFL: {
-                    frames: '49..96',
-                    frameRate: 90
-                },
-                idleFL: {
-                    frames: '97..195',
+                    frames: '147..194',
                     frameRate: 0
                 },
                 walkBR: {
-                    frames: '98..145',
-                    frameRate: 90
+                    frames: '48..95',
+                    frameRate: 24
                 },
-                idleBR: {
-                    frames: '146...195',
+                idleFL: {
+                    frames: '98..195',
                     frameRate: 0
                 },
-                walkBL: {
-                    frames: '147..194',
-                    frameRate: 90
+                walkFL: {
+                    frames: '96..143',
+                    frameRate: 24
+                },
+                idleBR: {
+                    frames: '49...195',
+                    frameRate: 0
+                },
+                walkFR: {
+                    frames: '143..190',
+                    frameRate: 24
                 },
                 idleBL: {
-                    frames: '195..200',
+                    frames: '0..195',
                     frameRate: 0
                 }
             }
@@ -64,7 +66,7 @@ export class Chicken extends SpriteClass {
             image: spriteSheet.frame[48],
             animations: spriteSheet.animations,
             onDown: function() {
-                
+                onDown(this);
             },
             onUp: function() {
 
@@ -81,16 +83,20 @@ export class Chicken extends SpriteClass {
         this.playingAnimation = 'idleFR';
 
         this.id = id;
-        this.displayName = displayName;
+        this.sceneId = sceneId;
+        this.ownerAccountId = ownerAccountId;
+
         this.target = Vector(this.x, this.y);
+        this.direction = Vector(1, 1).normalize();
         
         this.shadow = Sprite({
             image: imageAssets["bear-shadow"],
             opacity: 0.5,
-            y: 96
+            scaleX: 0.8,
+            scaleY: 0.8,
+            x: 10,
+            y: 80
         });
-
-        track(this);
     }
 
     update(): void {
@@ -116,20 +122,6 @@ export class Chicken extends SpriteClass {
         this.removeChild(this.shadow);
 
         super.draw();
-
-        let nameTag: Text = Text({
-            text: this.displayName,
-            font: '32px Arial',
-            color: 'black',
-            width: 128,
-            x: 0,
-            y: 128,
-            anchor: {x: 0, y: 0},
-            textAlign: 'center'
-        });
-
-        nameTag.render();
-        
     }
 
     setTarget(msg: any): void {
@@ -161,4 +153,8 @@ export class Chicken extends SpriteClass {
         log.appendChild(message);
     }
 
+    setEraserMode(eraserMode: boolean) {
+        if (eraserMode) track(this);
+        else untrack(this);
+    }
 }

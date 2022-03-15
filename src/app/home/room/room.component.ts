@@ -343,8 +343,9 @@ export class RoomComponent extends Handler implements OnInit {
           persistObject.setEraserMode(false);
         }
       }
+      this.closeEditItemTooltip();
+      document.getElementById("edit-room-nav").blur();
     }
-    document.getElementById("edit-room-nav").blur();
   }
 
   setActiveItem(itemId: number): void {
@@ -353,7 +354,7 @@ export class RoomComponent extends Handler implements OnInit {
   }
 
   onItemDown(object: GameObject) {
-    // this item can be erased. erase it!
+    // this item can be edited. edit it!
     if (typeof object.setEraserMode == "function") {
       this.openEditItemTooltip(object);
     }
@@ -378,6 +379,8 @@ export class RoomComponent extends Handler implements OnInit {
     instance.x = coords.x + "px";
     instance.y = coords.y + "px";
 
+    instance.ownerAccountId = object.ownerAccountId;
+
     this.editingObject = object;
   }
 
@@ -396,6 +399,7 @@ export class RoomComponent extends Handler implements OnInit {
     this.socketService.sendMessage({"channel": "room", "type": "remove_persist_object", "id": this.editingObject.id});
     this.socketService.sendMessage({"channel": "room", "type": "request_inventory"});
     this.setActiveItem(this.editingObject.sceneId);
+    this.toggleEditMode();
     this.closeEditItemTooltip();
   }
 

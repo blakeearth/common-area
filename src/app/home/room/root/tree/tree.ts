@@ -2,8 +2,9 @@ import { imageAssets, Sprite, SpriteSheet, Vector, SpriteClass, initPointer, tra
 
 export class Tree extends SpriteClass {
     id: string;
+    ownerAccountId: string;
 
-    constructor(id: string, sceneId: string, position: Vector, rotationDegrees: number, onDown: Function) {
+    constructor(id: string, sceneId: string, ownerAccountId: string, position: Vector, rotationDegrees: number, onDown: Function) {
 
         let spriteSheet = SpriteSheet({
             image: imageAssets["tree"],
@@ -57,6 +58,7 @@ export class Tree extends SpriteClass {
 
         this.id = id;
         this.sceneId = sceneId;
+        this.ownerAccountId = ownerAccountId;
 
         this.shadow = Sprite({
             image: imageAssets["bear-shadow"],

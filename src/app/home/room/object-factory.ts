@@ -55,15 +55,15 @@ export class ObjectFactory {
                 break; 
             }
             case 2: {
-                object = new Tree(data["id"], data["scene_id"], Vector(data["translation_x"], data["translation_y"]), data["rotation_degrees"], this.onItemDown);
+                object = new Tree(data["id"], data["scene_id"], data["owner_account_id"], Vector(data["translation_x"], data["translation_y"]), data["rotation_degrees"], this.onItemDown);
                 break;
             }
             case 3: {
-                object = new Chicken(data["id"], data["display_name"], Vector(data["translation_x"], data["translation_y"]));
+                object = new Chicken(data["id"], data["scene_id"], data["owner_account_id"], Vector(data["translation_x"], data["translation_y"]), this.onItemDown);
                 break;
             }
             case 4: {
-                object = new Shrub(data["id"], data["scene_id"], Vector(data["translation_x"], data["translation_y"]), data["rotation_degrees"], this.onItemDown);
+                object = new Shrub(data["id"], data["scene_id"], data["owner_account_id"], Vector(data["translation_x"], data["translation_y"]), data["rotation_degrees"], this.onItemDown);
                 break;
             }
         }

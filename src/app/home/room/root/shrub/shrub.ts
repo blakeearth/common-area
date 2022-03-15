@@ -3,8 +3,9 @@ import { SocketService } from 'src/app/socket/socket.service';
 
 export class Shrub extends SpriteClass {
     id: string;
+    ownerAccountId: string;
 
-    constructor(id: string, sceneId: string, position: Vector, rotationDegrees: number, onDown: Function) {
+    constructor(id: string, sceneId: string, ownerAccountId: string, position: Vector, rotationDegrees: number, onDown: Function) {
         let spriteSheet = SpriteSheet({
             image: imageAssets["shrub"],
             frameWidth: 180,
@@ -54,6 +55,7 @@ export class Shrub extends SpriteClass {
 
         this.id = id;
         this.sceneId = sceneId;
+        this.ownerAccountId = ownerAccountId;
 
         this.shadow = Sprite({
             image: imageAssets["bear-shadow"],
