@@ -9,6 +9,7 @@ import { GameObject, Vector } from 'kontra';
 import { RoomComponent } from './room.component';
 import { Tree } from './root/tree/tree';
 import { Chicken } from './root/character/chicken/chicken';
+import { Shrub } from './root/shrub/shrub';
 
 export class ObjectFactory {
     socketService: SocketService;
@@ -19,14 +20,14 @@ export class ObjectFactory {
         this.socketService = socketService;
     }
 
-    makeObject(objects: any, data: any): GameObject {
+    makeObject(data: any): GameObject {
         let sceneId: number = data["scene_id"];
         let object: GameObject;
         switch(sceneId) { 
             case 0: { 
                 // tile map
                 object = new TileMap(data["width"],
-                    data["height"], data["layers"], this.socketService);
+                    data["height"], data["layers"], this.socketService, this.room);
                 break;
             } 
             case 1: { 
@@ -57,6 +58,11 @@ export class ObjectFactory {
             }
             case 3: {
                 object = new Chicken(data["id"], data["display_name"], Vector(data["translation_x"], data["translation_y"]));
+                break;
+            }
+            case 4: {
+                object = new Shrub(data["id"], Vector(data["translation_x"], data["translation_y"]), data["rotation_degrees"]);
+                break;
             }
         }
         return object;

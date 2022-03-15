@@ -64,6 +64,10 @@ import { ForgotPasswordComponent } from './auth/goals/forgot-password/forgot-pas
 import { ResetPasswordComponent } from './auth/goals/reset-password/reset-password.component';
 import { OnboardingPopupDirective } from './home/menu/onboarding-popup.directive';
 import { OnboardingPopupComponent } from './home/menu/onboarding-popup/onboarding-popup.component';
+import { VendorPopupComponent } from './home/room/vendor-popup/vendor-popup.component';
+import { InventoryPopupComponent } from './home/room/inventory-popup/inventory-popup.component';
+import { InventoryPopupDirective } from './home/room/inventory-popup.directive';
+import { VendorPopupDirective } from './home/room/vendor-popup.directive';
 
 @NgModule({
     declarations: [
@@ -121,6 +125,10 @@ import { OnboardingPopupComponent } from './home/menu/onboarding-popup/onboardin
         ResetPasswordComponent,
         OnboardingPopupDirective,
         OnboardingPopupComponent,
+        VendorPopupComponent,
+        InventoryPopupComponent,
+        InventoryPopupDirective,
+        VendorPopupDirective,
     ],
     imports: [
         BrowserModule.withServerTransition({ appId: 'serverApp' }),

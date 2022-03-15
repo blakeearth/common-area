@@ -1,14 +1,14 @@
-import { imageAssets, Sprite, SpriteSheet, Vector, SpriteClass, initPointer, track, getCanvas } from 'kontra';
+import { imageAssets, Sprite, SpriteSheet, Vector, SpriteClass } from 'kontra';
 
-export class Tree extends SpriteClass {
+export class Shrub extends SpriteClass {
     id: string;
 
     constructor(id: string, position: Vector, rotationDegrees: number) {
 
         let spriteSheet = SpriteSheet({
-            image: imageAssets["tree"],
-            frameWidth: 128,
-            frameHeight: 192,
+            image: imageAssets["shrub"],
+            frameWidth: 180,
+            frameHeight: 180,
             animations: {
                 walkFR: {
                     frames: '0..0',
@@ -28,17 +28,14 @@ export class Tree extends SpriteClass {
                 },
             }
         });
-
-        initPointer();
         
         super({
-            type: 'player',
             x: position.x,
             y: position.y,
-            width: 128,
-            height: 192,
+            width: 180,
+            height: 180,
             image: spriteSheet.frame[0],
-            animations: spriteSheet.animations,
+            animations: spriteSheet.animations
         });
 
         this.playAnimation("walkFR");
@@ -48,13 +45,11 @@ export class Tree extends SpriteClass {
         this.shadow = Sprite({
             image: imageAssets["bear-shadow"],
             opacity: 0.5,
-            y: 128,
-            x: -16,
-            scaleX: 1.25,
+            y: 90,
+            x: -36,
+            scaleX: 2,
             scaleY: 2
         });
-
-        track(this);
     }
 
     draw(): void {
@@ -63,6 +58,6 @@ export class Tree extends SpriteClass {
         this.removeChild(this.shadow);
 
         //super.render();
-        super.draw();
+        super.draw();        
     }
 }

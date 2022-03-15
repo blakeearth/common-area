@@ -6,11 +6,19 @@ import { MembersService } from '../members.service';
 import { RoomChangeService } from '../room-change.service';
 
 import { images } from "./images";
+import { InventoryPopupDirective } from './inventory-popup.directive';
+import { InventoryPopupComponent } from './inventory-popup/inventory-popup.component';
 
 import { ObjectFactory } from './object-factory'
+import { Chicken } from './root/character/chicken/chicken';
 import { Player } from './root/character/player/player';
+
 import { PlayerTooltipDirective } from './root/character/player/player-tooltip.directive';
 import { PlayerTooltipComponent } from './root/character/player/player-tooltip/player-tooltip.component';
+import { TileMap } from './root/tile-map';
+import { VendorPopupDirective } from './vendor-popup.directive';
+import { VendorPopupComponent } from './vendor-popup/vendor-popup.component';
+
 
 @Component({
   selector: 'app-room',
@@ -21,6 +29,8 @@ import { PlayerTooltipComponent } from './root/character/player/player-tooltip/p
 export class RoomComponent extends Handler implements OnInit {
 
   @ViewChild(PlayerTooltipDirective, { static: true }) public playerTooltipHost: PlayerTooltipDirective;
+  @ViewChild(VendorPopupDirective, { static: true }) public vendorPopupHost: VendorPopupDirective;
+  @ViewChild(InventoryPopupDirective, { static: true }) public inventoryPopupHost: InventoryPopupDirective;
 
   roomTitle: string;
   roomDescription: string;
@@ -35,6 +45,7 @@ export class RoomComponent extends Handler implements OnInit {
   objectFactory: ObjectFactory;
 
   editMode: boolean = false;
+  activeItem: number = 1;
 
   roomChangeService: RoomChangeService;
   socketService: SocketService;
@@ -42,9 +53,11 @@ export class RoomComponent extends Handler implements OnInit {
 
   componentFactoryResolver: ComponentFactoryResolver;
 
-  editButtonDisplay: string;
+  editButtonDisplay: string = "none";
 
   loop: GameLoop;
+
+  cameraOrigin: {x: number, y: number};
 
   constructor(socketService: SocketService, roomChangeService: RoomChangeService, membersService: MembersService, componentFactoryResolver: ComponentFactoryResolver) {
     super();
@@ -113,12 +126,11 @@ export class RoomComponent extends Handler implements OnInit {
 
   requestSetTarget(): void {
     let pointer: any = getPointer();
-    if (!this.editMode) this.socketService.sendMessage({channel: "room", type: "set_target", position_x: Math.floor(this.me.x + pointer.x - getCanvas().width / 2), position_y: Math.floor(this.me.y + pointer.y - getCanvas().height / 2)});
-    else this.socketService.sendMessage({channel: "room", type: "add_persist_object", scene_id: 2, parent_id: "root", rotation_degrees_y: 0, position_x: Math.floor(this.me.x + pointer.x - getCanvas().width / 2), position_y: Math.floor(this.me.y + pointer.y - getCanvas().height / 2)});
+    
   }
 
   addPersistObject(msg: any): void {
-    let object: any = this.objectFactory.makeObject(this.objects, msg["data"]);
+    let object: any = this.objectFactory.makeObject(msg["data"]);
     let scene: Scene = this.objects.get("scene");
     if (msg["data"]["parent_id"] != null) {
       
@@ -138,7 +150,9 @@ export class RoomComponent extends Handler implements OnInit {
         // this is me
         this.me = object;
         this.objects.get("root").setPlayer(object);
+        this.objects.get("root").setScene(this.objects.get("scene"));
         this.target = {x: object.x, y: object.y};
+        this.cameraOrigin = this.target;
         let scene: Scene = this.objects.get("scene");
 
         if (this.loop != undefined) this.loop.stop();
@@ -148,15 +162,25 @@ export class RoomComponent extends Handler implements OnInit {
             scene.update();
           },
           render: function() {
-            scene.render();
-
-            this.wealth = Math.ceil(lerp(this.wealth, this.newWealth, 0.02));
-
             this.target = {
               x: lerp(this.target.x, object.x + object.width / 2, 0.1),
               y: lerp(this.target.y, object.y + object.height / 2, 0.1)
             };
             scene.lookAt(this.target);
+            scene.render();
+
+            this.wealth = Math.ceil(lerp(this.wealth, this.newWealth, 0.02));
+
+            for (let persistObject of this.objects.values()) {
+              if (persistObject != this.objects.get("scene")) {
+                let t = {
+                  x: this.target.x - this.cameraOrigin.x - persistObject.width / 2,
+                  y: this.target.y - this.cameraOrigin.y
+                };
+                persistObject.sx = t.x;
+                persistObject.sy = t.y;
+              }
+            }
           }.bind(this)
         });
       
@@ -194,7 +218,8 @@ export class RoomComponent extends Handler implements OnInit {
   }
 
   onRoomChange(roomId: string): void {
-    this.editButtonDisplay = (sessionStorage.getItem("room_is_owner") == 'true') ? "inherit" : "none";
+    //this.editButtonDisplay = (sessionStorage.getItem("room_is_owner") == 'true') ? "inherit" : "none";
+    this.editButtonDisplay = "inherit";
     (this.objects.get("scene") as Scene).destroy();
     this.objects = new Map<string, any>();
 
@@ -243,7 +268,49 @@ export class RoomComponent extends Handler implements OnInit {
     viewContainerRef.clear();
   }
 
-  toggleEditMode() {
+  openInventoryPopup(): void {
+    const viewContainerRef = this.inventoryPopupHost.viewContainerRef;
+    viewContainerRef.clear();
+
+    const componentFactory = this.componentFactoryResolver.resolveComponentFactory(InventoryPopupComponent);
+
+    let componentRef: ComponentRef<InventoryPopupComponent>;
+
+    componentRef = viewContainerRef.createComponent(componentFactory);
+
+    let instance: InventoryPopupComponent = <InventoryPopupComponent>componentRef.instance;
+
+    let tileMap: TileMap = this.objects.get("root");
+
+    instance.onClose = this.closeInventoryPopup.bind(this);
+    instance.setActiveItem = tileMap.setActiveItem.bind(tileMap);
+  }
+
+  closeInventoryPopup(): void {
+    const viewContainerRef = this.inventoryPopupHost.viewContainerRef;
+    viewContainerRef.clear();
+  }
+
+  openVendorPopup(): void {
+    const viewContainerRef = this.vendorPopupHost.viewContainerRef;
+    viewContainerRef.clear();
+
+    const componentFactory = this.componentFactoryResolver.resolveComponentFactory(VendorPopupComponent);
+
+    let componentRef: ComponentRef<VendorPopupComponent>;
+
+    componentRef = viewContainerRef.createComponent(componentFactory);
+
+    let instance: VendorPopupComponent = <VendorPopupComponent>componentRef.instance;
+    instance.onClose = this.closeVendorPopup.bind(this);
+  }
+
+  closeVendorPopup(): void {
+    const viewContainerRef = this.vendorPopupHost.viewContainerRef;
+    viewContainerRef.clear();
+  }
+
+  toggleEditMode(): void {
     this.editMode = !this.editMode;
     this.objects.get("root").toggleEditMode();
   }

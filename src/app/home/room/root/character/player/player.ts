@@ -1,10 +1,9 @@
-import { imageAssets, Sprite, SpriteSheet, track, Vector, Text, Button, getCanvas, getWorldRect, SpriteClass, getPointer } from 'kontra';
+import { imageAssets, Sprite, SpriteSheet, track, Vector, Text, Button, getCanvas, getWorldRect, SpriteClass, getPointer, initPointer } from 'kontra';
 import { RoomComponent } from '../../../room.component';
-import { Character } from '../character';
 
 const speed: number = 5;
 
-export class Player extends Character {
+export class Player extends SpriteClass {
     room: RoomComponent;
     id: string;
     displayName: string;
@@ -18,6 +17,8 @@ export class Player extends Character {
     shadow: Sprite;
 
     constructor(room: RoomComponent, id: string, displayName: string, position: Vector) {
+
+        initPointer();
 
         let spriteSheet = SpriteSheet({
             image: imageAssets["bear"],
@@ -60,7 +61,7 @@ export class Player extends Character {
         });
 
 
-        super(id, displayName, position, {
+        super({
             type: 'player',
             x: position.x,
             y: position.y,
@@ -68,7 +69,18 @@ export class Player extends Character {
             dy: 0,
             image: spriteSheet.frame[48],
             animations: spriteSheet.animations,
-            children: []
+            onDown: function() {
+                this.room.membersService.openTooltip(displayName, id);
+            },
+            onUp: function() {
+
+            },
+            onOver: function() {
+                getCanvas().style.cursor = "pointer";
+            },
+            onOut: function() {
+                getCanvas().style.cursor = "default";
+            }
         });
 
         this.room = room;
@@ -79,7 +91,6 @@ export class Player extends Character {
         this.id = id;
         this.displayName = displayName;
         this.target = Vector(this.x, this.y);
-        track(this);
 
         if (this.id == sessionStorage.getItem("account_id")) {
             this.me = true;
@@ -90,5 +101,100 @@ export class Player extends Character {
             opacity: 0.5,
             y: 96
         });
+
+        track(this);
+    }
+
+    update(): void {
+        let distance: number = this.target.distance(Vector(this.x, this.y));
+        // also cancel movement upon collision! maybe upon collision, set target to position?
+        if (distance > 0 && (this.lastDistance == undefined || distance < this.lastDistance)) {
+            this.velocity = Vector(this.direction.x * speed, this.direction.y * speed);
+            this.lastDistance = distance;
+        }
+        else if (!this.playingAnimation.includes('idle')) {
+            this.playingAnimation = this.playingAnimation.replace('walk', 'idle');
+            this.playAnimation(this.playingAnimation);
+            this.reportLocation();
+            this.target = Vector(this.x, this.y);
+            this.dx = 0;
+            this.dy = 0;
+        }
+        super.update();
+    }
+
+    draw(): void {
+        this.addChild(this.shadow);
+        this.shadow.render();
+        this.removeChild(this.shadow);
+
+        if (this.me && this.dx == 0 && this.dy == 0) {
+            let pointer: any = getPointer();
+            let lookTarget: Vector = Vector(pointer.x, pointer.y - 128 / 2);
+            let lookDirection: Vector = Vector(lookTarget.x - getCanvas().width / 2, lookTarget.y - getCanvas().height / 2).normalize();
+            let left: boolean = lookDirection.x <= 0;
+            let right: boolean = !left;
+            let backward: boolean = lookDirection.y <= 0;
+            let forward: boolean = !backward;
+            if (forward && right) {
+                this.playingAnimation = 'idleFR';
+            }
+            if (forward && left) {
+                this.playingAnimation = 'idleFL';
+            }
+            if (backward && right) {
+                this.playingAnimation = 'idleBR';
+            }
+            if (backward && left) {
+                this.playingAnimation = 'idleBL';
+            }
+            this.playAnimation(this.playingAnimation);
+        }
+
+        super.draw();
+
+        let nameTag: Text = Text({
+            text: this.displayName,
+            font: '32px Arial',
+            color: 'black',
+            width: 128,
+            x: 0,
+            y: 128,
+            anchor: {x: 0, y: 0},
+            textAlign: 'center'
+        });
+
+        nameTag.render();
+        
+    }
+
+    setTarget(msg: any): void {
+        this.target = Vector(msg["position_x"], msg["position_y"] - 128 / 2);
+        this.direction = Vector(this.target.x - this.x, this.target.y - this.y).normalize();
+        this.lastDistance = undefined;
+        let left: boolean = this.direction.x <= 0;
+        let right: boolean = !left;
+        let backward: boolean = this.direction.y <= 0;
+        let forward: boolean = !backward;
+        if (forward && right) {
+            this.playingAnimation = 'walkFR';
+        }
+        if (forward && left) {
+            this.playingAnimation = 'walkFL';
+        }
+        if (backward && right) {
+            this.playingAnimation = 'walkBR';
+        }
+        if (backward && left) {
+            this.playingAnimation = 'walkBL';
+        }
+        this.playAnimation(this.playingAnimation);
+    }
+
+    reportLocation(): void {
+        let log: HTMLElement = document.getElementById("game-log");
+        let message: HTMLParagraphElement = document.createElement("p");
+        message.innerHTML = this.displayName + " is now at " + Math.round(this.x) + " on the x-axis and " + Math.round(this.y) + " on the y-axis.";
+        log.appendChild(message);
     }
 }

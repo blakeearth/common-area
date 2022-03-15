@@ -1,4 +1,4 @@
-import { imageAssets, Sprite, SpriteSheet, track, Vector, Text, Button, getCanvas, getWorldRect, SpriteClass, getPointer } from 'kontra';
+import { imageAssets, Sprite, SpriteSheet, track, Vector, Text, Button, getCanvas, getWorldRect, SpriteClass, getPointer, initPointer } from 'kontra';
 
 const speed: number = 5;
 
@@ -13,6 +13,8 @@ export class Chicken extends SpriteClass {
     shadow: Sprite;
 
     constructor(id: string, displayName: string, position: Vector) {
+        initPointer();
+
         let spriteSheet = SpriteSheet({
             image: imageAssets["bear"],
             frameWidth: 128,
@@ -61,7 +63,18 @@ export class Chicken extends SpriteClass {
             dy: 0,
             image: spriteSheet.frame[48],
             animations: spriteSheet.animations,
-            children: []
+            onDown: function() {
+                
+            },
+            onUp: function() {
+
+            },
+            onOver: function() {
+                getCanvas().style.cursor = "pointer";
+            },
+            onOut: function() {
+                getCanvas().style.cursor = "default";
+            }
         });
 
         this.playAnimation('idleFR');
@@ -76,6 +89,8 @@ export class Chicken extends SpriteClass {
             opacity: 0.5,
             y: 96
         });
+
+        track(this);
     }
 
     update(): void {
