@@ -1,11 +1,10 @@
-import { TileEngine, imageAssets, initPointer, track, getPointer, GameObject, Button, GameObjectClass, getWorldRect, getCanvas, Scene } from 'kontra';
+import { imageAssets, initPointer, track, getPointer, GameObject, Button, GameObjectClass, getWorldRect, getCanvas, Scene } from 'kontra';
 import { SocketService } from 'src/app/socket/socket.service';
 import { ObjectFactory } from '../object-factory';
 import { RoomComponent } from '../room.component';
 
 export class TileMap extends GameObjectClass {
     socketService: SocketService;
-    tileEngine: TileEngine;
 
     editMode: boolean = false;
     activeItem: number;
@@ -23,26 +22,6 @@ export class TileMap extends GameObjectClass {
       initPointer();
 
       let img: HTMLImageElement = imageAssets['floor'];
-
-      this.tileEngine = TileEngine({
-        // tile size
-        tilewidth: 128,
-        tileheight: 128,
-    
-        // map size in tiles
-        width: width,
-        height: height,
-    
-        // tileset object
-        tilesets: [{
-          firstgid: 1,
-          image: img
-        }],
-    
-        // layer object
-        layers: layers,
-      });
-
       this.room = room;
       this.objectFactory = new ObjectFactory(this.room, socketService, function(){});
 
@@ -50,11 +29,14 @@ export class TileMap extends GameObjectClass {
         // button properties
         socketService: socketService,
         getEditMode: this.getEditMode.bind(this),
-        padX: width * this.tileEngine.tilewidth,
-        padY: height * this.tileEngine.tileheight,
+        padX: width * 128,
+        padY: height * 128,
         onDown: function() {
           let pointer: any = getPointer();
-          if (!this.editMode) this.socketService.sendMessage({channel: "room", type: "set_target", position_x: Math.floor(this.player.x + pointer.x - getCanvas().width / 2), position_y: Math.floor(this.player.y + pointer.y - getCanvas().height / 2)});
+          if (!this.editMode) {
+            this.socketService.sendMessage({channel: "room", type: "set_target", position_x: Math.floor(this.player.x + pointer.x - getCanvas().width / 2), position_y: Math.floor(this.player.y + pointer.y - getCanvas().height / 2)});
+            this.updateCamera();
+          }
           else {
             this.socketService.sendMessage({channel: "room", type: "add_persist_object", scene_id: this.activeItem, parent_id: "root", rotation_degrees_y: 0, position_x: Math.floor(this.player.x + pointer.x - getCanvas().width / 2), position_y: Math.floor(this.player.y + pointer.y - getCanvas().height / 2)});
             this.setEditMode(false);
@@ -105,7 +87,6 @@ export class TileMap extends GameObjectClass {
     }
 
     render(): void {
-      this.tileEngine.render();
       this.moveButton.sx = -this.sx;
       this.moveButton.sy = -this.sy;
       this.moveButton.render();
