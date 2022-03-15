@@ -52,6 +52,10 @@ svg {
     scale: 2;
 }
 
+.active {
+    color: black;
+}
+
 a {
     display: flex;
     position: relative;

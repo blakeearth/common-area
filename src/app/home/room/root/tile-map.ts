@@ -44,7 +44,7 @@ export class TileMap extends GameObjectClass {
       });
 
       this.room = room;
-      this.objectFactory = new ObjectFactory(this.room, socketService);
+      this.objectFactory = new ObjectFactory(this.room, socketService, function(){});
 
       this.moveButton = Button({
         // button properties
@@ -55,7 +55,10 @@ export class TileMap extends GameObjectClass {
         onDown: function() {
           let pointer: any = getPointer();
           if (!this.editMode) this.socketService.sendMessage({channel: "room", type: "set_target", position_x: Math.floor(this.player.x + pointer.x - getCanvas().width / 2), position_y: Math.floor(this.player.y + pointer.y - getCanvas().height / 2)});
-          else this.socketService.sendMessage({channel: "room", type: "add_persist_object", scene_id: this.activeItem, parent_id: "root", rotation_degrees_y: 0, position_x: Math.floor(this.player.x + pointer.x - getCanvas().width / 2), position_y: Math.floor(this.player.y + pointer.y - getCanvas().height / 2)});
+          else {
+            this.socketService.sendMessage({channel: "room", type: "add_persist_object", scene_id: this.activeItem, parent_id: "root", rotation_degrees_y: 0, position_x: Math.floor(this.player.x + pointer.x - getCanvas().width / 2), position_y: Math.floor(this.player.y + pointer.y - getCanvas().height / 2)});
+            this.setEditMode(false);
+          }
         }.bind(this)
       });
 
@@ -73,37 +76,38 @@ export class TileMap extends GameObjectClass {
     }
 
     setActiveItem(itemId: number): void {
+      this.setEditMode(true);
       this.activeItem = itemId;
-      if (this.editMode) {
-        if (this.preview == undefined) {
-          let pointer = getPointer();
-          this.preview = this.objectFactory.makeObject({
-            "scene_id": this.activeItem,
-            "id": "preview",
-            "translation_x": pointer.x,
-            "translation_y": pointer.y,
-            "rotation_degrees": 0,
-            "display_name": "",
-          });
-        }
-        else if (this.scene.objects.includes(this.preview)) {
-          this.scene.remove(this.preview);
-          let pointer = getPointer();
-          this.preview = this.objectFactory.makeObject({
-            "scene_id": this.activeItem,
-            "id": "preview",
-            "translation_x": pointer.x,
-            "translation_y": pointer.y,
-            "rotation_degrees": 0,
-            "display_name": "",
-          });
-        }
-        this.scene.add(this.preview);
+      if (this.preview == undefined) {
+        let pointer = getPointer();
+        this.preview = this.objectFactory.makeObject({
+          "scene_id": this.activeItem,
+          "id": "preview",
+          "translation_x": pointer.x,
+          "translation_y": pointer.y,
+          "rotation_degrees": 0,
+          "display_name": "",
+        });
       }
+      else if (this.scene.objects.includes(this.preview)) {
+        this.scene.remove(this.preview);
+        let pointer = getPointer();
+        this.preview = this.objectFactory.makeObject({
+          "scene_id": this.activeItem,
+          "id": "preview",
+          "translation_x": pointer.x,
+          "translation_y": pointer.y,
+          "rotation_degrees": 0,
+          "display_name": "",
+        });
+      }
+      this.scene.add(this.preview);
     }
 
     render(): void {
       this.tileEngine.render();
+      this.moveButton.sx = -this.sx;
+      this.moveButton.sy = -this.sy;
       this.moveButton.render();
       let pointer = getPointer();
       if (this.scene.objects.includes(this.preview)) {
@@ -117,10 +121,11 @@ export class TileMap extends GameObjectClass {
       return this.editMode;
     }
 
-    toggleEditMode(): void {
-      this.editMode = !this.editMode;
-      if (!this.editMode) {
+    setEditMode(editMode: boolean): void {
+      this.editMode = editMode;
+      if (!editMode) {
         this.scene.remove(this.preview);
+        this.preview = undefined;
       }
     }
   }

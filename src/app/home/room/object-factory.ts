@@ -14,10 +14,12 @@ import { Shrub } from './root/shrub/shrub';
 export class ObjectFactory {
     socketService: SocketService;
     room: RoomComponent;
+    onItemDown: Function;
 
-    constructor(room: RoomComponent, socketService: SocketService) {
+    constructor(room: RoomComponent, socketService: SocketService, onItemDown: Function) {
         this.room = room;
         this.socketService = socketService;
+        this.onItemDown = onItemDown;
     }
 
     makeObject(data: any): GameObject {
@@ -53,7 +55,7 @@ export class ObjectFactory {
                 break; 
             }
             case 2: {
-                object = new Tree(data["id"], Vector(data["translation_x"], data["translation_y"]), data["rotation_degrees"]);
+                object = new Tree(data["id"], data["scene_id"], Vector(data["translation_x"], data["translation_y"]), data["rotation_degrees"], this.onItemDown);
                 break;
             }
             case 3: {
@@ -61,7 +63,7 @@ export class ObjectFactory {
                 break;
             }
             case 4: {
-                object = new Shrub(data["id"], Vector(data["translation_x"], data["translation_y"]), data["rotation_degrees"]);
+                object = new Shrub(data["id"], data["scene_id"], Vector(data["translation_x"], data["translation_y"]), data["rotation_degrees"], this.onItemDown);
                 break;
             }
         }

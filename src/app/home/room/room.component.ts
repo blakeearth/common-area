@@ -15,6 +15,8 @@ import { Player } from './root/character/player/player';
 
 import { PlayerTooltipDirective } from './root/character/player/player-tooltip.directive';
 import { PlayerTooltipComponent } from './root/character/player/player-tooltip/player-tooltip.component';
+import { EditItemTooltipDirective } from './root/edit-item-tooltip.directive';
+import { EditItemTooltipComponent } from './root/edit-item-tooltip/edit-item-tooltip.component';
 import { TileMap } from './root/tile-map';
 import { VendorPopupDirective } from './vendor-popup.directive';
 import { VendorPopupComponent } from './vendor-popup/vendor-popup.component';
@@ -31,6 +33,7 @@ export class RoomComponent extends Handler implements OnInit {
   @ViewChild(PlayerTooltipDirective, { static: true }) public playerTooltipHost: PlayerTooltipDirective;
   @ViewChild(VendorPopupDirective, { static: true }) public vendorPopupHost: VendorPopupDirective;
   @ViewChild(InventoryPopupDirective, { static: true }) public inventoryPopupHost: InventoryPopupDirective;
+  @ViewChild(EditItemTooltipDirective, { static: true }) public editItemTooltipHost: EditItemTooltipDirective;
 
   roomTitle: string;
   roomDescription: string;
@@ -45,7 +48,9 @@ export class RoomComponent extends Handler implements OnInit {
   objectFactory: ObjectFactory;
 
   editMode: boolean = false;
+  eraserMode: boolean = false;
   activeItem: number = 1;
+  editingObject: GameObject;
 
   roomChangeService: RoomChangeService;
   socketService: SocketService;
@@ -66,7 +71,7 @@ export class RoomComponent extends Handler implements OnInit {
     this.membersService = membersService;
     this.membersService.setRoom(this);
     this.objects = new Map<string, any>();
-    this.objectFactory = new ObjectFactory(this, socketService);
+    this.objectFactory = new ObjectFactory(this, socketService, this.onItemDown.bind(this));
     this.componentFactoryResolver = componentFactoryResolver;
   }
 
@@ -107,6 +112,9 @@ export class RoomComponent extends Handler implements OnInit {
 
     let sort = function(obj1, obj2) {
       [obj1, obj2] = [obj1, obj2].map(getWorldRect);
+      if (obj2 instanceof TileEngine || obj2 instanceof TileMap) {
+        return -10000;
+      }
       return (obj1.y + obj1.height / 2) - (obj2.y + obj2.height / 2);
     }
 
@@ -135,6 +143,11 @@ export class RoomComponent extends Handler implements OnInit {
     if (msg["data"]["parent_id"] != null) {
       
       scene.add(object);
+      if (this.editMode) {
+        if (typeof object.setEraserMode == "function") {
+          object.setEraserMode(true);
+        }
+      }
 
       if (msg["data"]["scene_id"] == 1) {
         // this is a player
@@ -230,9 +243,13 @@ export class RoomComponent extends Handler implements OnInit {
     }
 
     let sort = function(obj1, obj2) {
+      if (obj1 instanceof TileMap) return -1;
+      if (obj2 instanceof TileMap) return 1;
       [obj1, obj2] = [obj1, obj2].map(getWorldRect);
       return (obj1.y + obj1.height / 2) - (obj2.y + obj2.height / 2);
     }
+
+    initPointer();
 
     this.objects.set("scene", Scene({
       id: 'game',
@@ -280,10 +297,9 @@ export class RoomComponent extends Handler implements OnInit {
 
     let instance: InventoryPopupComponent = <InventoryPopupComponent>componentRef.instance;
 
-    let tileMap: TileMap = this.objects.get("root");
-
     instance.onClose = this.closeInventoryPopup.bind(this);
-    instance.setActiveItem = tileMap.setActiveItem.bind(tileMap);
+    instance.setActiveItem = this.setActiveItem.bind(this);
+    document.getElementById("inventory-nav").blur();
   }
 
   closeInventoryPopup(): void {
@@ -303,6 +319,7 @@ export class RoomComponent extends Handler implements OnInit {
 
     let instance: VendorPopupComponent = <VendorPopupComponent>componentRef.instance;
     instance.onClose = this.closeVendorPopup.bind(this);
+    document.getElementById("store-nav").blur();
   }
 
   closeVendorPopup(): void {
@@ -312,6 +329,92 @@ export class RoomComponent extends Handler implements OnInit {
 
   toggleEditMode(): void {
     this.editMode = !this.editMode;
-    this.objects.get("root").toggleEditMode();
+    if (this.eraserMode) this.eraserMode = this.editMode;
+    if (this.editMode) {
+      for (let persistObject of this.objects.values()) {
+        if (typeof persistObject.setEraserMode == "function") {
+          persistObject.setEraserMode(true);
+        }
+      }
+    }
+    else {
+      for (let persistObject of this.objects.values()) {
+        if (typeof persistObject.setEraserMode == "function") {
+          persistObject.setEraserMode(false);
+        }
+      }
+    }
+    document.getElementById("edit-room-nav").blur();
+  }
+
+  setActiveItem(itemId: number): void {
+    let tileMap: TileMap = this.objects.get("root");
+    tileMap.setActiveItem(itemId);
+  }
+
+  onItemDown(object: GameObject) {
+    // this item can be erased. erase it!
+    if (typeof object.setEraserMode == "function") {
+      this.openEditItemTooltip(object);
+    }
+  }
+
+  openEditItemTooltip(object) {
+    const viewContainerRef = this.editItemTooltipHost.viewContainerRef;
+    viewContainerRef.clear();
+
+    const componentFactory = this.componentFactoryResolver.resolveComponentFactory(EditItemTooltipComponent);
+
+    let componentRef: ComponentRef<EditItemTooltipComponent>;
+
+    componentRef = viewContainerRef.createComponent(componentFactory);
+
+    let instance: EditItemTooltipComponent = <EditItemTooltipComponent>componentRef.instance;
+    instance.onErase = this.onItemErase.bind(this);
+    instance.onMove = this.onItemMove.bind(this);
+
+    let coords: Vector = this.getPointerPosition();
+
+    instance.x = coords.x + "px";
+    instance.y = coords.y + "px";
+
+    this.editingObject = object;
+  }
+
+  closeEditItemTooltip() {
+    const viewContainerRef = this.editItemTooltipHost.viewContainerRef;
+    viewContainerRef.clear();
+  }
+
+  onItemErase(): void {
+    this.socketService.sendMessage({"channel": "room", "type": "remove_persist_object", "id": this.editingObject.id});
+    this.socketService.sendMessage({"channel": "room", "type": "request_inventory"});
+    this.closeEditItemTooltip();
+  }
+
+  onItemMove(): void {
+    this.socketService.sendMessage({"channel": "room", "type": "remove_persist_object", "id": this.editingObject.id});
+    this.socketService.sendMessage({"channel": "room", "type": "request_inventory"});
+    this.setActiveItem(this.editingObject.sceneId);
+    this.closeEditItemTooltip();
+  }
+
+  getPointerPosition(): Vector {
+    let gameBoundingRect: any = document.getElementById("game").getBoundingClientRect();
+
+    let canvas: any = {
+      x: gameBoundingRect.x,
+      y: gameBoundingRect.y,
+      width: getCanvas().width,
+      height: getCanvas().height
+    }
+
+    let pointer: any = getPointer();
+
+    let relativePointerPosition: Vector = Vector(pointer.x / canvas.width, pointer.y / canvas.height);
+    
+    let pointerPosition: Vector = Vector(relativePointerPosition.x * gameBoundingRect.width, relativePointerPosition.y * gameBoundingRect.height);
+    pointerPosition = pointerPosition.add(Vector(gameBoundingRect.x, gameBoundingRect.y));
+    return pointerPosition;
   }
 }

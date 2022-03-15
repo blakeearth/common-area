@@ -68,6 +68,8 @@ import { VendorPopupComponent } from './home/room/vendor-popup/vendor-popup.comp
 import { InventoryPopupComponent } from './home/room/inventory-popup/inventory-popup.component';
 import { InventoryPopupDirective } from './home/room/inventory-popup.directive';
 import { VendorPopupDirective } from './home/room/vendor-popup.directive';
+import { EditItemTooltipComponent } from './home/room/root/edit-item-tooltip/edit-item-tooltip.component';
+import { EditItemTooltipDirective } from './home/room/root/edit-item-tooltip.directive';
 
 @NgModule({
     declarations: [
@@ -129,6 +131,8 @@ import { VendorPopupDirective } from './home/room/vendor-popup.directive';
         InventoryPopupComponent,
         InventoryPopupDirective,
         VendorPopupDirective,
+        EditItemTooltipComponent,
+        EditItemTooltipDirective,
     ],
     imports: [
         BrowserModule.withServerTransition({ appId: 'serverApp' }),
