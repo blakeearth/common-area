@@ -260,10 +260,6 @@ export class RoomComponent extends Handler implements OnInit {
   }
 
   openPlayerTooltip(displayName: string, id: string, position: Vector) {
-    let roomPosition: Vector = Vector(document.getElementById("game").offsetLeft, document.getElementById("game").offsetTop);
-
-    let playerPositionCanvas: Vector = roomPosition.add(position);
-
     const viewContainerRef = this.playerTooltipHost.viewContainerRef;
     viewContainerRef.clear();
 
@@ -277,7 +273,7 @@ export class RoomComponent extends Handler implements OnInit {
     instance.onClose = this.closePlayerTooltip.bind(this);
     instance.displayName = displayName;
     instance.id = id;
-    instance.position = playerPositionCanvas;
+    instance.position = this.getPointerPosition().subtract(Vector(0, 50));
   }
 
   closePlayerTooltip() {
