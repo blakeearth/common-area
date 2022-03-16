@@ -1,6 +1,6 @@
 import { imageAssets, Sprite, SpriteSheet, track, Vector, Text, Button, getCanvas, getWorldRect, SpriteClass, getPointer, initPointer, untrack } from 'kontra';
 
-const speed: number = 5;
+const speed: number = 2;
 
 export class Chicken extends SpriteClass {
     id: string;
@@ -24,7 +24,7 @@ export class Chicken extends SpriteClass {
             animations: {
                 walkBL: {
                     frames: '0..47',
-                    frameRate: 24
+                    frameRate: 16
                 },
                 idleFR: {
                     frames: '147..194',
@@ -32,7 +32,7 @@ export class Chicken extends SpriteClass {
                 },
                 walkBR: {
                     frames: '48..95',
-                    frameRate: 24
+                    frameRate: 16
                 },
                 idleFL: {
                     frames: '98..195',
@@ -40,15 +40,15 @@ export class Chicken extends SpriteClass {
                 },
                 walkFL: {
                     frames: '96..143',
-                    frameRate: 24
+                    frameRate: 16
                 },
                 idleBR: {
                     frames: '49...195',
                     frameRate: 0
                 },
                 walkFR: {
-                    frames: '143..190',
-                    frameRate: 24
+                    frames: '144..191',
+                    frameRate: 16
                 },
                 idleBL: {
                     frames: '0..195',
