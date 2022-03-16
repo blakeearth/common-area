@@ -6,6 +6,7 @@ import { ChatMessageComponent } from './chat-message/chat-message.component';
 import { SocketService } from 'src/app/socket/socket.service';
 import { NotificationsService } from '../../notifications/notifications.service';
 import { MembersService } from '../../members.service';
+import { ChatService } from '../../chat-service.service';
 
 @Component({
   selector: 'app-chat',
@@ -23,6 +24,7 @@ export class ChatComponent implements OnInit, Activity {
   socketService: SocketService;
   notificationsService: NotificationsService;
   membersService: MembersService;
+  chatService: ChatService;
 
   earliestChatId: string;
   roomId: string;
@@ -30,11 +32,12 @@ export class ChatComponent implements OnInit, Activity {
 
   isRequesting: boolean;
 
-  constructor(socketService: SocketService, roomChangeService: RoomChangeService, notificationsService: NotificationsService, membersService: MembersService, componentFactoryResolver: ComponentFactoryResolver) {
+  constructor(socketService: SocketService, roomChangeService: RoomChangeService, notificationsService: NotificationsService, membersService: MembersService, chatService: ChatService, componentFactoryResolver: ComponentFactoryResolver) {
     this.socketService = socketService;
     this.roomChangeService = roomChangeService;
     this.notificationsService = notificationsService;
     this.membersService = membersService;
+    this.chatService = chatService;
     this.componentFactoryResolver = componentFactoryResolver;
   }
 
@@ -70,9 +73,9 @@ export class ChatComponent implements OnInit, Activity {
       }
     }
     else if (msg["type"] == "send_message") {
-      let data: any = {display_name: msg["display_name"], sent_date: msg["sent_date"] + "Z", contents: msg["contents"], chat_id: msg["chat_id"]};
+      msg["sent_date"] = msg["sent_date"] + "Z";
       this.notificationsService.pushNotification("chat");
-      this.loadChat(data, true);
+      this.loadChat(msg, true);
     }
   }
 
@@ -110,6 +113,7 @@ export class ChatComponent implements OnInit, Activity {
     let componentRef;
     if (recent) {
       componentRef = viewContainerRef.createComponent(componentFactory, 0);
+      this.chatService.pushChatMessage(data);
     }
     else {
       componentRef = viewContainerRef.createComponent(componentFactory);

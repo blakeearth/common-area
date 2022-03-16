@@ -2,6 +2,7 @@ import { Component, ComponentFactoryResolver, ComponentRef, OnInit, ViewChild } 
 import { init, TileEngine, load, setImagePath, imageAssets, GameLoop, GameObject, Vector, getCanvas, Scene, depthSort, Sprite, getWorldRect, getPointer, initPointer, lerp } from 'kontra';
 import { Handler } from 'src/app/handler';
 import { SocketService } from 'src/app/socket/socket.service';
+import { ChatService } from '../chat-service.service';
 import { MembersService } from '../members.service';
 import { RoomChangeService } from '../room-change.service';
 
@@ -55,6 +56,7 @@ export class RoomComponent extends Handler implements OnInit {
   roomChangeService: RoomChangeService;
   socketService: SocketService;
   membersService: MembersService;
+  chatService: ChatService;
 
   componentFactoryResolver: ComponentFactoryResolver;
 
@@ -64,12 +66,16 @@ export class RoomComponent extends Handler implements OnInit {
 
   cameraOrigin: {x: number, y: number};
 
-  constructor(socketService: SocketService, roomChangeService: RoomChangeService, membersService: MembersService, componentFactoryResolver: ComponentFactoryResolver) {
+  constructor(socketService: SocketService, roomChangeService: RoomChangeService, membersService: MembersService, chatService: ChatService, componentFactoryResolver: ComponentFactoryResolver) {
     super();
     this.socketService = socketService;
     this.roomChangeService = roomChangeService;
     this.membersService = membersService;
     this.membersService.setRoom(this);
+    this.chatService = chatService;
+
+    this.chatService.chatMessage.subscribe(this.say.bind(this));
+
     this.objects = new Map<string, any>();
     this.objectFactory = new ObjectFactory(this, socketService, this.onItemDown.bind(this));
     this.componentFactoryResolver = componentFactoryResolver;
@@ -257,6 +263,11 @@ export class RoomComponent extends Handler implements OnInit {
       cullObjects: false,
       sortFunction: sort
     }));
+  }
+
+  say(chat: any): void {
+    console.log(chat);
+    this.objects.get(chat["account_id"]).say(chat);
   }
 
   openPlayerTooltip(displayName: string, id: string, position: Vector) {

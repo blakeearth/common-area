@@ -35,7 +35,6 @@ export class TileMap extends GameObjectClass {
           let pointer: any = getPointer();
           if (!this.editMode) {
             this.socketService.sendMessage({channel: "room", type: "set_target", position_x: Math.floor(this.player.x + pointer.x - getCanvas().width / 2), position_y: Math.floor(this.player.y + pointer.y - getCanvas().height / 2)});
-            this.updateCamera();
           }
           else {
             this.socketService.sendMessage({channel: "room", type: "add_persist_object", scene_id: this.activeItem, parent_id: "root", rotation_degrees_y: 0, position_x: Math.floor(this.player.x + pointer.x - getCanvas().width / 2), position_y: Math.floor(this.player.y + pointer.y - getCanvas().height / 2)});

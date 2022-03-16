@@ -1,5 +1,6 @@
 import { imageAssets, Sprite, SpriteSheet, track, Vector, Text, Button, getCanvas, getWorldRect, SpriteClass, getPointer, initPointer } from 'kontra';
 import { RoomComponent } from '../../../room.component';
+import { ChatSprite } from './chat-sprite';
 
 const speed: number = 5;
 
@@ -9,6 +10,9 @@ export class Player extends SpriteClass {
     displayName: string;
     target: Vector;
     direction: Vector;
+
+    chatMessage: ChatSprite;
+    handle: number;
 
     me: boolean;
 
@@ -165,7 +169,19 @@ export class Player extends SpriteClass {
         });
 
         nameTag.render();
-        
+    }
+
+    say(chat: any): void {
+        if (this.chatMessage != undefined) this.clearChat();
+        this.chatMessage = new ChatSprite(chat.contents);
+        this.addChild(this.chatMessage);
+        this.handle = window.setTimeout(this.clearChat.bind(this), 5000);
+    }
+
+    clearChat(): void {
+        this.removeChild(this.chatMessage);
+        window.clearTimeout(this.handle);
+        this.chatMessage = undefined;
     }
 
     setTarget(msg: any): void {
