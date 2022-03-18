@@ -136,6 +136,7 @@ export class TimerComponent extends Handler implements OnInit, Activity {
       // I started this session
       this.participants = msg["participants"];
       this.sessionId = msg["session_id"];
+      sessionStorage.setItem("session_id", this.sessionId);
       this.timeRemaining = new Date(0, 0, 0, 0, msg["duration"], 0);
       this.timerService.startTimer();
       if (this.timerSubscription != null) this.timerSubscription.unsubscribe();
@@ -169,11 +170,7 @@ export class TimerComponent extends Handler implements OnInit, Activity {
     this.sessions = [];
     for (let session of msg["messages"]) {
       session.expected_end_time = session.expected_end_time + "Z";
-      for (let participant of session.participants) {
-        if (participant.account_id == sessionStorage.getItem("account_id")) {
-          this.socketService.sendMessage({channel: "timer", type: "join_session", room_id: this.roomId, session_id: session.session_id});
-        }
-      }
+      if (session.session_id == sessionStorage.getItem("session_id")) this.socketService.sendMessage({channel: "timer", type: "join_session", room_id: this.roomId, session_id: session.session_id});
       this.sessions.push(session);
     }
     if (this.sessions.length > 0) {
@@ -190,6 +187,7 @@ export class TimerComponent extends Handler implements OnInit, Activity {
     if (mySession) {
       // I started this session
       this.sessionId = msg["session_id"];
+      sessionStorage.setItem("session_id", this.sessionId);
       this.timeRemaining = new Date((new Date(msg["expected_end_time"])).getTime() - Date.now());
       this.timerService.startTimer();
       if (this.timerSubscription != null) this.timerSubscription.unsubscribe();
