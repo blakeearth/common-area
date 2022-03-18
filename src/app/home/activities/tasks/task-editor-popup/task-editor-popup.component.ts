@@ -70,6 +70,10 @@ export class TaskEditorPopupComponent implements OnInit {
     }
   }
 
+  saveTask(): void {
+    this.socketService.sendMessage({"channel": "tasks", "type": "save_task", "task_id": this.data.task_id});
+  }
+
   onRequestTags(msg: any): void {
     for (let tag of msg["tags"]) this.loadTagging(tag);
   }
