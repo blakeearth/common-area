@@ -97,6 +97,7 @@ export class MembersService {
 
   removeMember(member: Player): void {
     this.removedMemberSource.next(member);
+    this.onlineMembers.delete(member);
     this.socketService.sendMessage({channel: "settings", type: "request_room_members", room_id: this.roomId});
   }
 
