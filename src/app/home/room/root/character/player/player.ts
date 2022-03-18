@@ -120,7 +120,8 @@ export class Player extends SpriteClass {
             this.playingAnimation = this.playingAnimation.replace('walk', 'idle');
             this.playAnimation(this.playingAnimation);
             this.reportLocation();
-            this.target = Vector(this.x, this.y);
+            this.target = this.position;
+            this.direction = Vector(this.target.x - this.x, this.target.y - this.y).normalize();
             this.dx = 0;
             this.dy = 0;
         }
@@ -205,6 +206,15 @@ export class Player extends SpriteClass {
             this.playingAnimation = 'walkBL';
         }
         this.playAnimation(this.playingAnimation);
+    }
+
+    warpTo(msg: any): void {
+        this.position = Vector(msg["position_x"], msg["position_y"]);
+        this.x = msg["position_x"];
+        this.y = msg["position_y"];
+        this.target = this.position;
+        this.direction = Vector(this.target.x - this.x, this.target.y - this.y).normalize();
+        this.lastDistance = undefined;
     }
 
     reportLocation(): void {

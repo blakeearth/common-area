@@ -70,6 +70,7 @@ import { InventoryPopupDirective } from './home/room/inventory-popup.directive';
 import { VendorPopupDirective } from './home/room/vendor-popup.directive';
 import { EditItemTooltipComponent } from './home/room/root/edit-item-tooltip/edit-item-tooltip.component';
 import { EditItemTooltipDirective } from './home/room/root/edit-item-tooltip.directive';
+import { CheckpointListComponent } from './home/room/checkpoint-list/checkpoint-list.component';
 
 @NgModule({
     declarations: [
@@ -133,6 +134,7 @@ import { EditItemTooltipDirective } from './home/room/root/edit-item-tooltip.dir
         VendorPopupDirective,
         EditItemTooltipComponent,
         EditItemTooltipDirective,
+        CheckpointListComponent,
     ],
     imports: [
         BrowserModule.withServerTransition({ appId: 'serverApp' }),

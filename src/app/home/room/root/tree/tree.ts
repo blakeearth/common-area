@@ -1,10 +1,13 @@
 import { imageAssets, Sprite, SpriteSheet, Vector, SpriteClass, initPointer, track, getCanvas, untrack } from 'kontra';
+import { PersistObject } from '../persist-object';
 
-export class Tree extends SpriteClass {
+export class Tree extends PersistObject {
     id: string;
     ownerAccountId: string;
 
-    constructor(id: string, sceneId: string, ownerAccountId: string, position: Vector, rotationDegrees: number, onDown: Function) {
+    hovered: boolean;
+
+    constructor(id: string, sceneId: number, ownerAccountId: string, position: Vector, rotationDegrees: number, onDown: Function, displayName?: string) {
 
         let spriteSheet = SpriteSheet({
             image: imageAssets["tree"],
@@ -30,35 +33,9 @@ export class Tree extends SpriteClass {
             }
         });
 
-        initPointer();
-        
-        super({
-            type: 'player',
-            x: position.x,
-            y: position.y,
-            width: 128,
-            height: 192,
-            image: spriteSheet.frame[0],
-            animations: spriteSheet.animations,
-            onDown: function() {
-                onDown(this);
-            },
-            onUp: function() {
-
-            },
-            onOver: function() {
-                getCanvas().style.cursor = "pointer";
-            },
-            onOut: function() {
-                getCanvas().style.cursor = "default";
-            }
-        });
+        super(id, sceneId, ownerAccountId, position, onDown, spriteSheet, 128, 192, displayName);
 
         this.playAnimation("walkFR");
-
-        this.id = id;
-        this.sceneId = sceneId;
-        this.ownerAccountId = ownerAccountId;
 
         this.shadow = Sprite({
             image: imageAssets["bear-shadow"],
@@ -77,10 +54,5 @@ export class Tree extends SpriteClass {
 
         //super.render();
         super.draw();
-    }
-
-    setEraserMode(eraserMode: boolean) {
-        if (eraserMode) track(this);
-        else untrack(this);
     }
 }

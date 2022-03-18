@@ -9,6 +9,9 @@ export class EditItemTooltipComponent implements OnInit {
 
   onMove: Function;
   onErase: Function;
+  onName: Function;
+
+  displayName: string;
 
   ownerAccountId: string;
   accountId: string;

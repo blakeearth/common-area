@@ -1,11 +1,13 @@
 import { imageAssets, Sprite, SpriteSheet, Vector, SpriteClass, getCanvas, track, untrack } from 'kontra';
-import { SocketService } from 'src/app/socket/socket.service';
+import { PersistObject } from '../persist-object';
 
-export class Shrub extends SpriteClass {
+export class Shrub extends PersistObject {
     id: string;
     ownerAccountId: string;
 
-    constructor(id: string, sceneId: string, ownerAccountId: string, position: Vector, rotationDegrees: number, onDown: Function) {
+    hovered: boolean;
+
+    constructor(id: string, sceneId: number, ownerAccountId: string, position: Vector, rotationDegrees: number, onDown: Function, displayName?: string) {
         let spriteSheet = SpriteSheet({
             image: imageAssets["shrub"],
             frameWidth: 180,
@@ -30,32 +32,9 @@ export class Shrub extends SpriteClass {
             }
         });
         
-        super({
-            x: position.x,
-            y: position.y,
-            width: 180,
-            height: 180,
-            image: spriteSheet.frame[0],
-            animations: spriteSheet.animations,
-            onDown: function() {
-                onDown(this);
-            },
-            onUp: function() {
-
-            },
-            onOver: function() {
-                getCanvas().style.cursor = "pointer";
-            },
-            onOut: function() {
-                getCanvas().style.cursor = "default";
-            }
-        });
+        super(id, sceneId, ownerAccountId, position, onDown, spriteSheet, 180, 180, displayName);
 
         this.playAnimation("walkFR");
-
-        this.id = id;
-        this.sceneId = sceneId;
-        this.ownerAccountId = ownerAccountId;
 
         this.shadow = Sprite({
             image: imageAssets["bear-shadow"],
@@ -74,10 +53,5 @@ export class Shrub extends SpriteClass {
 
         //super.render();
         super.draw();        
-    }
-
-    setEraserMode(eraserMode: boolean) {
-        if (eraserMode) track(this);
-        else untrack(this);
     }
 }

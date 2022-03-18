@@ -51,6 +51,10 @@ export class PlayerTooltipComponent extends Handler implements OnInit, OnDestroy
     this.activeTaskData = msg;
   }
 
+  requestWarp(): void {
+    this.socketService.sendMessage({"channel": "room", "type": "warp_to_persist_object", "id": this.id});
+  }
+
   ngOnDestroy(): void {
     this.subscription.unsubscribe();
   }

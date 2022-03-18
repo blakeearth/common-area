@@ -10,6 +10,7 @@ import { RoomComponent } from './room.component';
 import { Tree } from './root/tree/tree';
 import { Chicken } from './root/character/chicken/chicken';
 import { Shrub } from './root/shrub/shrub';
+import { Checkpoint } from './root/checkpoint/checkpoint';
 
 export class ObjectFactory {
     socketService: SocketService;
@@ -34,7 +35,7 @@ export class ObjectFactory {
             } 
             case 1: { 
                 // player
-                object = new Player(this.room, data["id"], data["display_name"], Vector(data["translation_x"], data["translation_y"]));
+                object = new Player(this.room, data["id"], data["display_name"], Vector(data["position_x"], data["position_y"]));
 
                 /* create the task popup
                 OMITTED FOR USER TESTS--WILL ASK USERS WHAT THEY WOULD DO INSTEAD
@@ -55,16 +56,19 @@ export class ObjectFactory {
                 break; 
             }
             case 2: {
-                object = new Tree(data["id"], data["scene_id"], data["owner_account_id"], Vector(data["translation_x"], data["translation_y"]), data["rotation_degrees"], this.onItemDown);
+                object = new Tree(data["id"], data["scene_id"], data["owner_account_id"], Vector(data["position_x"], data["position_y"]), data["rotation_degrees"], this.onItemDown, data["display_name"]);
                 break;
             }
             case 3: {
-                object = new Chicken(data["id"], data["scene_id"], data["owner_account_id"], Vector(data["translation_x"], data["translation_y"]), this.onItemDown);
+                object = new Chicken(data["id"], data["scene_id"], data["owner_account_id"], Vector(data["position_x"], data["position_y"]), this.onItemDown, data["display_name"]);
                 break;
             }
             case 4: {
-                object = new Shrub(data["id"], data["scene_id"], data["owner_account_id"], Vector(data["translation_x"], data["translation_y"]), data["rotation_degrees"], this.onItemDown);
+                object = new Shrub(data["id"], data["scene_id"], data["owner_account_id"], Vector(data["position_x"], data["position_y"]), data["rotation_degrees"], this.onItemDown, data["display_name"]);
                 break;
+            }
+            case 5: {
+                object = new Checkpoint(data["id"], data["scene_id"], data["owner_account_id"], Vector(data["position_x"], data["position_y"]), data["rotation_degrees"], this.onItemDown, data["display_name"]);
             }
         }
         return object;

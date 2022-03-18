@@ -79,17 +79,6 @@ a:hover:not(.selected), a:focus {
     outline: none;
 }
 
-#room-title {
-    position: absolute;
-    font-family: "Poppins Bold", sans-serif;
-    top: 0;
-    left: 24px;
-    padding: 0.2em 2ch;
-    background-color: white;
-    border-radius: 2rem 0 2rem 0;
-    box-shadow: 0 1rem 1px 0 rgba(0, 0, 0, 0.2);
-}
-
 @media only screen and (min-width: 600px) {
     canvas {
         border-radius: 2rem 0 0 0;

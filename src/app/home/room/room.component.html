@@ -1,5 +1,5 @@
 <div class="room">
-    <span id="room-title">{{ this.roomTitle || "Room"}}</span>
+    <app-checkpoint-list></app-checkpoint-list>
     <app-member-list [room]="this"></app-member-list>
     <canvas id="game" width="128" height="128" (click)="requestSetTarget()">
         <button>Move North</button>

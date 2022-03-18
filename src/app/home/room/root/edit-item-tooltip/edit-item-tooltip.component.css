@@ -1,13 +1,31 @@
 .tooltip {
     cursor: move;
     display: flex;
-    justify-content: center;
+    flex-direction: column;
     position: fixed;
-    overflow: auto;
-    width: 100px;
     background-color: white;
     border-radius: 2em;
     box-shadow: 0 1rem 1px 0 rgba(0, 0, 0, 0.2);
+    padding: 1em 0;
+    gap: 1ch;
+}
+
+#name-field {
+    cursor: pointer;
+    font-size: small;
+    height: small;
+    text-align: center;
+    resize: none;
+    background-color: transparent;
+    border-color: transparent;
+    margin-bottom: 0;
+    width: 100px;
+    height: 1em;
+}
+
+.buttons {
+    display: flex;
+    justify-content: center;
     padding: 1em 0;
     gap: 1ch;
 }

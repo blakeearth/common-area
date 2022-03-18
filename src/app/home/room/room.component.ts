@@ -5,6 +5,7 @@ import { SocketService } from 'src/app/socket/socket.service';
 import { ChatService } from '../chat-service.service';
 import { MembersService } from '../members.service';
 import { RoomChangeService } from '../room-change.service';
+import { CheckpointService } from './checkpoint.service';
 
 import { images } from "./images";
 import { InventoryPopupDirective } from './inventory-popup.directive';
@@ -16,8 +17,10 @@ import { Player } from './root/character/player/player';
 
 import { PlayerTooltipDirective } from './root/character/player/player-tooltip.directive';
 import { PlayerTooltipComponent } from './root/character/player/player-tooltip/player-tooltip.component';
+import { Checkpoint } from './root/checkpoint/checkpoint';
 import { EditItemTooltipDirective } from './root/edit-item-tooltip.directive';
 import { EditItemTooltipComponent } from './root/edit-item-tooltip/edit-item-tooltip.component';
+import { PersistObject } from './root/persist-object';
 import { TileMap } from './root/tile-map';
 import { VendorPopupDirective } from './vendor-popup.directive';
 import { VendorPopupComponent } from './vendor-popup/vendor-popup.component';
@@ -51,12 +54,13 @@ export class RoomComponent extends Handler implements OnInit {
   editMode: boolean = false;
   eraserMode: boolean = false;
   activeItem: number = 1;
-  editingObject: GameObject;
+  editingObject: PersistObject;
 
   roomChangeService: RoomChangeService;
   socketService: SocketService;
   membersService: MembersService;
   chatService: ChatService;
+  checkpointService: CheckpointService;
 
   componentFactoryResolver: ComponentFactoryResolver;
 
@@ -66,13 +70,14 @@ export class RoomComponent extends Handler implements OnInit {
 
   cameraOrigin: {x: number, y: number};
 
-  constructor(socketService: SocketService, roomChangeService: RoomChangeService, membersService: MembersService, chatService: ChatService, componentFactoryResolver: ComponentFactoryResolver) {
+  constructor(socketService: SocketService, roomChangeService: RoomChangeService, membersService: MembersService, chatService: ChatService, componentFactoryResolver: ComponentFactoryResolver, checkpointService: CheckpointService) {
     super();
     this.socketService = socketService;
     this.roomChangeService = roomChangeService;
     this.membersService = membersService;
     this.membersService.setRoom(this);
     this.chatService = chatService;
+    this.checkpointService = checkpointService;
 
     this.chatService.chatMessage.subscribe(this.say.bind(this));
 
@@ -211,12 +216,13 @@ export class RoomComponent extends Handler implements OnInit {
     else {
       scene.add(object);
     }
+    if (object instanceof Checkpoint) this.checkpointService.addCheckpoint(object as Checkpoint);
     this.objects.set(msg["data"]["id"], object);
   }
   
   modifyPersistObject(msg: any): void {
 	  if (this.objects.has(msg["id"])) {
-      let object: any = this.objects.get(msg["id"]);
+      let object: GameObject = this.objects.get(msg["id"]);
       object[this.snakeToCamel(msg["method"])](msg);
     }
   }
@@ -232,6 +238,7 @@ export class RoomComponent extends Handler implements OnInit {
     if (this.objects.has(msg["id"])) {
       let object: GameObject = this.objects.get(msg["id"]);
       this.objects.get("scene").remove(object);
+      if (object instanceof Checkpoint) this.checkpointService.removeCheckpoint(object);
       if (object instanceof Player) this.membersService.removeMember(object);
     }
   }
@@ -249,8 +256,6 @@ export class RoomComponent extends Handler implements OnInit {
     }
 
     let sort = function(obj1, obj2) {
-      if (obj1 instanceof TileMap) return -1;
-      if (obj2 instanceof TileMap) return 1;
       [obj1, obj2] = [obj1, obj2].map(getWorldRect);
       return (obj1.y + obj1.height / 2) - (obj2.y + obj2.height / 2);
     }
@@ -266,7 +271,6 @@ export class RoomComponent extends Handler implements OnInit {
   }
 
   say(chat: any): void {
-    console.log(chat);
     this.objects.get(chat["account_id"]).say(chat);
   }
 
@@ -342,6 +346,9 @@ export class RoomComponent extends Handler implements OnInit {
         if (typeof persistObject.setEraserMode == "function") {
           persistObject.setEraserMode(true);
         }
+        else {
+          console.log(persistObject);
+        }
       }
     }
     else {
@@ -358,6 +365,11 @@ export class RoomComponent extends Handler implements OnInit {
   setActiveItem(itemId: number): void {
     let tileMap: TileMap = this.objects.get("root");
     tileMap.setActiveItem(itemId);
+  }
+
+  setPreview(object: PersistObject): void {
+    let tileMap: TileMap = this.objects.get("root");
+    tileMap.setPreview(object);
   }
 
   onItemDown(object: GameObject) {
@@ -380,12 +392,14 @@ export class RoomComponent extends Handler implements OnInit {
     let instance: EditItemTooltipComponent = <EditItemTooltipComponent>componentRef.instance;
     instance.onErase = this.onItemErase.bind(this);
     instance.onMove = this.onItemMove.bind(this);
+    instance.onName = this.onItemName.bind(this);
 
     let coords: Vector = this.getPointerPosition();
 
     instance.x = coords.x + "px";
     instance.y = coords.y + "px";
 
+    instance.displayName = object.displayName || "Unnamed object";
     instance.ownerAccountId = object.ownerAccountId;
 
     this.editingObject = object;
@@ -396,6 +410,11 @@ export class RoomComponent extends Handler implements OnInit {
     viewContainerRef.clear();
   }
 
+  onItemName(name: string): void {
+    this.closeEditItemTooltip();
+    this.socketService.sendMessage({"channel": "room", "type": "set_display_name", "id": this.editingObject.id, "display_name": name});
+  }
+
   onItemErase(): void {
     this.socketService.sendMessage({"channel": "room", "type": "remove_persist_object", "id": this.editingObject.id});
     this.socketService.sendMessage({"channel": "room", "type": "request_inventory"});
@@ -403,9 +422,7 @@ export class RoomComponent extends Handler implements OnInit {
   }
 
   onItemMove(): void {
-    this.socketService.sendMessage({"channel": "room", "type": "remove_persist_object", "id": this.editingObject.id});
-    this.socketService.sendMessage({"channel": "room", "type": "request_inventory"});
-    this.setActiveItem(this.editingObject.sceneId);
+    this.setPreview(this.editingObject);
     this.toggleEditMode();
     this.closeEditItemTooltip();
   }
