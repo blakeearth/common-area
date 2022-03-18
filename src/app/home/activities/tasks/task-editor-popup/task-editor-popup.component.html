@@ -43,8 +43,8 @@
                         </label>
                     </div>
                 </div>
-                <button tabindex="0" (click)="saveTask()" (keydown.enter)="saveTask()">Save Task</button>
-                <div [ngClass]="this.data.can_edit_settings ? 'settings' : 'hidden-settings'">
+                <button [style.display]="this.data.has_listing ? 'none' : 'inherit'" tabindex="0" (click)="saveTask()" (keydown.enter)="saveTask()">Save Task</button>
+                <div [ngClass]="this.data.has_listing ? 'settings' : 'hidden-settings'">
                     <h6 class="task-actions">Listing Settings</h6>
                     <div class="tags-settings">
                         <button tabindex="0" (click)="toggleTags()"

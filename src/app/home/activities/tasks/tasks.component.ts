@@ -98,6 +98,14 @@ export class TasksComponent extends Handler implements OnInit, Activity {
       else if (msg["type"] == "request_task") {
         this.onRequestTask(msg);
       }
+
+      // TODO
+      else if (msg["type"] == "save_task") {
+        console.log("SAVE TASK!!!!!!!");
+        const viewContainerRef = this.taskEditorPopupHost.viewContainerRef;
+        viewContainerRef.clear();
+        this.location.replaceState('/home/tasks');
+      }
     }
   }
 

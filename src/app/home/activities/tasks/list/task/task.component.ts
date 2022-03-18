@@ -40,7 +40,7 @@ export class TaskComponent implements OnInit {
 
   ngOnInit(): void {
     this.socketService.reply.subscribe(msg => this.onResponseReceived(msg));
-    if (this.isListing) for (let tag of this.data.tags) this.loadTag(tag);
+    if (this.isListing && this.data.tags) for (let tag of this.data.tags) this.loadTag(tag);
     if (this.isListing && this.data.active) this.tasksService.setActiveTask(this.data);
   }
 

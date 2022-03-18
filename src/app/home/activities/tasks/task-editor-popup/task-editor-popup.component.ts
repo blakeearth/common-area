@@ -48,7 +48,7 @@ export class TaskEditorPopupComponent implements OnInit {
     this.enteredTitle = this.data.title || "Untitled task";
     this.enteredDescription = this.data.contents;
     let modalContent: HTMLElement = document.getElementsByClassName("modal-content")[0] as HTMLElement;
-    for (let tag of this.data.tags) {
+    if (this.data.tags) for (let tag of this.data.tags) {
       this.loadTagging(tag);
     }
     modalContent.focus();
@@ -56,7 +56,7 @@ export class TaskEditorPopupComponent implements OnInit {
   }
 
   ngOnDestroy(): void {
-    this.socketSubscription.unsubscribe();
+    if (this.socketSubscription) this.socketSubscription.unsubscribe();
   }
 
   onResponseReceived(msg: any): void {
