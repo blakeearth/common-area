@@ -223,6 +223,7 @@ export class TimerComponent extends Handler implements OnInit, Activity {
       this.leaveButtonDisplay = "none";
       this.timeRemaining = new Date(0, 0, 0, 0, this.timeToSubmit, 0);
       this.timerService.stopTimer();
+      sessionStorage.removeItem("session_id");
       if (this.timerSubscription != null) this.timerSubscription.unsubscribe();
 
       this.leftVisibility = "initial";
@@ -250,6 +251,7 @@ export class TimerComponent extends Handler implements OnInit, Activity {
 
       this.timeRemaining = new Date(0, 0, 0, 0, this.timeToSubmit, 0);
       this.timerService.stopTimer();
+      sessionStorage.removeItem("session_id");
       if (this.timerSubscription != null) this.timerSubscription.unsubscribe();
   
       this.leftVisibility = "inherit";
