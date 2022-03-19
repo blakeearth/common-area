@@ -77,7 +77,9 @@ export class Character extends PersistObject {
             this.playingAnimation = this.playingAnimation.replace('walk', 'idle');
             this.playAnimation(this.playingAnimation);
             this.reportLocation();
-            this.target = Vector(this.x, this.y);
+            this.position = Vector(this.x, this.y);
+            this.target = this.position;
+            this.velocity = Vector(0, 0);
             this.dx = 0;
             this.dy = 0;
         }
@@ -122,8 +124,9 @@ export class Character extends PersistObject {
     }
 
     move(msg: any): void {
-        this.target = this.position;
         super.move(msg);
+        this.target = this.position;
+        this.velocity = Vector(0, 0);
     }
 
 }
