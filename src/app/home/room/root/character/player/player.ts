@@ -121,7 +121,8 @@ export class Player extends SpriteClass {
             this.playAnimation(this.playingAnimation);
             this.reportLocation();
             this.target = this.position;
-            this.direction = Vector(this.target.x - this.x, this.target.y - this.y).normalize();
+            this.velocity = Vector(0, 0);
+            this.direction = Vector(0, 0);
             this.dx = 0;
             this.dy = 0;
         }
@@ -214,6 +215,7 @@ export class Player extends SpriteClass {
         this.y = msg["position_y"];
         this.target = this.position;
         this.direction = Vector(this.target.x - this.x, this.target.y - this.y).normalize();
+        this.velocity = Vector(0, 0);
         this.lastDistance = undefined;
     }
 
