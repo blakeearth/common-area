@@ -1,5 +1,5 @@
 import { Component, ComponentFactoryResolver, ComponentRef, OnInit, ViewChild } from '@angular/core';
-import { init, TileEngine, load, setImagePath, imageAssets, GameLoop, GameObject, Vector, getCanvas, Scene, depthSort, Sprite, getWorldRect, getPointer, initPointer, lerp } from 'kontra';
+import { init, TileEngine, load, setImagePath, imageAssets, GameLoop, GameObject, Vector, getCanvas, Scene, depthSort, Sprite, getWorldRect, getPointer, initPointer, lerp, Quadtree, collides } from 'kontra';
 import { Handler } from 'src/app/handler';
 import { SocketService } from 'src/app/socket/socket.service';
 import { ChatService } from '../chat-service.service';
@@ -181,10 +181,29 @@ export class RoomComponent extends Handler implements OnInit {
 
         if (this.loop != undefined) this.loop.stop();
 
+        let quadtree: Quadtree = Quadtree();
+
         this.loop = GameLoop({
           update: function() {
+            quadtree.clear();
+            let players: Player[] = [];
+            for (let object of this.objects.values()) {
+              (object as PersistObject).opacity = 1.0; // TODO: restore "original" opacity
+              quadtree.add(object);
+              if (object instanceof Player) players.push(object);
+            }
+            for (let player of players) {
+              for (let potentialCollider of quadtree.get(player)) {
+                let pCollider: PersistObject = potentialCollider as PersistObject;
+                let collision: boolean = collides(pCollider, player);
+                let playerBehind: boolean = ((pCollider.y + pCollider.height / 2) - (player.y + player.height / 2)) > 0;
+                if (collision && playerBehind && player.height < pCollider.height) {
+                  (potentialCollider as PersistObject).opacity = 0.2;
+                }
+              }
+            }
             scene.update();
-          },
+          }.bind(this),
           render: function() {
             this.target = {
               x: lerp(this.target.x, object.x + object.width / 2, 0.1),
