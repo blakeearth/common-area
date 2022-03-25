@@ -154,9 +154,15 @@ h2 {
         flex-direction: column;
         justify-content: center;
         align-items: stretch;
-        padding: 0 2ch;
+        background-color: #011638;
+        color: white;
         margin-top: 2em;
         margin-bottom: 2em;
+    }
+
+    .feature img {
+        width: auto;
+        height: auto;
     }
 
     .statement {
