@@ -244,19 +244,21 @@ export class TimerComponent extends Handler implements OnInit, Activity {
   // TODO END SESSION
   endSession(msg: any) {
     if (msg["session_id"] == this.sessionId) {
+      this.sessionId = msg["session_id"];
+
+      this.socketService.sendMessage({channel: "timer", type: "request_active_sessions", room_id: this.roomId});
       this.socketService.sendMessage({channel: "stats", type: "request_sessions"});
       this.socketService.sendMessage({channel: "stats", type: "request_achievements"});
-      
-      this.notificationsService.pushNotification("timer");
 
+      this.leaveButtonDisplay = "none";
       this.timeRemaining = new Date(0, 0, 0, 0, this.timeToSubmit, 0);
       this.timerService.stopTimer();
       sessionStorage.removeItem("session_id");
       if (this.timerSubscription != null) this.timerSubscription.unsubscribe();
-  
-      this.leftVisibility = "inherit";
-      this.rightVisibility = "inherit";
-      this.startButtonDisplay = "inherit";
+
+      this.leftVisibility = "initial";
+      this.rightVisibility = "initial";
+      this.startButtonDisplay = "initial";
       this.leaveButtonDisplay = "none";
       this.participantsDisplay = "none";
     }
@@ -287,7 +289,6 @@ export class TimerComponent extends Handler implements OnInit, Activity {
     let newDate = new Date(0, 0, 0, 0, this.timeRemaining.getMinutes(), 0);
     if (this.timeRemaining.getSeconds() == 0) {
       if (this.timeRemaining.getMinutes() == 0) {
-        this.socketService.sendMessage({channel: "timer", type: "leave_session", room_id: this.roomId, session_id: this.sessionId});
         this.timeRemaining = new Date(0, 0, 0, 0, this.timeToSubmit);
         this.timerService.stopTimer();
         this.timerSubscription.unsubscribe();
