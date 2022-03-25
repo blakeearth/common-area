@@ -96,4 +96,8 @@ a:hover:not(.selected), a:focus {
     #wealth, app-checkpoint-list {
         left: 0;
     }
+
+    canvas {
+        height: calc(100% - 10em);
+    }
 }
