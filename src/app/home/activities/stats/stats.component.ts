@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import Chart from 'chart.js/auto';
-import { Location } from '@angular/common';
 import { Handler } from 'src/app/handler';
 import { SocketService } from 'src/app/socket/socket.service';
 import { WebMonetizationService } from 'src/app/web-monetization/web-monetization.service';
@@ -8,6 +7,7 @@ import { Activity } from '../activity';
 import { TasksService } from '../tasks.service';
 import { randInt } from 'kontra';
 import { NotificationsService } from '../../notifications/notifications.service';
+import { StatsService } from '../stats.service';
 
 @Component({
   selector: 'app-stats',
@@ -21,6 +21,7 @@ export class StatsComponent extends Handler implements OnInit, Activity {
   socketService: SocketService;
   tasksService: TasksService;
   notificationsService: NotificationsService;
+  statsService: StatsService;
 
   tagBreakdownStackedBar: Chart;
   taskBreakdownPieChart: Chart;
@@ -32,7 +33,6 @@ export class StatsComponent extends Handler implements OnInit, Activity {
   millisecondsPerTagPerDay: Map<string, number[]>;
 
   listings: any[];
-  millisecondsPerListing: Map<string, number>;
   minutesOnDeletedListings: number;
 
   fromDate: Date;
@@ -42,14 +42,14 @@ export class StatsComponent extends Handler implements OnInit, Activity {
   hours: number;
   minutes: number = 0;
 
-  constructor(webMonetizationService: WebMonetizationService, socketService: SocketService, tasksService: TasksService, notificationsService: NotificationsService) {
+  constructor(webMonetizationService: WebMonetizationService, socketService: SocketService, tasksService: TasksService, notificationsService: NotificationsService, statsService: StatsService) {
     super();
     this.webMonetizationService = webMonetizationService;
     this.socketService = socketService;
     this.tasksService = tasksService;
     this.tasksService.setOnListsDoneLoading(this.updateData.bind(this));
     this.notificationsService = notificationsService;
-    this.millisecondsPerListing = new Map<string, number>();
+    this.statsService = statsService;
   }
 
   ngOnInit(): void {
@@ -144,7 +144,6 @@ export class StatsComponent extends Handler implements OnInit, Activity {
     this.tags = new Map<string, any>();
     this.millisecondsPerTagPerDay = new Map<string, number[]>();
     this.listings = [];
-    this.millisecondsPerListing = new Map<string, number>();
     this.minutesOnDeletedListings = 0;
 
     const oneDay = 24 * 60 * 60 * 1000;
@@ -162,12 +161,12 @@ export class StatsComponent extends Handler implements OnInit, Activity {
           millisecondsInDuration += ms;
           let listing: any = this.tasksService.getListing(span.listing_id);
           if (listing != null) {
-            if (this.millisecondsPerListing.has(span.listing_id)) {
-              this.millisecondsPerListing.set(span.listing_id, this.millisecondsPerListing.get(span.listing_id) + ms);
+            if (this.statsService.hasListing(span.listing_id)) {
+              this.statsService.setMillisecondsForListing(span.listing_id, this.statsService.getMillisecondsForListing(span.listing_id) + ms);
             }
             else {
               this.listings.push(listing);
-              this.millisecondsPerListing.set(span.listing_id, ms);
+              this.statsService.setMillisecondsForListing(span.listing_id, ms);
             }
           }
           else {
@@ -205,12 +204,12 @@ export class StatsComponent extends Handler implements OnInit, Activity {
     this.minutesOnDeletedListings = Math.floor(this.minutesOnDeletedListings);
 
     this.listings.sort(function(a: any, b: any){
-      a.minutes = Math.floor(this.millisecondsPerListing.get(a.listing_id) / 60000);
-      b.minutes = Math.floor(this.millisecondsPerListing.get(b.listing_id) / 60000);
-      return this.millisecondsPerListing.get(b.listing_id) - this.millisecondsPerListing.get(a.listing_id);
+      a.minutes = Math.floor(this.statsService.getMillisecondsForListing(a.listing_id) / 60000);
+      b.minutes = Math.floor(this.statsService.getMillisecondsForListing(b.listing_id) / 60000);
+      return this.statsService.getMillisecondsForListing(b.listing_id) - this.statsService.getMillisecondsForListing(a.listing_id);
     }.bind(this));
 
-    if (this.listings.length == 1) this.listings[0].minutes = Math.floor(this.millisecondsPerListing.get(this.listings[0].listing_id) / 60000)
+    if (this.listings.length == 1) this.listings[0].minutes = Math.floor(this.statsService.getMillisecondsForListing(this.listings[0].listing_id) / 60000)
 
     this.taskBreakdownPieChart.data.labels = [];
 
@@ -305,7 +304,6 @@ export class StatsComponent extends Handler implements OnInit, Activity {
   }
 
   requestAchievements(msg: any): void {
-    console.log(msg);
     this.achievements = [];
     for (let achievement of msg["achievements"]) {
       if (achievement.just_completed) this.notificationsService.pushNotification('stats');

@@ -1,6 +1,7 @@
 import { Component, ComponentFactoryResolver, ComponentRef, OnInit, ViewChild, ViewRef } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { SocketService } from 'src/app/socket/socket.service';
+import { StatsService } from '../../stats.service';
 import { TagDirective } from '../list/filter-popup/tag.directive';
 import { TagComponent } from '../list/filter-popup/tag/tag.component';
 import { TagsPopupDirective } from './tags-popup.directive';
@@ -34,13 +35,18 @@ export class TaskEditorPopupComponent implements OnInit {
   tagsPopupOpen: boolean = false;
 
   socketService: SocketService;
+  statsService: StatsService;
   componentFactoryResolver: ComponentFactoryResolver;
 
   socketSubscription: Subscription;
-  
 
-  constructor(socketService: SocketService, componentFactoryResolver: ComponentFactoryResolver) {
+  days: number;
+  hours: number;
+  minutes: number;
+
+  constructor(socketService: SocketService, statsService: StatsService, componentFactoryResolver: ComponentFactoryResolver) {
     this.socketService = socketService;
+    this.statsService = statsService;
     this.componentFactoryResolver = componentFactoryResolver;
   }
 
@@ -53,6 +59,19 @@ export class TaskEditorPopupComponent implements OnInit {
     }
     modalContent.focus();
     this.socketSubscription = this.socketService.channelReply.get("tasks").subscribe(msg => this.onResponseReceived(msg));
+
+    if (this.statsService.hasListing(this.data.listing_id)) {
+      let seconds: number = this.statsService.getMillisecondsForListing(this.data.listing_id) / 1000;
+      let days: number = Math.floor(seconds / (3600*24));
+      seconds -= days*3600*24;
+      let hours: number = Math.floor(seconds / 3600);
+      seconds -= hours * 3600;
+      let minutes: number = Math.floor(seconds / 60);
+      seconds -= minutes * 60;
+      this.days = days;
+      this.hours = hours;
+      this.minutes = minutes;
+    }
   }
 
   ngOnDestroy(): void {

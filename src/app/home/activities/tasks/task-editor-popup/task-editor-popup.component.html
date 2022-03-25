@@ -8,13 +8,16 @@
         <div class="task-content">
             <div class="task-main">
                 <form (submit)="onClose($event)">
-                    <div tabindex="0" class="tooltip-parent">
+                    <div tabindex="0" class="tooltip-parent" [style.display]="data.has_listing ? 'inherit' : 'none'">
                         <h3>Listing</h3>
                         <span>A listing is your personal copy of a task. Shared versions of the task will not have this
                             information.</span>
                     </div>
-                    <div class="tags">
+                    <div class="tags" [style.display]="data.has_listing ? 'inherit' : 'none'">
                         <ng-template appTag></ng-template>
+                    </div>
+                    <div class="time" [style.display]="minutes > 0 ? 'inherit' : 'none'">
+                        <span>You've spent {{ minutes }} minutes on this.</span>
                     </div>
                     <h3>Task</h3>
                     <label for="event-details">Description</label>
@@ -43,7 +46,7 @@
                         </label>
                     </div>
                 </div>
-                <button [style.display]="this.data.has_listing ? 'none' : 'inherit'" tabindex="0" (click)="saveTask()" (keydown.enter)="saveTask()">Save Task</button>
+                <button [style.display]="this.data.has_listing ? 'none' : 'block'" tabindex="0" (click)="saveTask()" (keydown.enter)="saveTask()">Save Task</button>
                 <div [ngClass]="this.data.has_listing ? 'settings' : 'hidden-settings'">
                     <h6 class="task-actions">Listing Settings</h6>
                     <div class="tags-settings">

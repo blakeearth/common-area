@@ -51,7 +51,6 @@
 .close-button {
     background-color: #011638;
     color: white;
-    
 }
 
 .close-button:not(:hover):not(:active) {
@@ -133,6 +132,7 @@
 
 .task-sidebar button {
     align-self: stretch;
+    text-align: center;
 }
 
 .tags-settings button {
