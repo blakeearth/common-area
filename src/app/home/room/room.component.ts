@@ -70,6 +70,8 @@ export class RoomComponent extends Handler implements OnInit {
 
   cameraOrigin: {x: number, y: number};
 
+  mobile: boolean;
+
   constructor(socketService: SocketService, roomChangeService: RoomChangeService, membersService: MembersService, chatService: ChatService, componentFactoryResolver: ComponentFactoryResolver, checkpointService: CheckpointService) {
     super();
     this.socketService = socketService;
@@ -108,8 +110,17 @@ export class RoomComponent extends Handler implements OnInit {
     this.socketService.sendMessage({channel: "room", type: "request_wealth"});
 
     let { canvas, context } = init((document.getElementById("game") as HTMLCanvasElement));
-    canvas.width = 9 * 128;
-    canvas.height = 6 * 128;
+
+    this.mobile = window.matchMedia('only screen and (max-width: 760px)').matches;
+
+    if (this.mobile) {
+      canvas.width = 6 * 128;
+      canvas.height = 9 * 128;
+    }
+    else {
+      canvas.width = 9 * 128;
+      canvas.height = 6 * 128;
+    }
 
     setImagePath('/assets/room/');
     load.apply(
@@ -117,9 +128,15 @@ export class RoomComponent extends Handler implements OnInit {
     );
 
     document.onresize = function() {
-      canvas.width = 9 * 128;
-      canvas.height =  6 * 128;
-    };
+      if (this.mobile) {
+        canvas.width = 6 * 128;
+        canvas.height = 9 * 128;
+      }
+      else {
+        canvas.width = 9 * 128;
+        canvas.height = 6 * 128;
+      }
+    }.bind(this);
 
     let sort = function(obj1, obj2) {
       [obj1, obj2] = [obj1, obj2].map(getWorldRect);

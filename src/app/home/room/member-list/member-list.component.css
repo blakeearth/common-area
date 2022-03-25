@@ -51,3 +51,15 @@
 .member {
     padding: 0.5em 8px;
 }
+
+@media only screen and (max-width: 600px) {
+    #member-list {
+        width: fit-content;
+        padding: 0.5em 1ch;
+        border-radius: 0 2em 0 2em;
+    }
+
+    h3 {
+        font-size: 1em;
+    }
+}

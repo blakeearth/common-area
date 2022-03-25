@@ -24,7 +24,6 @@
         </table>
     </div>
     <div id="host">
-        <h2>Start a new session</h2>
         <div id="time">
             <a tabindex="0" id="left-arrow" class="arrow" [ngStyle]="{ 'visibility': this.leftVisibility }" (click)="addTime($event, -5)" (keydown.enter)="addTime($event, -5)"><</a>
             <div id="time-display">{{ this.timeRemaining | date:'mm:ss'}}</div>

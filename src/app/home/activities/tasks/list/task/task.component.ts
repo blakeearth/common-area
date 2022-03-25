@@ -30,6 +30,8 @@ export class TaskComponent implements OnInit {
 
   location: Location;
 
+  mobile: boolean;
+
   constructor(socketService: SocketService, listsService: ListsService, tasksService: TasksService, componentFactoryResolver: ComponentFactoryResolver, location: Location) {
     this.socketService = socketService;
     this.listsService = listsService;
@@ -42,6 +44,8 @@ export class TaskComponent implements OnInit {
     this.socketService.reply.subscribe(msg => this.onResponseReceived(msg));
     if (this.isListing && this.data.tags) for (let tag of this.data.tags) this.loadTag(tag);
     if (this.isListing && this.data.active) this.tasksService.setActiveTask(this.data);
+
+    this.mobile = window.matchMedia('only screen and (max-width: 760px)').matches;
   }
 
   onResponseReceived(msg: any): void {

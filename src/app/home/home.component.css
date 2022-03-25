@@ -37,27 +37,7 @@
     display: none;
 }
 
-@media only screen and (max-width: 600px) {
-
-    .home {
-        display: none;
-    }
-
-    .mobile {
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        background-color: #011638;
-        color: white;
-        height: 100%;
-        overflow: hidden;
-        padding: 0 4ch;
-    }
-
-    .mobile h2, p {
-        text-align: center;
-    }
-
+@media only screen and (max-width: 760px) {
     .app {
         flex-direction: column;
     }

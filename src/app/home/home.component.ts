@@ -25,18 +25,17 @@ export class HomeComponent implements OnInit {
   updateActivity(url: string, state: unknown): void {
     window.history.pushState(null, url, url);
     let activity: string = MenuComponent.getActivity(url);
-    console.log(activity);
-    if (activity == '') {
+    if (activity == 'room') {
       let activityContainer: Element = document.getElementById("activity-container");
-      let room: Element = document.getElementsByClassName("room")[0];
+      let room: HTMLElement = document.getElementById("room");
       activityContainer.classList.add("invisible");
-      room.classList.toggle("visible-mobile");
+      room.style.display = "flex";
     }
-    else {
+    else if (window.matchMedia('only screen and (max-width: 760px)').matches) {
       let activityContainer: Element = document.getElementById("activity-container");
       activityContainer.classList.remove("invisible");
-      let room: Element = document.getElementsByClassName("room")[0];
-      room.classList.remove("visible-mobile");
+      let room: HTMLElement = document.getElementById("room");
+      room.style.display = "none";
     }
     
   }

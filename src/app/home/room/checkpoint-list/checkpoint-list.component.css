@@ -4,10 +4,7 @@
     padding: 1em 2ch;
     display: flex;
     flex-direction: column;
-    position: absolute;
     font-family: "Poppins Bold", sans-serif;
-    top: 0;
-    left: 24px;
     background-color: white;
     border-radius: 2rem 0 2rem 0;
     box-shadow: 0 1rem 1px 0 rgba(0, 0, 0, 0.2);
@@ -55,4 +52,16 @@
 
 .checkpoint {
     padding: 0.5em 8px;
+}
+
+@media only screen and (max-width: 600px) {
+    #checkpoint-list {
+        width: fit-content;
+        padding: 0.5em 1ch;
+        border-radius: 2rem 0 2rem 0;
+    }
+
+    h3 {
+        font-size: 1em;
+    }
 }
