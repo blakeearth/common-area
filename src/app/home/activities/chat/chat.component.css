@@ -63,7 +63,7 @@ form {
 
 @media only screen and (max-width: 600px) {
     #list {
-        padding-bottom: 10em;
+        padding-bottom: 5em;
     }
 
     #chat {
@@ -74,7 +74,7 @@ form {
     #chat-box {
         position: absolute;
         width: 100%;
-        bottom: 5em;
+        bottom: 0;
         background-color: white;
         border-top: 1px solid black;
     }
