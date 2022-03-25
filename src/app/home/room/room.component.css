@@ -98,6 +98,6 @@ a:hover:not(.selected), a:focus {
     }
 
     canvas {
-        height: calc(100% - 10em);
+        flex: 1 0 0;
     }
 }
