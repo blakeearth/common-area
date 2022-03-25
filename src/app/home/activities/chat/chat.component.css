@@ -62,12 +62,20 @@ form {
 }
 
 @media only screen and (max-width: 600px) {
-    .list {
-        height: 70vh;
+    #list {
+        padding-bottom: 10em;
     }
 
     #chat {
         width: 70vh;
         max-width: 70vw;
+    }
+
+    #chat-box {
+        position: absolute;
+        width: 100%;
+        bottom: 5em;
+        background-color: white;
+        border-top: 1px solid black;
     }
 }

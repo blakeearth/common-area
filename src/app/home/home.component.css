@@ -40,6 +40,7 @@
 @media only screen and (max-width: 760px) {
     .app {
         flex-direction: column;
+        position: relative;
     }
 
     #activity-container {
@@ -48,8 +49,11 @@
     }
 
     #menu {
-        order: 3;
-        width: auto;
+        position: absolute;
+        bottom: 0;
+        z-index: 1;
+        width: 100%;
+        height: 5em;
     }
 
     .room {
@@ -58,5 +62,14 @@
 
     .visible-mobile {
         display: inherit;
+    }
+
+    html, body {
+        overflow: hidden;
+        height: 100%;
+    }
+
+    body {
+        position: relative;
     }
 }
