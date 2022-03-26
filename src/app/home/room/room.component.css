@@ -97,11 +97,15 @@ a:hover:not(.selected), a:focus {
         left: 0;
     }
 
-    #editor-tools, #wealth {
-        bottom: 5em;
+    #wealth {
+        bottom: 3.4em;
+    }
+
+    #editor-tools {
+        display: none;
     }
 
     canvas {
-        height: calc(100% - 5em);
+        height: calc(100% - 3.4em);
     }
 }

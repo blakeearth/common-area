@@ -115,7 +115,7 @@ export class RoomComponent extends Handler implements OnInit {
 
     if (this.mobile) {
       canvas.width = 4 * 128;
-      canvas.height = 5 * 128;
+      canvas.height = 6 * 128;
     }
     else {
       canvas.width = 9 * 128;
@@ -130,7 +130,7 @@ export class RoomComponent extends Handler implements OnInit {
     document.onresize = function() {
       if (this.mobile) {
         canvas.width = 4 * 128;
-        canvas.height = 5 * 128;
+        canvas.height = 6 * 128;
       }
       else {
         canvas.width = 9 * 128;
@@ -281,7 +281,7 @@ export class RoomComponent extends Handler implements OnInit {
 
   onRoomChange(roomId: string): void {
     //this.editButtonDisplay = (sessionStorage.getItem("room_is_owner") == 'true') ? "inherit" : "none";
-    this.editButtonDisplay = "inherit";
+    if (!this.mobile) this.editButtonDisplay = "inherit";
     (this.objects.get("scene") as Scene).destroy();
     this.objects = new Map<string, any>();
 

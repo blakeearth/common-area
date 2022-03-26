@@ -45,11 +45,21 @@ a:hover {
 }
 
 @media only screen and (max-width: 600px) {
-    h1 {
-        font-size: 1em;
+    .home img {
+        height: 24px;
+        width: 24px;
+    }
+
+    .version {
+        left: 24px;
+        font-size: 0.4em;
     }
 
     .options {
-        top: 0.8em;
+        font-size: x-small;
+    }
+
+    .header {
+        padding: 0.4em 0 0.2em 0;
     }
 }

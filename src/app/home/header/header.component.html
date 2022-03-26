@@ -4,6 +4,6 @@
         <span class="version">Alpha</span>
     </a>
     <nav class="options">
-        <a (click)="signOut()" tabindex="0">Sign out</a>
+        <a (click)="signOut()" (keyboard.down)="signOut()" tabindex="0">Sign out</a>
     </nav>
 </div>
