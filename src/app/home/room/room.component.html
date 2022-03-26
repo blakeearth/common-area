@@ -1,7 +1,7 @@
 <div class="room">
     <app-checkpoint-list></app-checkpoint-list>
     <app-member-list [room]="this"></app-member-list>
-    <canvas id="game" width="128" height="128" (click)="requestSetTarget()">
+    <canvas id="game" (click)="requestSetTarget()">
         <button>Move North</button>
         <button>Move South</button>
         <button>Move East</button>

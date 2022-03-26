@@ -114,8 +114,8 @@ export class RoomComponent extends Handler implements OnInit {
     this.mobile = window.matchMedia('only screen and (max-width: 760px)').matches;
 
     if (this.mobile) {
-      canvas.width = 3 * 128;
-      canvas.height = 5 * 128;
+      canvas.setAttribute('width', window.getComputedStyle(canvas, null).getPropertyValue("width"));
+      canvas.setAttribute('height', window.getComputedStyle(canvas, null).getPropertyValue("height"));
     }
     else {
       canvas.width = 9 * 128;
@@ -129,8 +129,8 @@ export class RoomComponent extends Handler implements OnInit {
 
     document.onresize = function() {
       if (this.mobile) {
-        canvas.width = 3 * 128;
-        canvas.height = 5 * 128;
+        canvas.setAttribute('width', window.getComputedStyle(canvas, null).getPropertyValue("width"));
+        canvas.setAttribute('height', window.getComputedStyle(canvas, null).getPropertyValue("height"));
       }
       else {
         canvas.width = 9 * 128;
