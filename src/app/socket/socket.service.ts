@@ -35,7 +35,7 @@ export class SocketService implements OnInit {
 
   ngOnInit(): void {
     window.onfocus = function(event: FocusEvent) {
-      if (this.socket.isStopped) this.socket = webSocket('wss://ws.cowork.ac:4433');
+      if (this.socket.isStopped) document.location.reload();
     }.bind(this);
   }
 
@@ -64,8 +64,8 @@ export class SocketService implements OnInit {
           }
         },
         // reconnect on error or completion
-        function() {this.socket = webSocket('wss://ws.cowork.ac:4433')}.bind(this),
-        function() {this.socket = webSocket('wss://ws.cowork.ac:4433')}.bind(this),
+        function(err) {console.log(err)},
+        function() {console.log("complete")},
       );
 
       window.setInterval(() => {
