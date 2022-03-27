@@ -22,7 +22,7 @@ export class HomeComponent implements OnInit {
       else this.location.replaceState('/home/tasks');
     }
     this.updateActivity(this.location.path(), this.location.getState());
-    this.location.onUrlChange(this.updateActivity);
+    this.location.onUrlChange(this.updateActivity.bind(this));
   }
 
   updateActivity(url: string, state: unknown): void {
