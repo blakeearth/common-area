@@ -113,12 +113,14 @@ a:hover:not(.selected), a:focus {
 }
 
 @media only screen and (max-width: 600px) {
-    #wealth, app-checkpoint-list {
+    app-checkpoint-list {
         left: 0;
     }
 
     #wealth {
-        bottom: 8em;
+        bottom: 9em;
+        left: 2ch;
+        border-radius: 1em;
     }
 
     #editor-tools {
