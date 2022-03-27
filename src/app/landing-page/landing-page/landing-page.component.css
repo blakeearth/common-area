@@ -15,6 +15,7 @@ app-navbar {
 
 .hero {
     flex: 1 0 auto;
+    height: 75vh;
     padding: 0 6ch;
     gap: 6ch;
 }
@@ -35,7 +36,6 @@ app-navbar {
 
 .section {
     display: flex;
-    height: 75vh;
 }
 
 h2 {
@@ -78,11 +78,6 @@ h3.feature-header {
 .feature {
     display: flex;
     justify-content: space-between;
-}
-
-.feature img {
-    max-height: 75vh;
-    width: auto;
 }
 
 .feature-header {

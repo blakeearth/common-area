@@ -18,7 +18,11 @@ ul {
     margin-right: 2ch;
 }
 
-li a {
+a {
+    text-decoration: none;
+}
+
+.link {
     color: white;
     font-size: small;
 }
