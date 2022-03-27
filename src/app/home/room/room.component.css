@@ -85,6 +85,26 @@ a:hover:not(.selected), a:focus {
     outline: none;
 }
 
+#chat-box-room {
+    display: none;
+    padding: 1em 0 1em 0;
+}
+
+#chat-field-room {
+    flex: 1;
+    padding: 0.2em 1ch 0.2em 1ch;
+    margin: 0 2ch 0 2ch;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    background-color: #dfdfdf;
+    box-sizing: border-box;
+    border: none !important;
+    box-shadow: none !important;
+    outline: none !important;
+    resize: vertical;
+    border-radius: 8px;
+}
+
 @media only screen and (min-width: 600px) {
     canvas {
         border-radius: 2rem 0 0 0;
@@ -98,7 +118,7 @@ a:hover:not(.selected), a:focus {
     }
 
     #wealth {
-        bottom: 3.4em;
+        bottom: 8em;
     }
 
     #editor-tools {
@@ -107,5 +127,14 @@ a:hover:not(.selected), a:focus {
 
     canvas {
         height: calc(100% - 3.4em);
+    }
+
+    #chat-box-room {
+        display: flex;
+        position: absolute;
+        width: 100%;
+        bottom: 3.4em;
+        background-color: white;
+        border-top: 1px solid black;
     }
 }

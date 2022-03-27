@@ -162,7 +162,14 @@ export class RoomComponent extends Handler implements OnInit {
 
   requestSetTarget(): void {
     let pointer: any = getPointer();
-    
+  }
+
+  onSendChat(event: any): void {
+    let chatField: HTMLTextAreaElement = document.getElementById("chat-field-room") as HTMLTextAreaElement;
+    let contents: string = chatField.value;
+    this.socketService.sendMessage({channel: "chat", type: "send_message", room_id: sessionStorage.getItem("room_id"), contents: contents});
+    chatField.value = "";
+    event.preventDefault();
   }
 
   addPersistObject(msg: any): void {

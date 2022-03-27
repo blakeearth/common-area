@@ -32,4 +32,7 @@
             </svg>
         </a>
     </div>
+    <form id="chat-box-room" novalidate>
+        <textarea id="chat-field-room" class="contents" tabindex="0" (keydown.enter)="onSendChat($event)" placeholder="Message the room..."></textarea>
+    </form>
 </div>

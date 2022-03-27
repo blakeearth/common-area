@@ -74,7 +74,7 @@ export class ChatComponent implements OnInit, Activity {
     }
     else if (msg["type"] == "send_message") {
       msg["sent_date"] = msg["sent_date"] + "Z";
-      this.notificationsService.pushNotification("chat");
+      if (msg["account_id"] != sessionStorage.getItem("account_id")) this.notificationsService.pushNotification("chat");
       this.loadChat(msg, true);
     }
   }
