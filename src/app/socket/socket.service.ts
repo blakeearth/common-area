@@ -7,7 +7,7 @@ import { HttpClient } from '@angular/common/http';
 @Injectable({
   providedIn: 'root'
 })
-export class SocketService {
+export class SocketService implements OnInit {
 
   socket: WebSocketSubject<any>;
 
@@ -31,6 +31,12 @@ export class SocketService {
     this.replySources = new Map<string, Subject<any>>();
     this.channelReply = new Map<string, Observable<any>>();
     this.establishWebsocket();
+  }
+
+  ngOnInit(): void {
+    window.onfocus = function(event: FocusEvent) {
+      if (this.socket.isStopped) this.socket = webSocket('wss://ws.cowork.ac:4433');
+    }.bind(this);
   }
 
   establishWebsocket() {
@@ -57,8 +63,9 @@ export class SocketService {
             this.replySources.get(channel).next(msg);
           }
         },
-        err => console.log(err),
-        () => console.log('complete')
+        // reconnect on error or completion
+        function() {this.socket = webSocket('wss://ws.cowork.ac:4433')}.bind(this),
+        function() {this.socket = webSocket('wss://ws.cowork.ac:4433')}.bind(this),
       );
 
       window.setInterval(() => {
