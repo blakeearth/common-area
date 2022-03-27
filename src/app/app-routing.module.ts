@@ -4,6 +4,7 @@ import { HomeComponent } from './home/home.component';
 import { LandingPageComponent } from './landing-page/landing-page/landing-page.component';
 import { AuthComponent } from './auth/auth.component';
 import { PricingComponent } from './landing-page/pricing/pricing.component';
+import { AppInstructionsComponent } from './landing-page/app-instructions/app-instructions.component';
 
 const routes: Routes = [
   {
@@ -14,6 +15,10 @@ const routes: Routes = [
   {
     path: 'pricing',
     component: PricingComponent
+  },
+  {
+    path: 'app',
+    component: AppInstructionsComponent
   },
   {
     path: 'auth',

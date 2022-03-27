@@ -71,6 +71,7 @@ import { VendorPopupDirective } from './home/room/vendor-popup.directive';
 import { EditItemTooltipComponent } from './home/room/root/edit-item-tooltip/edit-item-tooltip.component';
 import { EditItemTooltipDirective } from './home/room/root/edit-item-tooltip.directive';
 import { CheckpointListComponent } from './home/room/checkpoint-list/checkpoint-list.component';
+import { AppInstructionsComponent } from './landing-page/app-instructions/app-instructions.component';
 
 @NgModule({
     declarations: [
@@ -118,6 +119,7 @@ import { CheckpointListComponent } from './home/room/checkpoint-list/checkpoint-
         TagsPopupDirective,
         NavbarComponent,
         PricingComponent,
+        AppInstructionsComponent,
         FooterComponent,
         UpdateNotesPopupComponent,
         UpdateNotesPopupDirective,

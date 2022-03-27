@@ -1,3 +1,15 @@
+app-navbar {
+    position: sticky;
+    width: 100%;
+    top: 0;
+}
+
+#scroll {
+    height: 100%;
+    overflow: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
 #pricing {
     display: flex;
     justify-content: center;
