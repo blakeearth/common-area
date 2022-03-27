@@ -41,10 +41,12 @@ app-footer {
 .step div h2 {
     font-family: "Noto Sans", sans-serif;
     text-align: center;
+    font-weight: lighter;
 }
 
 .step h2 {
     font-family: "Noto Sans", sans-serif;
+    font-weight: lighter;
 }
 
 .step h2 a {
@@ -66,12 +68,15 @@ app-footer {
 @media only screen and (max-width: 600px) {
     .step {
         flex-direction: column;
+        align-items: center;
         max-height: none;
         margin: 0 2ch;
     }
 
     .step img {
         max-height: none;
+        width: 187px;
+        height: 313px;
     }
 
     #app-instructions {
