@@ -1,7 +1,8 @@
 .landing-page {
     color: #011638;
-    -webkit-overflow-scrolling: touch;
     overflow: auto;
+    -webkit-overflow-scrolling: touch;
+    min-height: fit-content;
 }
 
 .section {

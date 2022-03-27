@@ -45,8 +45,13 @@ button {
     background: none;
     box-shadow: none;
     background-color: #fce17f;
+    color: #011638;
     border-radius: 8px;
     font-family: "Poppins Bold", sans-serif;
     font-weight: bold;
     padding: 0 1ch 0 1ch;
+}
+
+button a {
+    color: #011638;
 }
