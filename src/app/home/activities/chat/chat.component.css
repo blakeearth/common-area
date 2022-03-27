@@ -1,13 +1,12 @@
 .scroll-container {
     display: flex;
     flex-direction: column;
-    overflow: auto;
-    -webkit-overflow-scrolling: touch;
     flex: 1;
 }
 
 #list {
     overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
     display: flex;
     flex-direction: column-reverse;
     flex: 1;
