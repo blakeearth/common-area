@@ -186,6 +186,7 @@ h2 {
         margin: 1em 2ch 1em 2ch;
         border-radius: 2em;
         box-shadow: 0 0 1rem #000000dd;
+        object-fit: cover;
     }
 
     .statement {

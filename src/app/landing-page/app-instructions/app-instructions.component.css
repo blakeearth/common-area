@@ -43,7 +43,6 @@ app-footer {
     text-align: center;
 }
 
-
 .step h2 {
     font-family: "Noto Sans", sans-serif;
 }
@@ -67,6 +66,7 @@ app-footer {
 @media only screen and (max-width: 600px) {
     .step {
         flex-direction: column;
+        max-height: none;
         margin: 0 2ch;
     }
 
