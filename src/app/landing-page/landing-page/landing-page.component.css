@@ -187,6 +187,7 @@ h2 {
         box-shadow: 0 0 1rem #000000dd;
         max-width: 80%;
         height: auto;
+        order: 1;
     }
 
     .statement {
@@ -232,7 +233,7 @@ h2 {
     }
 
     .statement {
-        order: 1;
+        order: 0;
     }
 
     .faq {
