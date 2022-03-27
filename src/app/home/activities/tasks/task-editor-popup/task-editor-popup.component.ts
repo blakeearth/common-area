@@ -40,8 +40,6 @@ export class TaskEditorPopupComponent implements OnInit {
 
   socketSubscription: Subscription;
 
-  days: number;
-  hours: number;
   minutes: number;
 
   constructor(socketService: SocketService, statsService: StatsService, componentFactoryResolver: ComponentFactoryResolver) {
@@ -62,14 +60,8 @@ export class TaskEditorPopupComponent implements OnInit {
 
     if (this.statsService.hasListing(this.data.listing_id)) {
       let seconds: number = this.statsService.getMillisecondsForListing(this.data.listing_id) / 1000;
-      let days: number = Math.floor(seconds / (3600*24));
-      seconds -= days*3600*24;
-      let hours: number = Math.floor(seconds / 3600);
-      seconds -= hours * 3600;
       let minutes: number = Math.floor(seconds / 60);
       seconds -= minutes * 60;
-      this.days = days;
-      this.hours = hours;
       this.minutes = minutes;
     }
   }
