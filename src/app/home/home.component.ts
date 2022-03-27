@@ -9,14 +9,17 @@ import { MenuComponent } from './menu/menu.component';
 })
 export class HomeComponent implements OnInit {
   location: Location;
+  mobile: boolean;
 
   constructor(location: Location) {
     this.location = location;
   }
 
   ngOnInit(): void {
+    this.mobile = window.matchMedia('only screen and (max-width: 760px)').matches;
     if (this.location.path() == '/home') {
-      this.location.replaceState('/home/tasks');
+      if (this.mobile) this.location.replaceState('/home/room')
+      else this.location.replaceState('/home/tasks');
     }
     this.updateActivity(this.location.path(), this.location.getState());
     this.location.onUrlChange(this.updateActivity);
@@ -31,7 +34,7 @@ export class HomeComponent implements OnInit {
       activityContainer.classList.add("invisible");
       room.style.display = "flex";
     }
-    else if (window.matchMedia('only screen and (max-width: 760px)').matches) {
+    else if (this.mobile) {
       let activityContainer: Element = document.getElementById("activity-container");
       activityContainer.classList.remove("invisible");
       let room: HTMLElement = document.getElementById("room");
