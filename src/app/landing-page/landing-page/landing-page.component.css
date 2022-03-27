@@ -1,8 +1,9 @@
 .landing-page {
     color: #011638;
+    display: flex;
+    flex-direction: column;
     overflow: auto;
     -webkit-overflow-scrolling: touch;
-    min-height: fit-content;
 }
 
 .section {
