@@ -1,6 +1,8 @@
 .scroll-container {
     display: flex;
     flex-direction: column;
+    -webkit-overflow-scrolling: touch;
+    overflow: auto;
     height: 100%;
 }
 

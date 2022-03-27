@@ -2,6 +2,8 @@
     align-content: center;
     justify-content: center;
     color: #011638;
+    -webkit-overflow-scrolling: touch;
+    overflow: auto;
 }
 
 .section {
