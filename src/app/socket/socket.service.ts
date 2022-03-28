@@ -40,8 +40,8 @@ export class SocketService implements OnInit {
   }
 
   establishWebsocket() {
-    this.httpClient.get('https://ws.cowork.ac', {responseType: 'text', withCredentials: true}).subscribe(data => {
-      this.socket = webSocket('wss://ws.cowork.ac:4433');
+    this.httpClient.get('https://ws.joincowork.com', {responseType: 'text', withCredentials: true}).subscribe(data => {
+      this.socket = webSocket('wss://ws.joincowork.com:4433');
 
       this.socket.subscribe(
         msg => {
