@@ -11,7 +11,6 @@ import { MenuComponent } from './home/menu/menu.component';
 import { HeaderComponent } from './home/header/header.component';
 import { ActivityContainerComponent } from './home/activity-container.component';
 import { PanelHeaderComponent } from './panel-header/panel-header.component';
-import { StoreComponent } from './home/activities/store/store.component';
 import { ChatComponent } from './home/activities/chat/chat.component';
 import { TimerComponent } from './home/activities/timer/timer.component';
 import { TasksComponent } from './home/activities/tasks/tasks.component';
@@ -72,6 +71,7 @@ import { EditItemTooltipComponent } from './home/room/root/edit-item-tooltip/edi
 import { EditItemTooltipDirective } from './home/room/root/edit-item-tooltip.directive';
 import { CheckpointListComponent } from './home/room/checkpoint-list/checkpoint-list.component';
 import { AppInstructionsComponent } from './landing-page/app-instructions/app-instructions.component';
+import { SubpageLinkComponent } from './home/activities/settings/subpage-link/subpage-link.component';
 
 @NgModule({
     declarations: [
@@ -81,7 +81,6 @@ import { AppInstructionsComponent } from './landing-page/app-instructions/app-in
         HeaderComponent,
         ActivityContainerComponent,
         PanelHeaderComponent,
-        StoreComponent,
         ChatComponent,
         TimerComponent,
         TasksComponent,
@@ -137,6 +136,7 @@ import { AppInstructionsComponent } from './landing-page/app-instructions/app-in
         EditItemTooltipComponent,
         EditItemTooltipDirective,
         CheckpointListComponent,
+        SubpageLinkComponent,
     ],
     imports: [
         BrowserModule.withServerTransition({ appId: 'serverApp' }),

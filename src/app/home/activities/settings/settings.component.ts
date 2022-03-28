@@ -1,4 +1,5 @@
-import { Component, OnInit, ComponentFactoryResolver, ViewChild } from '@angular/core';
+import { Component, OnInit, ComponentFactoryResolver, ViewChild, ComponentRef } from '@angular/core';
+import { Location } from '@angular/common';
 import { SocketService } from 'src/app/socket/socket.service';
 import { RoomChangeService } from '../../room-change.service';
 import { Activity } from '../activity';
@@ -7,6 +8,7 @@ import { RoomLinkComponent } from './room-link/room-link.component';
 import { NgForm } from '@angular/forms';
 import { RoomInvitationDirective } from './room-invitation.directive';
 import { RoomInvitationComponent } from './room-invitation/room-invitation.component';
+import { MenuComponent } from '../../menu/menu.component';
 
 @Component({
   selector: 'app-settings',
@@ -14,7 +16,6 @@ import { RoomInvitationComponent } from './room-invitation/room-invitation.compo
   styleUrls: ['./settings.component.css']
 })
 export class SettingsComponent implements OnInit, Activity {
-  
   @ViewChild(RoomLinkDirective, {static: true}) roomLinkHost: RoomLinkDirective;
   @ViewChild(RoomInvitationDirective, {static: true}) roomInvitationHost: RoomInvitationDirective;
   
@@ -35,9 +36,14 @@ export class SettingsComponent implements OnInit, Activity {
 
   displayName: string;
 
-  constructor(socketService: SocketService, roomChangeService: RoomChangeService, componentFactoryResolver: ComponentFactoryResolver) {
+  location: Location;
+
+  subpage: string;
+
+  constructor(socketService: SocketService, roomChangeService: RoomChangeService, location: Location, componentFactoryResolver: ComponentFactoryResolver) {
     this.socketService = socketService;
     this.roomChangeService = roomChangeService;
+    this.location = location;
     this.componentFactoryResolver = componentFactoryResolver;
   }
 
@@ -56,6 +62,9 @@ export class SettingsComponent implements OnInit, Activity {
       sessionStorage.removeItem("joinRoomTitle");
     }
     this.displayName = sessionStorage.getItem("display_name");
+
+    this.location.onUrlChange(this.handleAddition.bind(this));
+    this.handleAddition();
   }
 
   onResponseReceived(msg: any): void {
@@ -177,6 +186,29 @@ export class SettingsComponent implements OnInit, Activity {
     }
   }
 
+  handleAddition(): void {
+    if (MenuComponent.getActivity(this.location.path()) == "settings" && this.location.path().split('/').length > 3) {
+      this.openSubpage(this.location.path().split('/')[3]);
+    }
+    else if (MenuComponent.getActivity(this.location.path()) == "settings" ) {
+      this.openSubpage(undefined);
+    }
+  }
+
+  navigate(subpage: string, event: Event) {
+    event.preventDefault();
+    this.location.replaceState('/home/settings/' + subpage);
+  }
+
+  openSubpage(subpage: string): void {
+    this.subpage = subpage;
+  }
+
+  closeSubpage(): void {
+    this.location.replaceState('/home/settings');
+    this.openSubpage(undefined);
+  }
+
   onSubmitDisplayName(f: NgForm) {
     let submission = {channel: "settings", type: "edit_display_name", display_name: <string> f.value["display_name"]};
     f.resetForm();
@@ -197,7 +229,6 @@ export class SettingsComponent implements OnInit, Activity {
   }
 
   loadRoomLink(data: any): void {
-    console.log(this.rooms.has(data.room_id));
     if (!(this.rooms.has(data.room_id))) {
       const componentFactory = this.componentFactoryResolver.resolveComponentFactory(RoomLinkComponent);
 
@@ -241,7 +272,6 @@ export class SettingsComponent implements OnInit, Activity {
   }
 
   onSubmitInvite(f: NgForm): void {
-    console.log(f);
     let submission = {channel: "settings", type: "create_invitation", room_id: sessionStorage.getItem("room_id"), invitee: <string> f.value["username"]};
     this.socketService.sendMessage(submission);
     f.resetForm();

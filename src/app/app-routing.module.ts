@@ -51,9 +51,24 @@ const routes: Routes = [
 
   },
   {
-    path: 'home/store',
+    path: 'home/settings/profile',
     component: HomeComponent
-
+  },
+  {
+    path: 'home/settings/subscribe',
+    component: HomeComponent
+  },
+  {
+    path: 'home/settings/current-room',
+    component: HomeComponent
+  },
+  {
+    path: 'home/settings/other-rooms',
+    component: HomeComponent
+  },
+  {
+    path: 'home/settings/invitations',
+    component: HomeComponent
   },
   {
     path: 'home/stats',
