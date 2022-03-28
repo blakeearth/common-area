@@ -261,9 +261,7 @@ export class SettingsComponent implements OnInit, Activity {
   }
 
   onRoomChange(roomId: string): void {
-    console.log("entered room " + roomId);
     if (!(roomId == undefined)) {
-      console.log("entered room " + roomId);
       this.socketService.sendMessage({channel: "settings", type: "request_room_privacy", room_id: roomId});
       this.roomId = roomId;
       this.roomLink = "https://joincowork.com/j/" + this.roomId;

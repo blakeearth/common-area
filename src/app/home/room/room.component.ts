@@ -157,7 +157,7 @@ export class RoomComponent extends Handler implements OnInit {
   }
 
   requestWealth(msg: any): void {
-    this.newWealth = msg["wealth"];
+    this.wealth = msg["wealth"];
   }
 
   requestSetTarget(): void {
@@ -235,9 +235,7 @@ export class RoomComponent extends Handler implements OnInit {
             };
             scene.lookAt(this.target);
             scene.render();
-
-            this.wealth = Math.ceil(lerp(this.wealth, this.newWealth, 0.02));
-
+            
             for (let persistObject of this.objects.values()) {
               if (persistObject != this.objects.get("scene")) {
                 let t = {

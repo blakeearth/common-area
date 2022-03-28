@@ -36,9 +36,12 @@ app-checkpoint-list {
 
 #wealth {
     position: absolute;
+    display: flex;
     bottom: 0;
     left: 24px;
     padding: 0.2em 2ch;
+    align-items: baseline;
+    gap: 1ch;
     background-color: white;
     border-radius: 1em 1em 0 0;
 }
@@ -56,6 +59,11 @@ app-checkpoint-list {
 svg {
     margin-right: 1ch;
     scale: 2;
+}
+
+#wealth svg {
+    padding-bottom: 0.1em;
+    color: black;
 }
 
 .active {
