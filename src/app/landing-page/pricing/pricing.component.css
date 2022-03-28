@@ -13,7 +13,7 @@ app-navbar {
 #pricing {
     display: flex;
     justify-content: center;
-    align-content: center;
+    align-items: center;
 }
 
 .plan {

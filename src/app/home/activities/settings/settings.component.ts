@@ -9,6 +9,7 @@ import { NgForm } from '@angular/forms';
 import { RoomInvitationDirective } from './room-invitation.directive';
 import { RoomInvitationComponent } from './room-invitation/room-invitation.component';
 import { MenuComponent } from '../../menu/menu.component';
+import * as braintree from 'braintree-web-drop-in';
 
 @Component({
   selector: 'app-settings',
@@ -50,6 +51,7 @@ export class SettingsComponent implements OnInit, Activity {
   ngOnInit(): void {
     this.socketService.reply.subscribe(msg => this.onResponseReceived(msg));
     this.roomChangeService.roomId.subscribe(msg => this.onRoomChange(msg));
+    this.socketService.sendMessage({channel: "settings", type: "request_payment_client_token"});
     this.socketService.sendMessage({channel: "settings", type: "request_rooms"});
     this.socketService.sendMessage({channel: "settings", type: "request_listed_rooms"});
     this.socketService.sendMessage({channel: "settings", type: "request_invitations"});
@@ -69,6 +71,22 @@ export class SettingsComponent implements OnInit, Activity {
 
   onResponseReceived(msg: any): void {
     if (msg["channel"] == "settings") {
+      if (msg["type"] == "request_payment_client_token") {
+        braintree.create({
+          // Insert your tokenization key here
+          authorization: msg["token"],
+          container: '#dropin-container'
+        }, function (createErr, instance) {
+          let button = document.getElementById("submit-button");
+          button.addEventListener('click', function () {
+            instance.requestPaymentMethod(function (requestPaymentMethodErr, payload) {
+              // When the user clicks on the 'Submit payment' button this code will send the
+              // encrypted payment information in a variable called a payment method nonce
+              this.socketService.send_message({channel: "settings", type: "checkout", payment_nonce: payload.nonce});
+            }.bind(this));
+          }.bind(this));
+        }.bind(this));
+      }
       if (msg["type"] == "request_rooms") {
         let numRooms = Object.keys(msg["rooms"]).length;
         if (numRooms == 0) {
