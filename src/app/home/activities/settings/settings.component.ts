@@ -24,7 +24,7 @@ export class SettingsComponent implements OnInit, Activity {
   roomTitle: string = sessionStorage.getItem("room_title");
   roomDescription: string = sessionStorage.getItem("room_description") || "";
   roomId: string = sessionStorage.getItem("room_id");
-  roomLink: string = "https://cowork.ac/j/" + this.roomId;
+  roomLink: string = "https://joincowork.com/j/" + this.roomId;
 
   rooms: Set<string> = new Set<string>();
 
@@ -221,7 +221,6 @@ export class SettingsComponent implements OnInit, Activity {
     this.socketService.sendMessage(submission);
   }
 
-
   onSubmitRoomDescription(f: NgForm) {
     let submission = {channel: "settings", type: "edit_room_description", room_id: this.roomId, room_description: <string> f.value["room_description"]};
     f.resetForm();
@@ -262,11 +261,12 @@ export class SettingsComponent implements OnInit, Activity {
   }
 
   onRoomChange(roomId: string): void {
+    console.log("entered room " + roomId);
     if (!(roomId == undefined)) {
+      console.log("entered room " + roomId);
       this.socketService.sendMessage({channel: "settings", type: "request_room_privacy", room_id: roomId});
-      document.getElementById("room-title").innerHTML = sessionStorage.getItem("room_title");
       this.roomId = roomId;
-      this.roomLink = "https://cowork.ac/j/" + this.roomId;
+      this.roomLink = "https://joincowork.com/j/" + this.roomId;
       this.reloadRooms();
     }
   }

@@ -129,7 +129,7 @@
                 </form>
                 <h3>Update room description</h3>
                 <form class="description-form" #k="ngForm" (ngSubmit)="onSubmitRoomDescription(k)" novalidate>
-                    <textarea placeholder="{{ roomDescription }}" name="room_description" ngModel required></textarea>
+                    <textarea [placeholder]="roomDescription == 'null' || roomDescription == null ? roomTitle : roomDescription" name="room_description" ngModel required></textarea>
                     <div class="description-save">
                         <button type="submit">Save</button>
                     </div>
