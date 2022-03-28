@@ -38,6 +38,10 @@ app-navbar {
     display: flex;
 }
 
+.statement h2 {
+    font-weight: lighter;
+}
+
 h2 {
     font-family: "Noto Sans", sans-serif;
 }
@@ -49,6 +53,7 @@ h2.feature-header {
 
 h3.feature-header {
     font-family: "Noto Sans", sans-serif;
+    font-weight: lighter;
     font-size: 2em;
 }
 
