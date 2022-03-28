@@ -27,6 +27,26 @@
   <link rel="icon" sizes="512x512" href="assets/icons/icon.png">
   <link rel="apple-touch-icon" sizes="512x512" href="assets/icons/icon.png">
 
+  <script src="https://www.paypal.com/sdk/js?client-id=AQOPRAUyLiLhaYnzETp-jnFaUHP5KE2y6dCjVq8D0GsNWUnG_788xsVdMmJ9-qrpst2qECypGXj843y8&amp;vault=true&amp;intent=subscription" data-sdk-integration-source="button-factory"></script>
+  <script>
+    paypal.Buttons({
+        style: {
+            shape: 'pill',
+            color: 'gold',
+            layout: 'vertical',
+            label: 'subscribe'
+        },
+        createSubscription: function(data, actions) {
+          return actions.subscription.create({
+            /* Creates the subscription */
+            plan_id: 'P-9F657674LY2005415MJANSXQ'
+          });
+        },
+        onApprove: function(data, actions) {
+          alert(data.subscriptionID); // You can add optional success message for the subscriber here
+        }
+    }).render('#paypal-button-container-P-9F657674LY2005415MJANSXQ'); // Renders the PayPal button
+  </script>
   <script type="text/javascript">
     (function(w) {
       var s = document.createElement('script');
@@ -41,6 +61,6 @@
 <body>
   <app-root></app-root>
   <noscript>Please enable JavaScript to continue using this application.</noscript>
-<script src="runtime.afa251f41383b9e1.js" type="module"></script><script src="polyfills.0ce361547cd12f21.js" type="module"></script><script src="main.3ab85a20d19d5add.js" type="module"></script>
+<script src="runtime.afa251f41383b9e1.js" type="module"></script><script src="polyfills.0ce361547cd12f21.js" type="module"></script><script src="main.aa1c6fea8dcfda1d.js" type="module"></script>
 
 </body></html>
