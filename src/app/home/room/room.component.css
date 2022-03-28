@@ -52,16 +52,12 @@ app-checkpoint-list {
     bottom: 0;
     right: 0;
     padding: 0.2em 2ch;
+    gap: 2ch;
     background-color: white;
     border-radius: 2em 2em 0 0;
 }
 
-svg {
-    margin-right: 1ch;
-    scale: 2;
-}
-
-#wealth svg {
+#wealth .bi-coin {
     padding-bottom: 0.1em;
     color: black;
 }
@@ -80,7 +76,6 @@ a {
     text-decoration: none;
     text-align: left;
     padding: 0.2em;
-    margin: 1ch 0 1ch 1ch;
 }
 
 a:hover:not(.selected), a:focus {

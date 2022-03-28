@@ -1,7 +1,7 @@
 <app-panel-header [header]="header"></app-panel-header>
 <ng-template appActiveTaskPickerPopup></ng-template>
 <div id="not-in-session">
-    <div id="consumable">⏳</div>
+    <div id="consumable"><i class="bi bi-hourglass-split"></i></div>
     <h2 [ngStyle]="{ 'display': this.participantsDisplay }">Participants:</h2>
     <p id="participants"><span id="participants" *ngFor="let participant of participants; let isLast=last" [ngStyle]="{ 'display': this.participantsDisplay }"><a class="participant" tabindex="0" (click)="openTooltip(participant.display_name, participant.account_id)" (keyboard.down)="openTooltip(participant.display_name, participant.account_id)">{{ participant.display_name }}</a>{{ isLast ? '' : ', ' }}</span></p>
     <div tabindex="0" class="tooltip-parent">

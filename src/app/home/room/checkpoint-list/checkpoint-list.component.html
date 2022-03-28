@@ -2,21 +2,15 @@
     <div class="header" tabindex="0" (click)="toggleCheckpoints()" (keydown.enter)="toggleCheckpoints()">
         <h3>{{ roomTitle || "Room" }}</h3>
         <a [style.display]="checkpointsList.length > 0 ? 'inherit' : 'none'">
-            <svg id="checkpoints-down-arrow" xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" viewBox="0 0 16 16">
-                <path d="M3.204 5h9.592L8 10.481 3.204 5zm-.753.659 4.796 5.48a1 1 0 0 0 1.506 0l4.796-5.48c.566-.647.106-1.659-.753-1.659H3.204a1 1 0 0 0-.753 1.659z"/>
-            </svg>
-            <svg id="checkpoints-up-arrow" [style.display]="'none'" xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" viewBox="0 0 16 16">
-                <path d="M3.204 11h9.592L8 5.519 3.204 11zm-.753-.659 4.796-5.48a1 1 0 0 1 1.506 0l4.796 5.48c.566.647.106 1.659-.753 1.659H3.204a1 1 0 0 1-.753-1.659z"/>
-            </svg>
+            <i id="checkpoints-down-arrow" class="bi bi-caret-down"></i>
+            <i id="checkpoints-down-arrow" [style.display]="'none'" class="bi bi-caret-up"></i>
         </a>
     </div>
     <div id="checkpoints" style="display: none;">
         <div class="checkpoint" *ngFor="let checkpoint of checkpointsList;" tabindex="0" (click)="requestWarp(checkpoint)" (keydown.enter)="requestWarp(checkpoint)">
             <span>{{ checkpoint.displayName || "Unnamed checkpoint" }}</span>
             <div class="icons">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-geo-alt-fill" viewBox="0 0 16 16">
-                    <path d="M8 16s6-5.686 6-10A6 6 0 0 0 2 6c0 4.314 6 10 6 10zm0-7a3 3 0 1 1 0-6 3 3 0 0 1 0 6z"/>
-                </svg>
+                <i class="bi bi-geo-alt-fill"></i>
             </div>
         </div>
     </div>
