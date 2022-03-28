@@ -33,6 +33,8 @@ export class StatsComponent extends Handler implements OnInit, Activity {
   millisecondsPerTagPerDay: Map<string, number[]>;
 
   listings: any[];
+
+  millisecondsPerListing: Map<string, number>;
   minutesOnDeletedListings: number;
 
   fromDate: Date;
@@ -49,6 +51,7 @@ export class StatsComponent extends Handler implements OnInit, Activity {
     this.tasksService = tasksService;
     this.tasksService.setOnListsDoneLoading(this.updateData.bind(this));
     this.notificationsService = notificationsService;
+    this.millisecondsPerListing = new Map<string, number>();
     this.statsService = statsService;
   }
 
@@ -156,17 +159,28 @@ export class StatsComponent extends Handler implements OnInit, Activity {
 
         let convertedEndTime: Date = new Date(span.end_time);
 
+        let listing: any = this.tasksService.getListing(span.listing_id);
+        let ms: number = ((new Date(span.end_time)).valueOf() - (new Date(span.start_time).valueOf()));
+        
+        if (listing != null) {
+          if (this.statsService.hasListing(span.listing_id)) {
+            this.statsService.setMillisecondsForListing(span.listing_id, this.statsService.getMillisecondsForListing(span.listing_id) + ms);
+          }
+          else {
+            this.listings.push(listing);
+            this.statsService.setMillisecondsForListing(span.listing_id, ms);
+          }
+        }
+
         if (convertedStartTime >= this.fromDate && convertedEndTime <= (this.toDate) && span.end_time != null) {
-          let ms: number = ((new Date(span.end_time)).valueOf() - (new Date(span.start_time).valueOf()));
           millisecondsInDuration += ms;
-          let listing: any = this.tasksService.getListing(span.listing_id);
           if (listing != null) {
-            if (this.statsService.hasListing(span.listing_id)) {
-              this.statsService.setMillisecondsForListing(span.listing_id, this.statsService.getMillisecondsForListing(span.listing_id) + ms);
+            if (this.millisecondsPerListing.has(span.listing_id)) {
+              this.millisecondsPerListing.set(span.listing_id, this.millisecondsPerListing.get(span.listing_id) + ms);
             }
             else {
               this.listings.push(listing);
-              this.statsService.setMillisecondsForListing(span.listing_id, ms);
+              this.millisecondsPerListing.set(span.listing_id, ms);
             }
           }
           else {

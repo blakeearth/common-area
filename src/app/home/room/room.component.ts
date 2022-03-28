@@ -43,7 +43,6 @@ export class RoomComponent extends Handler implements OnInit {
   roomDescription: string;
 
   wealth: number = 0;
-  newWealth: number = 0;
 
   objects: Map<string, any>;
   me: Player;
@@ -235,7 +234,7 @@ export class RoomComponent extends Handler implements OnInit {
             };
             scene.lookAt(this.target);
             scene.render();
-            
+
             for (let persistObject of this.objects.values()) {
               if (persistObject != this.objects.get("scene")) {
                 let t = {
