@@ -21,6 +21,17 @@ app-loading-monetization, app-monetized, app-not-monetized {
     font-size: 3em;
 }
 
+.advanced {
+    display: flex;
+    align-items: center;
+    gap: 1ch;
+}
+
+.advanced-stats {
+    display: flex;
+    flex-direction: column;
+}
+
 #membership {
     display: flex;
     justify-content: center;
@@ -29,6 +40,10 @@ app-loading-monetization, app-monetized, app-not-monetized {
     margin-bottom: 1em;
     padding: 0.2em 2ch;
     background-color: papayawhip;
+}
+
+#membership app-pro-badge {
+    font-size: 2em;
 }
 
 #membership-message {

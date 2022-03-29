@@ -1,25 +1,28 @@
-import { Component, OnInit, ComponentFactoryResolver, ViewChild, ComponentRef } from '@angular/core';
-import { Location } from '@angular/common';
-import { SocketService } from 'src/app/socket/socket.service';
-import { RoomChangeService } from '../../room-change.service';
-import { Activity } from '../activity';
-import { RoomLinkDirective } from './room-link.directive';
-import { RoomLinkComponent } from './room-link/room-link.component';
-import { NgForm } from '@angular/forms';
-import { RoomInvitationDirective } from './room-invitation.directive';
-import { RoomInvitationComponent } from './room-invitation/room-invitation.component';
-import { MenuComponent } from '../../menu/menu.component';
-import * as braintree from 'braintree-web-drop-in';
+import { Component, OnInit, ComponentFactoryResolver, ViewChild, ComponentRef } from "@angular/core";
+import { Location } from "@angular/common";
+import { SocketService } from "src/app/socket/socket.service";
+import { RoomChangeService } from "../../room-change.service";
+import { Activity } from "../activity";
+import { RoomLinkDirective } from "./room-link.directive";
+import { RoomLinkComponent } from "./room-link/room-link.component";
+import { NgForm } from "@angular/forms";
+import { RoomInvitationDirective } from "./room-invitation.directive";
+import { RoomInvitationComponent } from "./room-invitation/room-invitation.component";
+import { MenuComponent } from "../../menu/menu.component";
+
+import { client, dataCollector } from "braintree-web";
+import * as braintreeDropIn from "braintree-web-drop-in";
+import { ProService } from "../../pro.service";
 
 @Component({
-  selector: 'app-settings',
-  templateUrl: './settings.component.html',
-  styleUrls: ['./settings.component.css']
+  selector: "app-settings",
+  templateUrl: "./settings.component.html",
+  styleUrls: ["./settings.component.css"]
 })
 export class SettingsComponent implements OnInit, Activity {
-  @ViewChild(RoomLinkDirective, {static: true}) roomLinkHost: RoomLinkDirective;
-  @ViewChild(RoomInvitationDirective, {static: true}) roomInvitationHost: RoomInvitationDirective;
-  
+  @ViewChild(RoomLinkDirective, { static: true }) roomLinkHost: RoomLinkDirective;
+  @ViewChild(RoomInvitationDirective, { static: true }) roomInvitationHost: RoomInvitationDirective;
+
   header: string = "Settings";
   roomPrivate: boolean = true;
   roomTitle: string = sessionStorage.getItem("room_title");
@@ -31,8 +34,11 @@ export class SettingsComponent implements OnInit, Activity {
 
   sent: boolean;
 
+  pro: boolean;
+
   socketService: SocketService;
   roomChangeService: RoomChangeService;
+  proService: ProService;
   componentFactoryResolver: ComponentFactoryResolver;
 
   displayName: string;
@@ -41,9 +47,13 @@ export class SettingsComponent implements OnInit, Activity {
 
   subpage: string;
 
-  constructor(socketService: SocketService, roomChangeService: RoomChangeService, location: Location, componentFactoryResolver: ComponentFactoryResolver) {
+  paymentDeviceData: any;
+  dropinInstance: any;
+
+  constructor(socketService: SocketService, roomChangeService: RoomChangeService, proService: ProService, location: Location, componentFactoryResolver: ComponentFactoryResolver) {
     this.socketService = socketService;
     this.roomChangeService = roomChangeService;
+    this.proService = proService;
     this.location = location;
     this.componentFactoryResolver = componentFactoryResolver;
   }
@@ -51,15 +61,16 @@ export class SettingsComponent implements OnInit, Activity {
   ngOnInit(): void {
     this.socketService.reply.subscribe(msg => this.onResponseReceived(msg));
     this.roomChangeService.roomId.subscribe(msg => this.onRoomChange(msg));
-    this.socketService.sendMessage({channel: "settings", type: "request_payment_client_token"});
-    this.socketService.sendMessage({channel: "settings", type: "request_rooms"});
-    this.socketService.sendMessage({channel: "settings", type: "request_listed_rooms"});
-    this.socketService.sendMessage({channel: "settings", type: "request_invitations"});
+    this.proService.pro.subscribe(pro => this.pro = pro);
+    this.socketService.sendMessage({ channel: "settings", type: "request_payment_client_token" });
+    this.socketService.sendMessage({ channel: "settings", type: "request_rooms" });
+    this.socketService.sendMessage({ channel: "settings", type: "request_listed_rooms" });
+    this.socketService.sendMessage({ channel: "settings", type: "request_invitations" });
     if (sessionStorage.getItem("room_id") != undefined) {
-      this.socketService.sendMessage({channel: "settings", type: "enter_room", room_id: sessionStorage.getItem("room_id")});
+      this.socketService.sendMessage({ channel: "settings", type: "enter_room", room_id: sessionStorage.getItem("room_id") });
     }
     if (sessionStorage.getItem("joinRoomId") != undefined) {
-      this.socketService.sendMessage({channel: "settings", type: "join_room", room_id: sessionStorage.getItem("joinRoomId")});
+      this.socketService.sendMessage({ channel: "settings", type: "join_room", room_id: sessionStorage.getItem("joinRoomId") });
       sessionStorage.removeItem("joinRoomId");
       sessionStorage.removeItem("joinRoomTitle");
     }
@@ -72,20 +83,53 @@ export class SettingsComponent implements OnInit, Activity {
   onResponseReceived(msg: any): void {
     if (msg["channel"] == "settings") {
       if (msg["type"] == "request_payment_client_token") {
-        braintree.create({
-          // Insert your tokenization key here
-          authorization: msg["token"],
-          container: '#dropin-container'
-        }, function (createErr, instance) {
-          let button = document.getElementById("submit-button");
-          button.addEventListener('click', function () {
-            instance.requestPaymentMethod(function (requestPaymentMethodErr, payload) {
-              // When the user clicks on the 'Submit payment' button this code will send the
-              // encrypted payment information in a variable called a payment method nonce
-              this.socketService.send_message({channel: "settings", type: "checkout", payment_nonce: payload.nonce});
+        client.create({
+          authorization: msg["token"]
+        },
+          function (err, clientInstance) {
+            braintreeDropIn.create({
+              // Insert your tokenization key here
+              authorization: msg["token"],
+              container: "#dropin-container"
+            }, function (createErr, instance) {
+
+              this.dropinInstance = instance;
+
+              dataCollector.create({
+                client: clientInstance,
+              }, function (err, dataCollectorInstance) {
+                if (err) {
+                  // Handle error in creation of data collector
+                  return;
+                }
+                // At this point, you should access the dataCollectorInstance.deviceData value and provide it
+                // to your server, e.g. by injecting it into your form as a hidden input.
+                this.paymentDeviceData = dataCollectorInstance.deviceData;
+              }.bind(this));
+
+              let button = document.getElementById("submit-button");
+              button.addEventListener("click", function () {
+                instance.requestPaymentMethod(function (requestPaymentMethodErr, payload) {
+                  // When the user clicks on the "Submit payment" button this code will send the
+                  // encrypted payment information in a variable called a payment method nonce
+                  this.socketService.sendMessage({ channel: "settings", type: "checkout", payment_nonce: payload.nonce, device_data: this.paymentDeviceData });
+                }.bind(this));
+              }.bind(this));
             }.bind(this));
           }.bind(this));
-        }.bind(this));
+      }
+      if (msg["type"] == "checkout") {
+        if (msg["success"]) {
+          this.proService.setPro(true);
+          this.dropinInstance.teardown(function (teardownErr) {
+            if (teardownErr) {
+              console.error("Could not tear down Drop-in UI!");
+            } else {
+              console.info("Drop-in UI has been torn down!");
+              document.getElementById("submit-button").remove();
+            }
+          });
+        }
       }
       if (msg["type"] == "request_rooms") {
         let numRooms = Object.keys(msg["rooms"]).length;
@@ -107,7 +151,7 @@ export class SettingsComponent implements OnInit, Activity {
             sessionStorage.setItem("room_id", room_id);
             sessionStorage.setItem("room_title", msg["rooms"][room_id]["room_title"]);
             sessionStorage.setItem("room_description", msg["rooms"][room_id]["room_description"]);
-            this.socketService.sendMessage({channel: "settings", type: "enter_room", room_id: room_id});
+            this.socketService.sendMessage({ channel: "settings", type: "enter_room", room_id: room_id });
           }
           if (!(room_id == sessionStorage.getItem("room_id"))) {
             let data: any = msg["rooms"][room_id];
@@ -133,7 +177,7 @@ export class SettingsComponent implements OnInit, Activity {
           }
         }
       }
-      else if ( msg["type"] == "set_room_privacy") {
+      else if (msg["type"] == "set_room_privacy") {
         if (msg["success"] == true) {
           this.roomPrivate = !this.roomPrivate;
           let privacyForms: HTMLCollectionOf<Element> = document.getElementsByClassName("privacy-form");
@@ -152,7 +196,7 @@ export class SettingsComponent implements OnInit, Activity {
           sessionStorage.setItem("room_is_owner", msg["is_owner"]);
           this.roomTitle = sessionStorage.getItem("room_title");
           this.roomDescription = sessionStorage.getItem("room_description");
-          this.roomChangeService.setRoomData({"room_title": msg["room_title"], "room_description": msg["room_description"]});
+          this.roomChangeService.setRoomData({ "room_title": msg["room_title"], "room_description": msg["room_description"] });
           this.roomChangeService.setRoom(msg["room_id"]);
         }
       }
@@ -166,8 +210,10 @@ export class SettingsComponent implements OnInit, Activity {
         if (invitations.length > 0) {
           document.getElementById("invitations").classList.remove("hidden");
           invitations.forEach(invitation => {
-            let data: any = {title: invitation["room_title"], room_id: invitation["room_id"], 
-            username: invitation["username"], invitation_id: invitation["invitation_id"]};
+            let data: any = {
+              title: invitation["room_title"], room_id: invitation["room_id"],
+              username: invitation["username"], invitation_id: invitation["invitation_id"]
+            };
             this.loadInvitation(data);
           });
         }
@@ -179,7 +225,7 @@ export class SettingsComponent implements OnInit, Activity {
         this.reloadInvitations();
       }
       else if (msg["type"] == "create_room") {
-        this.socketService.sendMessage({channel: "settings", type: "enter_room", room_id: msg["room_id"]});
+        this.socketService.sendMessage({ channel: "settings", type: "enter_room", room_id: msg["room_id"] });
       }
       else if (msg["type"] == "leave_room") {
         if (msg["success"] == true) {
@@ -205,17 +251,17 @@ export class SettingsComponent implements OnInit, Activity {
   }
 
   handleAddition(): void {
-    if (MenuComponent.getActivity(this.location.path()) == "settings" && this.location.path().split('/').length > 3) {
-      this.openSubpage(this.location.path().split('/')[3]);
+    if (MenuComponent.getActivity(this.location.path()) == "settings" && this.location.path().split("/").length > 3) {
+      this.openSubpage(this.location.path().split("/")[3]);
     }
-    else if (MenuComponent.getActivity(this.location.path()) == "settings" ) {
+    else if (MenuComponent.getActivity(this.location.path()) == "settings") {
       this.openSubpage(undefined);
     }
   }
 
   navigate(subpage: string, event: Event) {
     event.preventDefault();
-    this.location.replaceState('/home/settings/' + subpage);
+    this.location.replaceState("/home/settings/" + subpage);
   }
 
   openSubpage(subpage: string): void {
@@ -223,24 +269,24 @@ export class SettingsComponent implements OnInit, Activity {
   }
 
   closeSubpage(): void {
-    this.location.replaceState('/home/settings');
+    this.location.replaceState("/home/settings");
     this.openSubpage(undefined);
   }
 
   onSubmitDisplayName(f: NgForm) {
-    let submission = {channel: "settings", type: "edit_display_name", display_name: <string> f.value["display_name"]};
+    let submission = { channel: "settings", type: "edit_display_name", display_name: <string>f.value["display_name"] };
     f.resetForm();
     this.socketService.sendMessage(submission);
   }
 
   onSubmitRoomTitle(f: NgForm) {
-    let submission = {channel: "settings", type: "edit_room_title", room_id: this.roomId, room_title: <string> f.value["room_title"]};
+    let submission = { channel: "settings", type: "edit_room_title", room_id: this.roomId, room_title: <string>f.value["room_title"] };
     f.resetForm();
     this.socketService.sendMessage(submission);
   }
 
   onSubmitRoomDescription(f: NgForm) {
-    let submission = {channel: "settings", type: "edit_room_description", room_id: this.roomId, room_description: <string> f.value["room_description"]};
+    let submission = { channel: "settings", type: "edit_room_description", room_id: this.roomId, room_description: <string>f.value["room_description"] };
     f.resetForm();
     this.socketService.sendMessage(submission);
   }
@@ -250,7 +296,7 @@ export class SettingsComponent implements OnInit, Activity {
       const componentFactory = this.componentFactoryResolver.resolveComponentFactory(RoomLinkComponent);
 
       const viewContainerRef = this.roomLinkHost.viewContainerRef;
-  
+
       const componentRef = viewContainerRef.createComponent(componentFactory);
       (<RoomLinkComponent>componentRef.instance).data = data;
 
@@ -262,7 +308,7 @@ export class SettingsComponent implements OnInit, Activity {
     const viewContainerRef = this.roomLinkHost.viewContainerRef;
     viewContainerRef.clear();
     this.rooms.clear();
-    this.socketService.sendMessage({channel: "settings", type: "request_rooms"});
+    this.socketService.sendMessage({ channel: "settings", type: "request_rooms" });
   }
 
   loadInvitation(data: any): void {
@@ -275,12 +321,12 @@ export class SettingsComponent implements OnInit, Activity {
   }
 
   reloadInvitations(): void {
-    this.socketService.sendMessage({channel: "settings", type: "request_invitations"});
+    this.socketService.sendMessage({ channel: "settings", type: "request_invitations" });
   }
 
   onRoomChange(roomId: string): void {
     if (!(roomId == undefined)) {
-      this.socketService.sendMessage({channel: "settings", type: "request_room_privacy", room_id: roomId});
+      this.socketService.sendMessage({ channel: "settings", type: "request_room_privacy", room_id: roomId });
       this.roomId = roomId;
       this.roomLink = "https://joincowork.com/j/" + this.roomId;
       this.reloadRooms();
@@ -288,32 +334,31 @@ export class SettingsComponent implements OnInit, Activity {
   }
 
   onSubmitInvite(f: NgForm): void {
-    let submission = {channel: "settings", type: "create_invitation", room_id: sessionStorage.getItem("room_id"), invitee: <string> f.value["username"]};
+    let submission = { channel: "settings", type: "create_invitation", room_id: sessionStorage.getItem("room_id"), invitee: <string>f.value["username"] };
     this.socketService.sendMessage(submission);
     f.resetForm();
     this.sent = true;
   }
 
   onSubmitJoin(f: NgForm): void {
-    let submission = {channel: "settings", type: "join_room", room_id: <string> f.value["joinCode"]};
+    let submission = { channel: "settings", type: "join_room", room_id: <string>f.value["joinCode"] };
     f.resetForm();
     this.socketService.sendMessage(submission);
   }
 
   onSubmitLeave(): void {
-    let submission = {channel: "settings", type: "leave_room", room_id: sessionStorage.getItem("room_id")};
+    let submission = { channel: "settings", type: "leave_room", room_id: sessionStorage.getItem("room_id") };
     this.socketService.sendMessage(submission);
   }
 
   onSubmitCreate(f: NgForm): void {
-    let submission = {channel: "settings", type: "create_room", title: <string> f.value["title"]};
+    let submission = { channel: "settings", type: "create_room", title: <string>f.value["title"] };
     f.resetForm();
     this.socketService.sendMessage(submission);
   }
 
   onToggleRoomPrivacy(): void {
-    let submission = {channel: "settings", type: "set_room_privacy", room_id: sessionStorage.getItem("room_id"), private: !this.roomPrivate};
+    let submission = { channel: "settings", type: "set_room_privacy", room_id: sessionStorage.getItem("room_id"), private: !this.roomPrivate };
     this.socketService.sendMessage(submission);
   }
 }
-  

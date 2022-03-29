@@ -3,6 +3,7 @@ import { Injectable, OnInit } from '@angular/core';
 import { webSocket, WebSocketSubject } from 'rxjs/webSocket';
 import { Observable, Subject } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
+import { ProService } from '../home/pro.service';
 
 @Injectable({
   providedIn: 'root'
@@ -19,17 +20,20 @@ export class SocketService implements OnInit {
 
   httpClient: HttpClient;
 
+  proService: ProService;
+
   unsentMessages: Array<any> = [];
 
   updateNotes: any[];
   onUpdateNotes: Function;
   
-  constructor(httpClient: HttpClient) {
+  constructor(httpClient: HttpClient, proService: ProService) {
     this.httpClient = httpClient;
     this.replySource = new Subject<any>();
     this.reply = this.replySource.asObservable();
     this.replySources = new Map<string, Subject<any>>();
     this.channelReply = new Map<string, Observable<any>>();
+    this.proService = proService;
     this.establishWebsocket();
   }
 
@@ -50,6 +54,8 @@ export class SocketService implements OnInit {
             sessionStorage.setItem("username", msg["username"]);
             sessionStorage.setItem("account_id", msg["account_id"]);
             sessionStorage.setItem("display_name", msg["display_name"]);
+            console.log(msg);
+            this.proService.setPro(msg["pro"]);
             this.updateNotes = msg["update_notes"];
             if (this.onUpdateNotes != undefined) this.onUpdateNotes(msg["update_notes"]);
           }

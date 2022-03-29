@@ -16,29 +16,33 @@
             </div>
         </div>
     </div>
-    <h2>Advanced</h2>
-    <div id="membership">
-        <span id="lock"><i class="bi bi-shield-lock-fill"></i></span>
-        <span id="membership-message">Note: in the future, these advanced statistics will be available for subscription holders only.</span>
+    <div class="advanced">
+        <app-pro-badge></app-pro-badge><h2>Advanced</h2>
     </div>
-    <div class="time">
-        <form>
-            <span>Between </span><input id="from" type="date" (change)=onDatesChanged()><span> and </span><input id="to" type="date" (change)=onDatesChanged()><span>,</span>
-        </form>
-        <span>you've spent</span>
-        <h2 [style.display]="days > 0 ? 'inherit' : 'none'" id="days">{{ days }} days</h2>
-        <h3 [style.display]="hours > 0 ? 'inherit' : 'none'" id="hours">{{ hours }} hours</h3>
-        <h4 id="minutes">{{ minutes }} minutes</h4>
-        <span>total time focusing.</span>
+    <div id="membership" [style.display]="pro ? 'none' : 'inherit'">
+        <app-pro-badge></app-pro-badge>
+        <span id="membership-message">For more advanced statistics, subscribe to Cowork Pro.</span>
     </div>
-    <h3 class="insight">Time spent on tags over time:</h3>
-    <span [style.display]="tags.size > 0 ? 'none' : 'inherit'">Apply tags to your tasks to get more insights here.</span>
-    <canvas id="tag-breakdown-stacked-bar" height="200px"></canvas>
-    <h3 class="insight">Top tasks by time spent:</h3>
-    <span [style.display]="tags.size > 0 ? 'none' : 'inherit'">You haven't worked on any tasks yet.</span>
-    <div class="task-breakdown">
-        <div class="task" *ngFor="let listing of listings"><app-task class="listing" [data]="listing"></app-task><span>{{ listing.minutes }} minutes</span></div>
+    <div class="advanced-stats" [style.display]="pro ? 'inherit' : 'none'">
+        <div class="time">
+            <form>
+                <span>Between </span><input id="from" type="date" (change)=onDatesChanged()><span> and </span><input id="to" type="date" (change)=onDatesChanged()><span>,</span>
+            </form>
+            <span>you've spent</span>
+            <h2 [style.display]="days > 0 ? 'inherit' : 'none'" id="days">{{ days }} days</h2>
+            <h3 [style.display]="hours > 0 ? 'inherit' : 'none'" id="hours">{{ hours }} hours</h3>
+            <h4 id="minutes">{{ minutes }} minutes</h4>
+            <span>total time focusing.</span>
+        </div>
+        <h3 class="insight">Time spent on tags over time:</h3>
+        <span [style.display]="tags.size > 0 ? 'none' : 'inherit'">Apply tags to your tasks to get more insights here.</span>
+        <canvas id="tag-breakdown-stacked-bar" height="200px"></canvas>
+        <h3 class="insight">Top tasks by time spent:</h3>
+        <span [style.display]="tags.size > 0 ? 'none' : 'inherit'">You haven't worked on any tasks yet.</span>
+        <div class="task-breakdown">
+            <div class="task" *ngFor="let listing of listings"><app-task class="listing" [data]="listing"></app-task><span>{{ listing.minutes }} minutes</span></div>
+        </div>
+        <div class="task" [style.display]="minutesOnDeletedListings > 0 ? 'inherit' : 'none'"><app-task class="listing" [data]="{title: 'Deleted listings', minutes: minutesOnDeletedListings}"></app-task><span>{{ minutesOnDeletedListings }} minutes</span></div>
+        <canvas id="task-breakdown-pie"></canvas>
     </div>
-    <div class="task" [style.display]="minutesOnDeletedListings > 0 ? 'inherit' : 'none'"><app-task class="listing" [data]="{title: 'Deleted listings', minutes: minutesOnDeletedListings}"></app-task><span>{{ minutesOnDeletedListings }} minutes</span></div>
-    <canvas id="task-breakdown-pie"></canvas>
 </div>

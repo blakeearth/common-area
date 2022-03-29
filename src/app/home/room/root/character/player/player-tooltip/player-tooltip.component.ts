@@ -14,7 +14,8 @@ export class PlayerTooltipComponent extends Handler implements OnInit, OnDestroy
 
   displayName: string;
   id: string;
-  activeTaskData: any = {"task_id": null, "title": "This user's active task is not currently available."};
+  activeTaskData: any = {"task_id": null, "title": "Loading..."};
+  pro: boolean = false;
   position: Vector;
 
   x: string;
@@ -38,21 +39,21 @@ export class PlayerTooltipComponent extends Handler implements OnInit, OnDestroy
     const marginBottom: number = 18;
 
     this.subscription = this.socketService.channelReply.get("room").subscribe(msg => {
-      if (msg["type"] == "request_active_task_for_account") this[this.snakeToCamel(msg["type"])](msg);
+      if (msg["type"] == "request_player_information") this[this.snakeToCamel(msg["type"])](msg);
     });
 
     this.x = (this.position.x - (width / 2) - (32 / 2)).toString() + "px";
     this.y = (this.position.y - height - marginBottom).toString() + "px";
 
-    this.socketService.sendMessage({ channel: "tasks", type: "request_active_task_for_account", "persist_object_id": this.id });
+    this.socketService.sendMessage({ channel: "tasks", type: "request_player_information", "persist_object_id": this.id });
   }
 
-  requestActiveTaskForAccount(msg: any): void {
+  requestPlayerInformation(msg: any): void {
     this.activeTaskData = msg;
-  }
-
-  requestWarp(): void {
-    this.socketService.sendMessage({"channel": "room", "type": "warp_to_persist_object", "id": this.id});
+    if (!msg["public"]) {
+      this.activeTaskData["title"] = "This user's active task is not currently available.";
+      this.pro = msg["pro"];
+    }
   }
 
   ngOnDestroy(): void {

@@ -19,6 +19,12 @@
     justify-content: space-between;
 }
 
+.name {
+    display: flex;
+    align-items: center;
+    gap: 1ch;
+}
+
 h3 {
     margin: 0;
 }

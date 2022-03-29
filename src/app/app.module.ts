@@ -72,6 +72,7 @@ import { EditItemTooltipDirective } from './home/room/root/edit-item-tooltip.dir
 import { CheckpointListComponent } from './home/room/checkpoint-list/checkpoint-list.component';
 import { AppInstructionsComponent } from './landing-page/app-instructions/app-instructions.component';
 import { SubpageLinkComponent } from './home/activities/settings/subpage-link/subpage-link.component';
+import { ProBadgeComponent } from './home/pro-badge/pro-badge.component';
 
 @NgModule({
     declarations: [
@@ -137,6 +138,7 @@ import { SubpageLinkComponent } from './home/activities/settings/subpage-link/su
         EditItemTooltipDirective,
         CheckpointListComponent,
         SubpageLinkComponent,
+        ProBadgeComponent,
     ],
     imports: [
         BrowserModule.withServerTransition({ appId: 'serverApp' }),

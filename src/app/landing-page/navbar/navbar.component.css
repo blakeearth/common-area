@@ -3,6 +3,13 @@ nav {
     justify-content: space-between;
     align-items: center;
     background-color: #011638;
+    padding: 0 5ch;
+}
+
+#title {
+    display: flex;
+    align-items: center;
+    color: white;
 }
 
 img {
@@ -29,4 +36,10 @@ a {
 
 button {
     padding: 0.5em 2ch;
+}
+
+@media only screen and (max-width: 600px) {
+    nav {
+        padding: 0;
+    }
 }

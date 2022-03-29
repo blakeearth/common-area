@@ -78,6 +78,20 @@ button {
     padding: 0.2em 2ch 0.2em 2ch;
 }
 
+#dropin-wrapper {
+    padding-bottom: 2em;
+}
+
+#submit-button {
+    width: 100%;
+}
+
+.pro-header {
+    display: flex;
+    align-items: center;
+    gap: 1ch;
+}
+
 input {
     margin-left: 2ch;
 }
@@ -105,7 +119,6 @@ ul {
     list-style-type: '✓';
     padding-left: 1ch;
     margin: 0;
-    margin-bottom: 2em;
 }
 
 li {

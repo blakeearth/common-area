@@ -43,24 +43,52 @@
                 </a>
                 <h4>Subscription</h4>
             </div>
-            <h2>Cowork Pro (Coming soon)</h2>
-            <div>
-                Easily track your productivity with friends and support indie software
-            </div>
-            <div class="price"><h3>$5</h3><span class="time">/mo</span></div>
-            <ul>
-                <li>Everything in Basic, plus...</li>
-                <li>Advanced personal productivity statistics</li>
-                <li>Custom room environment features</li>
-                <li>More cosmetic options for your avatar</li>
-                <li>More members in rooms you own</li>
-                <li>More rooms to host</li>
-            </ul>
-            <div id="dropin-wrapper" style="display: none;">
-                <div id="checkout-message"></div>
-                <div id="dropin-container"></div>
-                <button id="submit-button">Submit payment</button>
-            </div>
+
+            <div *ngIf="pro; then proBlock else subscribeBlock"></div>
+            <ng-template #proBlock>
+                <div class="pro-header">
+                    <app-pro-badge></app-pro-badge>
+                    <h2>Cowork Pro (Active)</h2>
+                </div>
+                <p>
+                    Thank you so much for your ongoing Pro membership! Your support is critical in helping us keep
+                    Cowork open. As a reminder, your membership gets you all the following features...
+                </p>
+                <ul>
+                    <li>Everything in Basic, plus...</li>
+                    <li>Advanced personal productivity statistics</li>
+                    <li>Custom room environment features</li>
+                    <li>More cosmetic options for your avatar</li>
+                    <li>More members in rooms you own</li>
+                    <li>More rooms to host</li>
+                </ul>
+                <p>
+                    To cancel your subscription, please send an email to <a href="mailto:support@joincowork.com">support@joincowork.com</a>.
+                </p>
+            </ng-template>
+            <ng-template #subscribeBlock>
+                <div class="pro-header">
+                    <app-pro-badge></app-pro-badge>
+                    <h2>Cowork Pro</h2>
+                </div>
+                <p>
+                    Easily track your productivity with friends and support indie software
+                </p>
+                <div class="price"><h3>$5</h3><span class="time">/mo</span></div>
+                <ul>
+                    <li>Everything in Basic, plus...</li>
+                    <li>Advanced personal productivity statistics</li>
+                    <li>Custom room environment features</li>
+                    <li>More cosmetic options for your avatar</li>
+                    <li>More members in rooms you own</li>
+                    <li>More rooms to host</li>
+                </ul>
+                <div id="dropin-wrapper">
+                    <div id="checkout-message"></div>
+                    <div id="dropin-container"></div>
+                    <button id="submit-button">Submit payment</button>
+                </div>
+            </ng-template>
         </div>
 
         <div [style.display]="subpage == 'other-rooms' ? 'inherit' : 'none'" id="other-rooms" class="subpage">
