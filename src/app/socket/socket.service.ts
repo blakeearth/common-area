@@ -54,7 +54,6 @@ export class SocketService implements OnInit {
             sessionStorage.setItem("username", msg["username"]);
             sessionStorage.setItem("account_id", msg["account_id"]);
             sessionStorage.setItem("display_name", msg["display_name"]);
-            console.log(msg);
             this.proService.setPro(msg["pro"]);
             this.updateNotes = msg["update_notes"];
             if (this.onUpdateNotes != undefined) this.onUpdateNotes(msg["update_notes"]);

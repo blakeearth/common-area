@@ -52,5 +52,6 @@ button {
 }
 
 button a, button {
+    text-align: center;
     color: black;
 }

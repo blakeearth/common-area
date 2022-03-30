@@ -48,10 +48,10 @@ export class TimerComponent extends Handler implements OnInit, Activity {
   
   joinedSession: boolean = false;
 
-  rightVisibility: string = "inherit";
-  leftVisibility: string = "inherit";
+  rightVisibility: string = "visible";
+  leftVisibility: string = "visible";
 
-  startButtonDisplay: string = "inherit";
+  startButtonDisplay: string = "block";
   leaveButtonDisplay: string = "none";
 
   participantsDisplay: string = "none";
@@ -114,8 +114,8 @@ export class TimerComponent extends Handler implements OnInit, Activity {
 
   addTime(event: Event, time: number): void {
     this.timeToSubmit += time;
-    this.rightVisibility = "inherit";
-    this.leftVisibility = "inherit";
+    this.rightVisibility = "visible";
+    this.leftVisibility = "visible";
     if (this.timeToSubmit > 45 || this.timeToSubmit < 10) this.timeToSubmit -= time;
     if (this.timeToSubmit == 45) {
       this.rightVisibility = "hidden";
@@ -148,7 +148,7 @@ export class TimerComponent extends Handler implements OnInit, Activity {
     
       // reveal leave session button, participants
       // TODO: the below could absolutely cause glitches if two people choose the same display name
-      this.leaveButtonDisplay = "inherit";
+      this.leaveButtonDisplay = "block";
   
       this.participantsDisplay = "initial";
     }
@@ -158,7 +158,7 @@ export class TimerComponent extends Handler implements OnInit, Activity {
       session.expected_end_time = msg.expected_end_time + "Z";
       this.sessions.push(session);
       if (this.sessions.length > 0) {
-        this.joinDisplay = "inherit";
+        this.joinDisplay = "flex";
       }
       else {
         this.joinDisplay = "none";
@@ -174,7 +174,7 @@ export class TimerComponent extends Handler implements OnInit, Activity {
       this.sessions.push(session);
     }
     if (this.sessions.length > 0) {
-      this.joinDisplay = "inherit";
+      this.joinDisplay = "flex";
     }
     else {
       this.joinDisplay = "none";
@@ -203,7 +203,7 @@ export class TimerComponent extends Handler implements OnInit, Activity {
   
       // reveal leave session button, participants
       // TODO: the below could absolutely cause glitches if two people choose the same display name
-      this.leaveButtonDisplay = "inherit";
+      this.leaveButtonDisplay = "block";
   
       this.participantsDisplay = "initial";
     }
@@ -226,16 +226,17 @@ export class TimerComponent extends Handler implements OnInit, Activity {
       sessionStorage.removeItem("session_id");
       if (this.timerSubscription != null) this.timerSubscription.unsubscribe();
 
-      this.leftVisibility = "initial";
-      this.rightVisibility = "initial";
-      this.startButtonDisplay = "initial";
+      this.leftVisibility = "visible";
+      this.rightVisibility = "visible";
+      this.startButtonDisplay = "block";
       this.leaveButtonDisplay = "none";
       this.participantsDisplay = "none";
     }
     else if (msg["session_id"] == this.sessionId) {
       let newParticipants: any[] = [];
       for (let participant of this.participants) {
-        if (!participant.includes(msg["display_name"])) newParticipants.push(participant);
+        console.log(participant);
+        if (participant["display_name"] != (msg["display_name"])) newParticipants.push(participant);
       }
       this.participants = newParticipants;
     }
@@ -256,9 +257,9 @@ export class TimerComponent extends Handler implements OnInit, Activity {
       sessionStorage.removeItem("session_id");
       if (this.timerSubscription != null) this.timerSubscription.unsubscribe();
 
-      this.leftVisibility = "initial";
-      this.rightVisibility = "initial";
-      this.startButtonDisplay = "initial";
+      this.leftVisibility = "visible";
+      this.rightVisibility = "visible";
+      this.startButtonDisplay = "block";
       this.leaveButtonDisplay = "none";
       this.participantsDisplay = "none";
     }
@@ -292,8 +293,8 @@ export class TimerComponent extends Handler implements OnInit, Activity {
         this.timeRemaining = new Date(0, 0, 0, 0, this.timeToSubmit);
         this.timerService.stopTimer();
         this.timerSubscription.unsubscribe();
-        this.leftVisibility = "inherit";
-        this.rightVisibility = "inherit";
+        this.leftVisibility = "visible";
+        this.rightVisibility = "visible";
       }
       else {
         newDate.setSeconds(59);

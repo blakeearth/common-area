@@ -10,8 +10,8 @@
 
 #consumable {
     text-align: center;
-    font-size: 15em;
-    color: goldenrod;
+    font-size: 8em;
+    color: #011638;
 }
 
 .tooltip-parent {
@@ -80,6 +80,7 @@ h2, #participants {
 #join {
     display: flex;
     flex-direction: column;
+    justify-content: stretch;
 }
 
 #time {
