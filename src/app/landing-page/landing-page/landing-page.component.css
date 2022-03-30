@@ -39,8 +39,8 @@ app-navbar {
 }
 
 .statement h2 {
-    font-size: 3em;
-    font-weight: lighter;
+    font-size: 2em;
+    font-family: "Poppins Bold", sans-serif;
 }
 
 h2 {
@@ -130,7 +130,8 @@ h3.feature-header {
     flex-direction: column;
     justify-content: center;
     margin: auto;
-    box-shadow: 0 0  2ch#000000;
+    border: 1px solid gray;
+    box-shadow: 0 1rem 1px 0 rgba(0, 0, 0, 0.2);
 }
 
 #logo {
@@ -190,7 +191,8 @@ h2 {
     .feature img {
         margin: 1em 2ch 1em 2ch;
         border-radius: 2em;
-        box-shadow: 0 0 1rem #000000dd;
+        border: 1px solid gray;
+        box-shadow: 0 1rem 1px 0 rgba(0, 0, 0, 0.2);
         max-width: 80%;
         height: auto;
         order: 1;

@@ -15,6 +15,7 @@ export class JoinRoomComponent implements OnInit, Goal {
   header: string = "Join the room!";
   roomId: string;
   roomTitle: string;
+  roomDescription: string;
   faUsers = faUsers;
   memberCount = 0;
 
@@ -50,7 +51,9 @@ export class JoinRoomComponent implements OnInit, Goal {
           hidden.classList.remove("hidden-form");
         }
       if (msg["title"] != null) {
+        this.header = "Join " + msg["title"];
         this.roomTitle = msg["title"];
+        this.roomDescription = msg["description"];
         this.memberCount = msg["member_count"];
       }
       else {

@@ -1,8 +1,9 @@
 <app-panel-header [header]="header"></app-panel-header>
 <form class="hidden-form">
     <div class="join-form-element">
-        <div class="users"><fa-icon [icon]="faUsers"></fa-icon> {{ memberCount }} members in this room</div>
-        <button (click)="joinRoom()"><h2>Join {{ roomTitle }}</h2></button>
+        <p><fa-icon [icon]="faUsers"></fa-icon> {{ memberCount }} members in this room</p>
+        <p>{{ roomDescription }}</p>
+        <button (click)="joinRoom()" (keydown.enter)="joinRoom()">Enter {{ roomTitle }}</button>
     </div>
     <div class="join-form-element hidden-form">
         <div class="users">That join link's not valid!</div>
