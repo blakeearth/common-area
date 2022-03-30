@@ -50,3 +50,7 @@ button {
     font-weight: bold;
     padding: 0 1ch 0 1ch;
 }
+
+button a, button {
+    color: black;
+}
