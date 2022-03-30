@@ -61,8 +61,10 @@ export class SettingsComponent implements OnInit, Activity {
   ngOnInit(): void {
     this.socketService.reply.subscribe(msg => this.onResponseReceived(msg));
     this.roomChangeService.roomId.subscribe(msg => this.onRoomChange(msg));
-    this.proService.pro.subscribe(pro => this.pro = pro);
-    this.socketService.sendMessage({ channel: "settings", type: "request_payment_client_token" });
+    this.proService.pro.subscribe(pro => {
+      this.pro = pro;
+      if (!this.pro) this.socketService.sendMessage({ channel: "settings", type: "request_payment_client_token" });
+    });
     this.socketService.sendMessage({ channel: "settings", type: "request_rooms" });
     this.socketService.sendMessage({ channel: "settings", type: "request_listed_rooms" });
     this.socketService.sendMessage({ channel: "settings", type: "request_invitations" });

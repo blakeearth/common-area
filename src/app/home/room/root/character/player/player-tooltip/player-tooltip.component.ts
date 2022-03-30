@@ -50,9 +50,9 @@ export class PlayerTooltipComponent extends Handler implements OnInit, OnDestroy
 
   requestPlayerInformation(msg: any): void {
     this.activeTaskData = msg;
+    this.pro = msg["pro"];
     if (!msg["public"]) {
       this.activeTaskData["title"] = "This user's active task is not currently available.";
-      this.pro = msg["pro"];
     }
   }
 
