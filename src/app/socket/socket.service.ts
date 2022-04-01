@@ -22,6 +22,7 @@ export class SocketService implements OnInit {
 
   proService: ProService;
 
+  authenticated: boolean = false;
   unsentMessages: Array<any> = [];
 
   updateNotes: any[];
@@ -45,15 +46,17 @@ export class SocketService implements OnInit {
 
   establishWebsocket() {
     this.httpClient.get('https://ws.joincowork.com', {responseType: 'text', withCredentials: true}).subscribe(data => {
+
       this.socket = webSocket('wss://ws.joincowork.com:4433');
 
       this.socket.subscribe(
         msg => {
-
           if (msg["password_correct"] == true) {
             sessionStorage.setItem("username", msg["username"]);
             sessionStorage.setItem("account_id", msg["account_id"]);
             sessionStorage.setItem("display_name", msg["display_name"]);
+            sessionStorage.setItem("server_ip", msg["server_ip"]);
+
             this.proService.setPro(msg["pro"]);
             this.updateNotes = msg["update_notes"];
             if (this.onUpdateNotes != undefined) this.onUpdateNotes(msg["update_notes"]);
@@ -70,17 +73,48 @@ export class SocketService implements OnInit {
         },
         // reconnect on error or completion
         function(err) {console.log(err)},
-        function() {console.log("complete")},
+        this.connectToMain.bind(this),
       );
 
       window.setInterval(() => {
         this.sendMessage({channel: "auth", type: "pong"});
       }, 3000);
-
-      while (this.unsentMessages.length > 0) {
-        this.sendMessage(this.unsentMessages.pop());
-      }
     });
+  }
+
+  connectToMain(): void {
+    this.socket = webSocket('wss://ws.joincowork.com:4434');
+    this.authenticated = true;
+
+    this.socket.subscribe(
+      msg => {
+
+        if (msg["password_correct"] == true) {
+          sessionStorage.setItem("username", msg["username"]);
+          sessionStorage.setItem("account_id", msg["account_id"]);
+          sessionStorage.setItem("display_name", msg["display_name"]);
+          this.proService.setPro(msg["pro"]);
+          this.updateNotes = msg["update_notes"];
+          if (this.onUpdateNotes != undefined) this.onUpdateNotes(msg["update_notes"]);
+        }
+
+        this.setResponse(msg);
+
+        // in the future, the below should be the only way to get messages.
+        // classes should subscribe to individual channels.
+        let channel: string = msg["channel"];
+        if (this.channelIsRegistered(channel)) {
+          this.replySources.get(channel).next(msg);
+        }
+      },
+      // reconnect on error or completion
+      function(err) {console.log(err)},
+      function() {console.log("complete")},
+    );
+
+    while (this.unsentMessages.length > 0) {
+      this.sendMessage(this.unsentMessages.pop());
+    }
   }
 
   setOnUpdateNotes(f: Function) {
@@ -93,7 +127,7 @@ export class SocketService implements OnInit {
   }
 
   sendMessage(msg: any): void {
-    if (this.socket === undefined) {
+    if (this.socket === undefined || (!this.authenticated && msg["channel"] != "auth")) {
       this.unsentMessages.push(msg);
     }
     else {
