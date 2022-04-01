@@ -19,6 +19,9 @@ export class JoinRoomComponent implements OnInit, Goal {
   faUsers = faUsers;
   memberCount = 0;
 
+  responseReceived: boolean;
+  roomValid: boolean = true;
+
   socketService: SocketService;
   route: ActivatedRoute;
 
@@ -42,7 +45,6 @@ export class JoinRoomComponent implements OnInit, Goal {
       this.socketService.reply.subscribe(msg => this.onResponseReceived(msg));
 
       this.requestInterval = window.setInterval(function() {
-        console.log("sending");
         this.socketService.sendMessage({channel: "public", type: "request_room", room_id: this.roomId});
       }.bind(this), 500);
     }
@@ -54,25 +56,18 @@ export class JoinRoomComponent implements OnInit, Goal {
 
   onResponseReceived(msg: any): void {
     if (msg["type"] == "request_room") {
+      this.responseReceived = true;
       window.clearInterval(this.requestInterval);
-      let hiddens: HTMLCollectionOf<Element> = document.getElementsByClassName("hidden-form");
-        for (let i: number = 0; i < hiddens.length; i++) {
-          let hidden: Element = document.getElementsByClassName("hidden-form")[i];
-          hidden.classList.remove("hidden-form");
-        }
       if (msg["title"] != null) {
+        this.roomValid = true;
         this.header = "Join " + msg["title"];
         this.roomTitle = msg["title"];
         this.roomDescription = msg["description"];
         this.memberCount = msg["member_count"];
       }
       else {
+        this.roomValid = false;
         this.header = "Invalid Room Link";
-        let forms: HTMLCollectionOf<Element> = document.getElementsByClassName("join-form-element");
-        for (let i: number = 0; i < forms.length; i++) {
-          let form: Element = document.getElementsByClassName("join-form-element")[i];
-          form.classList.toggle("hidden-form");
-        }
       }
     }
     else if (msg["type"] == "sign_in") {
