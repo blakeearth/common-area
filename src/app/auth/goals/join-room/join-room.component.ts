@@ -24,6 +24,8 @@ export class JoinRoomComponent implements OnInit, Goal {
 
   location: Location;
 
+  signedIn: boolean;
+
   constructor(socketService: SocketService, route: ActivatedRoute, location: Location) {
     this.socketService = socketService;
     this.route = route;
@@ -65,18 +67,17 @@ export class JoinRoomComponent implements OnInit, Goal {
         }
       }
     }
-    else if (msg["type"] == "request_invitations") {
-      window.location.href = '/home';
-    }
-    else if (msg["type"] == "sign_in" && !msg["password_correct"]) {
-      this.navigate('/auth/sign-up');
+    else if (msg["type"] == "sign_in") {
+      this.socketService.sendMessage({channel: "public", type: "request_room", room_id: this.roomId});
+      if (msg["password_correct"]) this.signedIn = true;
     }
   }
 
   joinRoom() {
     sessionStorage.setItem("joinRoomId", this.roomId);
     sessionStorage.setItem("joinRoomTitle", this.roomTitle);
-    this.socketService.sendMessage({channel: "settings", type: "request_invitations"});
+    if (!this.signedIn) this.navigate('/auth/sign-up');
+    else window.location.href = '/home';
   }
 
   goHome() {
