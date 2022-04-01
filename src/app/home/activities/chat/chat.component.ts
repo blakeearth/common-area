@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ComponentFactoryResolver } from '@angular/core';
+import { Component, OnInit, ViewChild, ComponentFactoryResolver, ViewRef } from '@angular/core';
 import { Activity } from '../activity';
 import { ChatMessageDirective } from './chat-message.directive';
 import { RoomChangeService } from '../../room-change.service';
@@ -25,6 +25,10 @@ export class ChatComponent implements OnInit, Activity {
   notificationsService: NotificationsService;
   membersService: MembersService;
   chatService: ChatService;
+
+  chats: Map<string, ChatMessageComponent> = new Map<string, ChatMessageComponent>();
+
+  chatViewRefs: Map<string, ViewRef> = new Map<string, ViewRef>();
 
   earliestChatId: string;
   roomId: string;
@@ -77,6 +81,13 @@ export class ChatComponent implements OnInit, Activity {
       if (msg["account_id"] != sessionStorage.getItem("account_id")) this.notificationsService.pushNotification("chat");
       this.loadChat(msg, true);
     }
+    else if (msg["type"] == "delete_message") {
+      console.log("deleting");
+      this.deleteChat(msg);
+    }
+    else if (msg["type"] == "edit_message") {
+      this.editChat(msg);
+    }
   }
 
   onSendChat(event: any): void {
@@ -119,6 +130,24 @@ export class ChatComponent implements OnInit, Activity {
       componentRef = viewContainerRef.createComponent(componentFactory);
       this.earliestChatId = data["chat_id"];
     }
-    (<ChatMessageComponent>componentRef.instance).data = data;
+
+    let instance: ChatMessageComponent = <ChatMessageComponent>componentRef.instance;
+    instance.data = data;
+    this.chats.set(data["chat_id"], instance);
+    this.chatViewRefs.set(data["chat_id"], componentRef.hostView);
+  }
+
+  deleteChat(msg: any) {
+    if (this.chats.has(msg.chat_id)) {
+      let index: number = this.chatMessageHost.viewContainerRef.indexOf(this.chatViewRefs.get(msg["chat_id"]));
+      this.chatMessageHost.viewContainerRef.remove(index);
+    }
+  }
+
+  editChat(msg: any) {
+    if (this.chats.has(msg["chat_id"])) {
+      this.chats.get(msg["chat_id"]).data["edited"] = true;
+      this.chats.get(msg["chat_id"]).data["contents"] = msg["new_contents"];
+    }
   }
 }
