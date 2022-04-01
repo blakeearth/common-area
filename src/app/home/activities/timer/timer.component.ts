@@ -1,4 +1,4 @@
-import { Component, ComponentFactoryResolver, ComponentRef, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, ComponentFactoryResolver, ComponentRef, OnInit, ViewChild } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { Handler } from 'src/app/handler';
 import { SocketService } from 'src/app/socket/socket.service';
@@ -59,7 +59,9 @@ export class TimerComponent extends Handler implements OnInit, Activity {
   joinDisplay: string = "none";
   sessions: any[] = [];
 
-  constructor(socketService: SocketService, roomChangeService: RoomChangeService, tasksService: TasksService, timerService: TimerService, notificationsService: NotificationsService, membersService: MembersService, componentFactoryResolver: ComponentFactoryResolver) {
+  cdr: ChangeDetectorRef;
+
+  constructor(socketService: SocketService, roomChangeService: RoomChangeService, cdr: ChangeDetectorRef, tasksService: TasksService, timerService: TimerService, notificationsService: NotificationsService, membersService: MembersService, componentFactoryResolver: ComponentFactoryResolver) {
     super();
     this.socketService = socketService;
     this.roomChangeService = roomChangeService;
@@ -68,6 +70,7 @@ export class TimerComponent extends Handler implements OnInit, Activity {
     this.notificationsService = notificationsService;
     this.membersService = membersService;
     this.componentFactoryResolver = componentFactoryResolver;
+    this.cdr = cdr;
   }
 
   ngOnInit(): void {
@@ -78,12 +81,13 @@ export class TimerComponent extends Handler implements OnInit, Activity {
     this.roomChangeService.roomId.subscribe(roomId => this.changeRoom(roomId));
     this.tasksService.activeTask.subscribe(data => {
       this.activeTaskData = data; this.activeTask = true;
+      this.cdr.detectChanges();
     });
     this.timeRemaining = new Date(0, 0, 0, 0, this.timeToSubmit);
     this.participants = [];
   }
 
-  changeActiveTask(): void {
+  changeActiveTask(onCloseResume?: Function): void {
     const componentFactory = this.componentFactoryResolver.resolveComponentFactory(ActiveTaskPickerPopupComponent);
 
     const viewContainerRef = this.activeTaskPickerPopupHost.viewContainerRef;
@@ -272,10 +276,12 @@ export class TimerComponent extends Handler implements OnInit, Activity {
 
   start(): void {
     if (this.activeTask) this.socketService.sendMessage({channel: "timer", type: "start_session", room_id: this.roomId, consumable: 0, duration: this.timeToSubmit, is_break: false});
+    else this.changeActiveTask();
   }
 
   join(sessionId: string): void {
     if (this.activeTask) this.socketService.sendMessage({channel: "timer", type: "join_session", room_id: this.roomId, session_id: sessionId});
+    else this.changeActiveTask();
   }
 
   leave(): void {

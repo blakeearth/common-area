@@ -19,7 +19,7 @@
             <tr *ngFor="let session of sessions;">
                 <th><span id="participants" *ngFor="let participant of session.participants; let isLast=last"><a class="participant" tabindex="0" (click)="openTooltip(participant.display_name, participant.account_id)" (keyboard.down)="openTooltip(participant.display_name, participant.account_id)">{{ participant.display_name }}</a>{{ isLast ? '' : ', ' }}</span></th>
                 <th>{{ session.expected_end_time | date:'h:mm a' }}</th>
-                <th class="join"><button class="join-button" (click)="join(session.session_id)">Join</button></th>
+                <th class="join"><button class="join-button" (click)="join(session.session_id)">{{ activeTask ? "Join" : "Pick a task" }}</button></th>
             </tr>
         </table>
     </div>
@@ -30,7 +30,7 @@
             <a tabindex="0" id="right-arrow" class="arrow" [ngStyle]="{ 'visibility': this.rightVisibility }" (click)="addTime($event, 5)" (keydown.enter)="addTime($event, 5)">></a>
         </div>
         <div id="start">
-            <button id="start-button" [ngStyle]="{ 'display': this.startButtonDisplay }" (click)="start()">Start</button>
+            <button id="start-button" [ngStyle]="{ 'display': this.startButtonDisplay }" (click)="start()">{{ activeTask ? "Start" : "Pick a task" }}</button>
             <button id="leave-button" [ngStyle]="{ 'display': this.leaveButtonDisplay }" (click)="leave()">Leave</button>
         </div>
     </div>
