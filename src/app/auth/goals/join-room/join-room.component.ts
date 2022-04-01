@@ -26,6 +26,9 @@ export class JoinRoomComponent implements OnInit, Goal {
 
   signedIn: boolean;
 
+  // account for lost messages
+  requestInterval: number;
+
   constructor(socketService: SocketService, route: ActivatedRoute, location: Location) {
     this.socketService = socketService;
     this.route = route;
@@ -37,7 +40,11 @@ export class JoinRoomComponent implements OnInit, Goal {
       this.roomId = this.route.snapshot.paramMap.get('roomId');
 
       this.socketService.reply.subscribe(msg => this.onResponseReceived(msg));
-      this.socketService.sendMessage({channel: "public", type: "request_room", room_id: this.roomId});
+
+      this.requestInterval = window.setInterval(function() {
+        console.log("sending");
+        this.socketService.sendMessage({channel: "public", type: "request_room", room_id: this.roomId});
+      }.bind(this), 500);
     }
   }
 
@@ -47,6 +54,7 @@ export class JoinRoomComponent implements OnInit, Goal {
 
   onResponseReceived(msg: any): void {
     if (msg["type"] == "request_room") {
+      window.clearInterval(this.requestInterval);
       let hiddens: HTMLCollectionOf<Element> = document.getElementsByClassName("hidden-form");
         for (let i: number = 0; i < hiddens.length; i++) {
           let hidden: Element = document.getElementsByClassName("hidden-form")[i];
@@ -68,7 +76,6 @@ export class JoinRoomComponent implements OnInit, Goal {
       }
     }
     else if (msg["type"] == "sign_in") {
-      this.socketService.sendMessage({channel: "public", type: "request_room", room_id: this.roomId});
       if (msg["password_correct"]) this.signedIn = true;
     }
   }

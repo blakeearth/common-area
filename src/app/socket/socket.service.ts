@@ -73,12 +73,12 @@ export class SocketService implements OnInit {
         },
         // reconnect on error or completion
         function(err) {console.log(err)},
-        this.connectToMain.bind(this),
+        this.connectToMain.bind(this)
       );
 
       let newUnsentMessages: any[] = [];
       for (let msg of this.unsentMessages) {
-        if (msg["channel"] == "public" || msg["channel"] == "auth") this.sendMessage(msg);
+        if (msg["channel"] == "auth" || msg["channel"] == "public") this.sendMessage(msg);
         else newUnsentMessages.push(msg);
       }
       this.unsentMessages = newUnsentMessages;
