@@ -76,6 +76,13 @@ export class SocketService implements OnInit {
         this.connectToMain.bind(this),
       );
 
+      let newUnsentMessages: any[] = [];
+      for (let msg of this.unsentMessages) {
+        if (msg["channel"] == "public" || msg["channel"] == "auth") this.sendMessage(msg);
+        else newUnsentMessages.push(msg);
+      }
+      this.unsentMessages = newUnsentMessages;
+
       window.setInterval(() => {
         this.sendMessage({channel: "auth", type: "pong"});
       }, 3000);
@@ -127,7 +134,7 @@ export class SocketService implements OnInit {
   }
 
   sendMessage(msg: any): void {
-    if (this.socket === undefined || (!this.authenticated && msg["channel"] != "auth")) {
+    if (this.socket === undefined || (!this.authenticated && msg["channel"] != "auth" && msg["channel"] != "public")) {
       this.unsentMessages.push(msg);
     }
     else {
