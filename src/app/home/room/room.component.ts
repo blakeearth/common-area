@@ -162,6 +162,11 @@ export class RoomComponent extends Handler implements OnInit {
   addPersistObject(msg: any): void {
     let object: any = this.objectFactory.makeObject(msg["data"]);
     let scene: Scene = this.objects.get("scene");
+
+    /*if (this.mobile) {
+      scene.camera.setScale(0.5, 0.5);
+    }*/
+
     if (msg["data"]["parent_id"] != null) {
       
       scene.add(object);

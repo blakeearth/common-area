@@ -17,6 +17,8 @@ export class TileMap extends GameObjectClass {
 
     room: RoomComponent;
     objectFactory: ObjectFactory;
+
+    mobile: boolean;
   
     constructor(width: number, height: number, layers: object[], socketService: SocketService, room: RoomComponent) {
       super();
@@ -26,6 +28,8 @@ export class TileMap extends GameObjectClass {
       let img: HTMLImageElement = imageAssets['floor'];
       this.room = room;
       this.objectFactory = new ObjectFactory(this.room, socketService, function(){});
+
+      this.mobile = window.matchMedia('only screen and (max-width: 760px)').matches;
 
       this.moveButton = Button({
         // button properties
