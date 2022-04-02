@@ -189,6 +189,8 @@ export class Player extends SpriteClass {
     setTarget(msg: any): void {
         this.target = Vector(msg["position_x"], msg["position_y"] - 128 / 2);
         this.direction = Vector(this.target.x - this.x, this.target.y - this.y).normalize();
+        this.dx = this.direction.x * speed;
+        this.dy = this.direction.y * speed;
         this.lastDistance = undefined;
         let left: boolean = this.direction.x <= 0;
         let right: boolean = !left;
