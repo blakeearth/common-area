@@ -109,33 +109,21 @@ export class RoomComponent extends Handler implements OnInit {
     this.socketService.sendMessage({channel: "room", type: "request_wealth"});
 
     let { canvas, context } = init((document.getElementById("game") as HTMLCanvasElement));
+    
+    canvas.width = canvas.clientWidth;
+    canvas.height = canvas.clientHeight;
+
+    document.onresize = function() {
+      canvas.width = canvas.clientWidth;
+      canvas.height = canvas.clientHeight;
+    };
 
     this.mobile = window.matchMedia('only screen and (max-width: 760px)').matches;
-
-    if (this.mobile) {
-      canvas.setAttribute('width', window.getComputedStyle(canvas, null).getPropertyValue("width"));
-      canvas.setAttribute('height', window.getComputedStyle(canvas, null).getPropertyValue("height"));
-    }
-    else {
-      canvas.width = 9 * 128;
-      canvas.height = 6 * 128;
-    }
 
     setImagePath('/assets/room/');
     load.apply(
       null, images
     );
-
-    document.onresize = function() {
-      if (this.mobile) {
-        canvas.setAttribute('width', window.getComputedStyle(canvas, null).getPropertyValue("width"));
-        canvas.setAttribute('height', window.getComputedStyle(canvas, null).getPropertyValue("height"));
-      }
-      else {
-        canvas.width = 9 * 128;
-        canvas.height = 6 * 128;
-      }
-    }.bind(this);
 
     let sort = function(obj1, obj2) {
       [obj1, obj2] = [obj1, obj2].map(getWorldRect);
