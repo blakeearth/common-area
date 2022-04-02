@@ -44,7 +44,7 @@ app-navbar {
 }
 
 h2 {
-    font-family: "Noto Sans", sans-serif;
+    font-family: "Helvetica", sans-serif;
 }
 
 h2.feature-header {
@@ -53,7 +53,7 @@ h2.feature-header {
 }
 
 h3.feature-header {
-    font-family: "Noto Sans", sans-serif;
+    font-family: "Helvetica", sans-serif;
     font-weight: lighter;
     font-size: 2em;
 }

@@ -17,14 +17,16 @@
                         <ng-template appTag></ng-template>
                     </div>
                     <div class="time" [style.display]="minutes > 0 ? 'inherit' : 'none'">
+                        <i class="bi bi-stopwatch"></i>
                         <span>You've spent {{ minutes }} minutes on this.</span>
                     </div>
                     <h3>Task</h3>
-                    <label for="event-details">Description</label>
-                    <textarea id="event-details" name="event-details" rows="6" style="resize: none;"
-                        [(ngModel)]="enteredDescription" (blur)="saveDescription()"
-                        [disabled]="!this.data.can_edit_contents">{{ data.description }}</textarea>
-
+                    <div class="description">
+                        <label for="event-details">Description</label>
+                        <textarea id="event-details" name="event-details" rows="6" style="resize: none;"
+                            [(ngModel)]="enteredDescription" (blur)="saveDescription()"
+                            [disabled]="!this.data.can_edit_contents">{{ data.description }}</textarea>
+                    </div>
                 </form>
             </div>
             <div class="task-sidebar">

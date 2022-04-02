@@ -68,11 +68,16 @@
 .tags {
     display: flex;
     gap: 1ch;
-    margin: 1em 0 1em 0;
 }
 
 .task-content {
     display: flex;
+}
+
+.time {
+    display: flex;
+    align-items: center;
+    gap: 1ch;
 }
 
 .tooltip-parent {
@@ -145,6 +150,12 @@ input, textarea {
 }
 
 form {
+    display: flex;
+    flex-direction: column;
+    gap: 1em;
+}
+
+form .description {
     display: flex;
     flex-direction: column;
 }
