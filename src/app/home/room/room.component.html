@@ -1,7 +1,7 @@
 <div class="room">
     <app-checkpoint-list></app-checkpoint-list>
     <app-member-list [room]="this"></app-member-list>
-    <canvas id="game" (click)="requestSetTarget()">
+    <canvas id="game" (click)="requestSetTarget()" [ngClass]="{'editing': editMode}">
         <button>Move North</button>
         <button>Move South</button>
         <button>Move East</button>
