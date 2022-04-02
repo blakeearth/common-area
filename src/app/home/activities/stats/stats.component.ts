@@ -161,9 +161,9 @@ export class StatsComponent extends Handler implements OnInit, Activity {
     for (let session in this.sessions) {
       for (let span of this.sessions[session].spans) {
         // check that span ended
-        let convertedStartTime: Date = new Date(span.start_time);
+        let convertedStartTime: Date = new Date(span.start_time + "Z");
 
-        let convertedEndTime: Date = new Date(span.end_time);
+        let convertedEndTime: Date = new Date(span.end_time + "Z");
 
         let listing: any = this.tasksService.getListing(span.listing_id);
         let ms: number = ((new Date(span.end_time)).valueOf() - (new Date(span.start_time).valueOf()));
@@ -193,7 +193,7 @@ export class StatsComponent extends Handler implements OnInit, Activity {
           }
 
           let tags: any = span.tags;
-          let spanDay: number = Math.floor((new Date(span.end_time).getTime() - this.fromDate.getTime()) / oneDay);
+          let spanDay: number = Math.floor((convertedEndTime.getTime() - this.fromDate.getTime()) / oneDay) + 1;
           
           for (let tag of tags) {
             if (this.tags.has(tag.tag_id)) {
