@@ -109,14 +109,26 @@ export class RoomComponent extends Handler implements OnInit {
     this.socketService.sendMessage({channel: "room", type: "request_wealth"});
 
     let { canvas, context } = init((document.getElementById("game") as HTMLCanvasElement));
+
+    canvas.width = 9 * 128;
+    canvas.height = 6 * 128;
+
+    if (this.mobile) {
+      canvas.setAttribute('width', window.getComputedStyle(canvas, null).getPropertyValue("width"));
+      canvas.setAttribute('height', window.getComputedStyle(canvas, null).getPropertyValue("height"));
+    }
+    else {
+      canvas.width = 9 * 128;
+      canvas.height = 6 * 128;
+    }
     
-    canvas.width = canvas.clientWidth;
+    /*canvas.width = canvas.clientWidth;
     canvas.height = canvas.clientHeight;
 
     document.onresize = function() {
       canvas.width = canvas.clientWidth;
       canvas.height = canvas.clientHeight;
-    };
+    };*/
 
     this.mobile = window.matchMedia('only screen and (max-width: 760px)').matches;
 
@@ -231,7 +243,7 @@ export class RoomComponent extends Handler implements OnInit {
             for (let persistObject of this.objects.values()) {
               if (persistObject != this.objects.get("scene")) {
                 let t = {
-                  x: this.target.x - this.cameraOrigin.x - persistObject.width / 2,
+                  x: this.target.x - this.cameraOrigin.x - (persistObject.width / 2),
                   y: this.target.y - this.cameraOrigin.y
                 };
                 persistObject.sx = t.x;
@@ -378,9 +390,6 @@ export class RoomComponent extends Handler implements OnInit {
       for (let persistObject of this.objects.values()) {
         if (typeof persistObject.setEraserMode == "function") {
           persistObject.setEraserMode(true);
-        }
-        else {
-          console.log(persistObject);
         }
       }
     }
