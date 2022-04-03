@@ -6,7 +6,7 @@ export class Character extends PersistObject {
 
     speed: number;
 
-    constructor(id: string, sceneId: number, ownerAccountId: string, position: Vector, onDown: Function, displayName?: string) {
+    constructor(id: string, sceneId: number, ownerAccountId: string, position: Vector, rotation: number, onDown: Function, displayName?: string) {
         let spriteSheet = SpriteSheet({
             image: imageAssets["chicken"],
             frameWidth: 128,
@@ -47,7 +47,7 @@ export class Character extends PersistObject {
             }
         });
 
-        super(id, sceneId, ownerAccountId, position, onDown, spriteSheet, 128, 128, displayName);
+        super(id, sceneId, ownerAccountId, position, rotation, onDown, spriteSheet, 128, 128, displayName);
 
         this.speed = 5;
 
@@ -56,15 +56,6 @@ export class Character extends PersistObject {
 
         this.target = Vector(this.x, this.y);
         this.direction = Vector(1, 1).normalize();
-        
-        this.shadow = Sprite({
-            image: imageAssets["bear-shadow"],
-            opacity: 0.5,
-            scaleX: 0.8,
-            scaleY: 0.8,
-            x: 10,
-            y: 80
-        });
     }
 
     update(): void {
@@ -87,10 +78,6 @@ export class Character extends PersistObject {
     }
 
     draw(): void {
-        this.addChild(this.shadow);
-        this.shadow.render();
-        this.removeChild(this.shadow);
-
         super.draw();
     }
 

@@ -56,19 +56,19 @@ export class ObjectFactory {
                 break; 
             }
             case 2: {
-                object = new Tree(data["id"], data["scene_id"], data["owner_account_id"], Vector(data["position_x"], data["position_y"]), data["rotation_degrees"], this.onItemDown, data["display_name"]);
+                object = new Tree(data["id"], data["scene_id"], data["owner_account_id"], Vector(data["position_x"], data["position_y"]), data["rotation"], this.onItemDown, data["display_name"]);
                 break;
             }
             case 3: {
-                object = new Chicken(data["id"], data["scene_id"], data["owner_account_id"], Vector(data["position_x"], data["position_y"]), this.onItemDown, data["display_name"]);
+                object = new Chicken(data["id"], data["scene_id"], data["owner_account_id"], Vector(data["position_x"], data["position_y"]), 0, this.onItemDown, data["display_name"]);
                 break;
             }
             case 4: {
-                object = new Shrub(data["id"], data["scene_id"], data["owner_account_id"], Vector(data["position_x"], data["position_y"]), data["rotation_degrees"], this.onItemDown, data["display_name"]);
+                object = new Shrub(data["id"], data["scene_id"], data["owner_account_id"], Vector(data["position_x"], data["position_y"]), data["rotation"], this.onItemDown, data["display_name"]);
                 break;
             }
             case 5: {
-                object = new Checkpoint(data["id"], data["scene_id"], data["owner_account_id"], Vector(data["position_x"], data["position_y"]), data["rotation_degrees"], this.onItemDown, data["display_name"]);
+                object = new Checkpoint(data["id"], data["scene_id"], data["owner_account_id"], Vector(data["position_x"], data["position_y"]), data["rotation"], this.onItemDown, data["display_name"]);
             }
         }
         return object;

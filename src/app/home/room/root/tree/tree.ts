@@ -7,52 +7,47 @@ export class Tree extends PersistObject {
 
     hovered: boolean;
 
-    constructor(id: string, sceneId: number, ownerAccountId: string, position: Vector, rotationDegrees: number, onDown: Function, displayName?: string) {
+    constructor(id: string, sceneId: number, ownerAccountId: string, position: Vector, variant: number, onDown: Function, displayName?: string) {
 
         let spriteSheet = SpriteSheet({
             image: imageAssets["tree"],
             frameWidth: 128,
             frameHeight: 192,
             animations: {
-                walkFR: {
+                "0": {
                     frames: '0..0',
-                    frameRate: 90
+                    frameRate: 1
                 },
-                idleFR: {
+                "2": {
                     frames: '1..1',
-                    frameRate: 0
+                    frameRate: 1
                 },
-                walkFL: {
+                "1": {
                     frames: '2..2',
-                    frameRate: 90
+                    frameRate: 1
                 },
-                idleFL: {
+                "3": {
                     frames: '3..3',
-                    frameRate: 0
+                    frameRate: 1
                 },
             }
         });
 
-        super(id, sceneId, ownerAccountId, position, onDown, spriteSheet, 128, 192, displayName);
+        super(id, sceneId, ownerAccountId, position, variant, onDown, spriteSheet, 128, 192, displayName);
 
-        this.playAnimation("walkFR");
+        this.variants = 4;
+        this.playAnimation((variant % this.variants).toString());
+    }
 
-        this.shadow = Sprite({
-            image: imageAssets["bear-shadow"],
-            opacity: 0.5,
-            y: 128,
-            x: -16,
-            scaleX: 1.25,
-            scaleY: 2
-        });
+    rotate(msg: any): void {
+        let variant: number = msg["rotation"]
+        this.variant = variant % this.variants;
+        this.playAnimation((this.variant).toString());
     }
 
     draw(): void {
-        this.addChild(this.shadow);
-        this.shadow.render();
-        this.removeChild(this.shadow);
-
         //super.render();
+        if (this.hovered) this.context.filter = "grayscale(50%) brightness(120%)";
         super.draw();
     }
 }

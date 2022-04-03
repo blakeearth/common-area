@@ -432,8 +432,10 @@ export class RoomComponent extends Handler implements OnInit {
     componentRef = viewContainerRef.createComponent(componentFactory);
 
     let instance: EditItemTooltipComponent = <EditItemTooltipComponent>componentRef.instance;
+    instance.object = object;
     instance.onErase = this.onItemErase.bind(this);
     instance.onMove = this.onItemMove.bind(this);
+    instance.onRotate = this.onItemRotate.bind(this);
     instance.onName = this.onItemName.bind(this);
 
     let coords: Vector = this.getPointerPosition();
@@ -467,6 +469,10 @@ export class RoomComponent extends Handler implements OnInit {
     this.setPreview(this.editingObject);
     this.toggleEditMode();
     this.closeEditItemTooltip();
+  }
+
+  onItemRotate(): void {
+    this.socketService.sendMessage({"channel": "room", "type": "rotate_persist_object", "id": this.editingObject.id, "rotation": this.editingObject.variant + 1});
   }
 
   getPointerPosition(): Vector {

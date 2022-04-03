@@ -8,9 +8,12 @@ export class PersistObject extends SpriteClass {
 
     hovered: boolean;
 
+    variants: number;
+    variant: number;
+
     nameTag: Text;
 
-    constructor(id: string, sceneId: number, ownerAccountId: string, position: Vector, onDown: Function, spriteSheet: SpriteSheet, width: number, height: number, displayName?: string) {
+    constructor(id: string, sceneId: number, ownerAccountId: string, position: Vector, variant: number, onDown: Function, spriteSheet: SpriteSheet, width: number, height: number, displayName?: string) {
         initPointer();
         
         super({
@@ -39,6 +42,7 @@ export class PersistObject extends SpriteClass {
 
         this.id = id;
         this.sceneId = sceneId;
+        this.variant = variant;
         this.displayName = displayName;
         this.ownerAccountId = ownerAccountId;
 
@@ -62,8 +66,6 @@ export class PersistObject extends SpriteClass {
     }
 
     draw(): void {
-        if (this.hovered) this.context.filter = "grayscale(50%) brightness(120%)";
-
         if (this.nameTag) {
             this.children[this.children.indexOf(this.nameTag)].text = this.displayName;
         }
@@ -79,6 +81,8 @@ export class PersistObject extends SpriteClass {
                 textAlign: 'center'
             });
 
+            this.context.filter = "";
+
             this.addChild(this.nameTag);
         }
 
@@ -92,6 +96,10 @@ export class PersistObject extends SpriteClass {
 
     warpTo(msg: any): void {
         this.position = Vector(msg["position_x"], msg["position_y"]);
+    }
+
+    rotate(msg: any) {
+        this.variant = msg["variant"];
     }
 
     move(msg: any): void {

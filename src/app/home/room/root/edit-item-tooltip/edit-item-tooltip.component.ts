@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { PersistObject } from '../persist-object';
 
 @Component({
   selector: 'app-edit-item-tooltip',
@@ -7,7 +8,10 @@ import { Component, OnInit } from '@angular/core';
 })
 export class EditItemTooltipComponent implements OnInit {
 
+  object: PersistObject;
+
   onMove: Function;
+  onRotate: Function;
   onErase: Function;
   onName: Function;
 

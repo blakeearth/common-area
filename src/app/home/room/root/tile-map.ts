@@ -49,7 +49,7 @@ export class TileMap extends GameObjectClass {
               this.moving = false;
             }
             else {
-              this.socketService.sendMessage({channel: "room", type: "add_persist_object", scene_id: this.activeItem, parent_id: "root", rotation_degrees_y: 0, position_x: Math.floor(this.player.x + pointer.x - getCanvas().width / 2), position_y: Math.floor(this.player.y + pointer.y - getCanvas().height / 2)});
+              this.socketService.sendMessage({channel: "room", type: "add_persist_object", scene_id: this.activeItem, parent_id: "root", rotation: 0, position_x: Math.floor(this.player.x + pointer.x - getCanvas().width / 2), position_y: Math.floor(this.player.y + pointer.y - getCanvas().height / 2)});
             }
             this.setEditMode(false);
           }
@@ -79,7 +79,7 @@ export class TileMap extends GameObjectClass {
           "id": "preview",
           "translation_x": pointer.x,
           "translation_y": pointer.y,
-          "rotation_degrees": 0,
+          "rotation": 0,
           "display_name": "",
         }) as PersistObject;
       }
@@ -91,7 +91,7 @@ export class TileMap extends GameObjectClass {
           "id": "preview",
           "translation_x": pointer.x,
           "translation_y": pointer.y,
-          "rotation_degrees": 0,
+          "rotation": 0,
           "display_name": "",
         }) as PersistObject;
       }

@@ -2,7 +2,7 @@ import { imageAssets, SpriteSheet, Vector, Text } from "kontra";
 import { PersistObject } from "../persist-object";
 
 export class Checkpoint extends PersistObject {
-    constructor(id: string, sceneId: number, ownerAccountId: string, position: Vector, rotationDegrees: number, onDown: Function, displayName?: string) {
+    constructor(id: string, sceneId: number, ownerAccountId: string, position: Vector, rotation: number, onDown: Function, displayName?: string) {
 
         let spriteSheet = SpriteSheet({
             image: imageAssets["checkpoint"],
@@ -16,7 +16,7 @@ export class Checkpoint extends PersistObject {
             }
         });
 
-        super(id, sceneId, ownerAccountId, position, onDown, spriteSheet, 128, 128, displayName);
+        super(id, sceneId, ownerAccountId, position, rotation, onDown, spriteSheet, 128, 128, displayName);
         
         this.opacity = 0.5;
 
