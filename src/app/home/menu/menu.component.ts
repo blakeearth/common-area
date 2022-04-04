@@ -35,7 +35,7 @@ export class MenuComponent extends Handler implements OnInit{
   faCog = faCog;
 
   updateNotesDisplay: string = "none";
-  updateNotesData: string[];
+  updateNotesData: string[] = [];
 
   componentFactoryResolver: ComponentFactoryResolver;
 
@@ -78,8 +78,10 @@ export class MenuComponent extends Handler implements OnInit{
   }
 
   onUpdateNotes(updateNotesData: any[]): void {
-    this.updateNotesData = updateNotesData;
-    for (let i = 0; i < updateNotesData.length; i++) this.notificationsService.pushNotification('update-notes');
+    for (let i = 0; i < updateNotesData.length; i++) {
+      this.updateNotesData.push(updateNotesData[i]);
+      this.notificationsService.pushNotification('update-notes');
+    }
     if (this.updateNotesData.length > 0) {
       this.updateNotesDisplay = "inherit";
     }
