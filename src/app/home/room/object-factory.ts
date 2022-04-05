@@ -11,6 +11,8 @@ import { Tree } from './root/tree/tree';
 import { Chicken } from './root/character/chicken/chicken';
 import { Shrub } from './root/shrub/shrub';
 import { Checkpoint } from './root/checkpoint/checkpoint';
+import { BrickWall } from './root/brick-wall/brick-wall';
+import { WoodTile } from './root/tile/wood-tile/wood-tile';
 
 export class ObjectFactory {
     socketService: SocketService;
@@ -69,6 +71,15 @@ export class ObjectFactory {
             }
             case 5: {
                 object = new Checkpoint(data["id"], data["scene_id"], data["owner_account_id"], Vector(data["position_x"], data["position_y"]), data["rotation"], this.onItemDown, data["display_name"]);
+                break;
+            }
+            case 6: {
+                object = new BrickWall(data["id"], data["scene_id"], data["owner_account_id"], Vector(data["position_x"], data["position_y"]), data["rotation"], this.onItemDown, data["display_name"]);
+                break;
+            }
+            case 7: {
+                object = new WoodTile(data["id"], data["scene_id"], data["owner_account_id"], Vector(data["position_x"], data["position_y"]), data["rotation"], this.onItemDown, data["display_name"]);
+                break;
             }
         }
         return object;

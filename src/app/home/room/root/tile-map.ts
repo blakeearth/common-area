@@ -3,6 +3,7 @@ import { SocketService } from 'src/app/socket/socket.service';
 import { ObjectFactory } from '../object-factory';
 import { RoomComponent } from '../room.component';
 import { PersistObject } from './persist-object';
+import { Tile } from './tile/tile';
 
 export class TileMap extends GameObjectClass {
     socketService: SocketService;
@@ -35,8 +36,8 @@ export class TileMap extends GameObjectClass {
         // button properties
         socketService: socketService,
         getEditMode: this.getEditMode.bind(this),
-        padX: width * 128,
-        padY: height * 128,
+        padX: this.context.canvas.clientWidth,
+        padY: this.context.canvas.clientHeight,
         onDown: function() {
           let pointer: any = getPointer();
           if (!this.editMode) {

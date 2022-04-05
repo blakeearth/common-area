@@ -22,6 +22,7 @@ import { EditItemTooltipDirective } from './root/edit-item-tooltip.directive';
 import { EditItemTooltipComponent } from './root/edit-item-tooltip/edit-item-tooltip.component';
 import { PersistObject } from './root/persist-object';
 import { TileMap } from './root/tile-map';
+import { Tile } from './root/tile/tile';
 import { VendorPopupDirective } from './vendor-popup.directive';
 import { VendorPopupComponent } from './vendor-popup/vendor-popup.component';
 
@@ -139,7 +140,8 @@ export class RoomComponent extends Handler implements OnInit {
 
     let sort = function(obj1, obj2) {
       [obj1, obj2] = [obj1, obj2].map(getWorldRect);
-      if (obj2 instanceof TileEngine || obj2 instanceof TileMap) {
+      if (obj2 instanceof Tile) {
+        console.log("champ");
         return -10000;
       }
       return (obj1.y + obj1.height / 2) - (obj2.y + obj2.height / 2);
@@ -302,6 +304,12 @@ export class RoomComponent extends Handler implements OnInit {
 
     let sort = function(obj1, obj2) {
       [obj1, obj2] = [obj1, obj2].map(getWorldRect);
+      if (obj2.hasOwnProperty("renderModifier")) {
+        return obj2.renderModifier;
+      }
+      else if (obj2.hasOwnProperty("renderModifier")) {
+        return obj2.renderModifier;
+      }
       return (obj1.y + obj1.height / 2) - (obj2.y + obj2.height / 2);
     }
 

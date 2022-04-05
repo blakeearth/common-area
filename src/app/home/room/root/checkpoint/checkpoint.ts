@@ -11,7 +11,7 @@ export class Checkpoint extends PersistObject {
             animations: {
                 walkFR: {
                     frames: '0..0',
-                    frameRate: 90
+                    frameRate: 0
                 }
             }
         });
