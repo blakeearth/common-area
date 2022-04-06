@@ -14,11 +14,13 @@ export class AnalyticsService {
   constructor() { }
 
   trackEvent(eventId: string, value?: number) {
-    if (value) {
-      window.fathom.trackGoal(eventId, value);
-    }
-    else {
-      window.fathom.trackGoal(eventId, 0);
+    if (window.fathom) {
+      if (value) {
+        window.fathom.trackGoal(eventId, value);
+      }
+      else {
+        window.fathom.trackGoal(eventId, 0);
+      }
     }
   }
 }
