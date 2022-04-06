@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Location } from '@angular/common';
+import { AnalyticsService } from 'src/app/analytics.service';
 
 @Component({
   selector: 'app-pro-badge',
@@ -9,9 +10,11 @@ import { Location } from '@angular/common';
 export class ProBadgeComponent implements OnInit {
 
   location: Location;
+  analyticsService: AnalyticsService;
 
-  constructor(location: Location) {
+  constructor(location: Location, analyticsService: AnalyticsService) {
     this.location = location;
+    this.analyticsService = analyticsService;
   }
 
   ngOnInit(): void {
@@ -19,6 +22,7 @@ export class ProBadgeComponent implements OnInit {
 
   goToSubscription(event: Event): void {
     event.preventDefault();
+    this.analyticsService.trackEvent("TXV9LFY6");
     this.location.replaceState("/home/settings/subscribe");
   }
 

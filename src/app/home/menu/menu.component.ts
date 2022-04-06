@@ -9,6 +9,7 @@ import { Handler } from 'src/app/handler';
 import { RoomChangeService } from '../room-change.service';
 import { OnboardingPopupDirective } from './onboarding-popup.directive';
 import { OnboardingPopupComponent } from './onboarding-popup/onboarding-popup.component';
+import { AnalyticsService } from 'src/app/analytics.service';
 
 
 @Component({
@@ -24,6 +25,7 @@ export class MenuComponent extends Handler implements OnInit{
   notificationsService: NotificationsService;
   socketService: SocketService;
   roomChangeService: RoomChangeService;
+  analyticsService: AnalyticsService;
   location: Location;
   faHome = faHome;
   faStore = faStore;
@@ -41,13 +43,14 @@ export class MenuComponent extends Handler implements OnInit{
 
   audio: HTMLAudioElement;
 
-  constructor(notificationsService: NotificationsService, location: Location, componentFactoryResolver: ComponentFactoryResolver, socketService: SocketService, roomChangeService: RoomChangeService) {
+  constructor(notificationsService: NotificationsService, location: Location, componentFactoryResolver: ComponentFactoryResolver, socketService: SocketService, roomChangeService: RoomChangeService, analyticsService: AnalyticsService) {
     super();
     
     this.notificationsService = notificationsService;
     this.componentFactoryResolver = componentFactoryResolver;
     this.socketService = socketService;
     this.roomChangeService = roomChangeService;
+    this.analyticsService = analyticsService;
     this.location = location;
     this.location.onUrlChange(this.updateActivity.bind(this));
 
@@ -144,6 +147,8 @@ export class MenuComponent extends Handler implements OnInit{
   }
 
   openUpdateNotes(): void {
+    this.analyticsService.trackEvent("PHLC5RJG");
+
     const componentFactory = this.componentFactoryResolver.resolveComponentFactory(UpdateNotesPopupComponent);
 
     const viewContainerRef = this.updateNotesPopupHost.viewContainerRef;

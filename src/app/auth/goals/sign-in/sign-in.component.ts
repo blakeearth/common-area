@@ -3,6 +3,7 @@ import { NgForm, FormsModule } from '@angular/forms'
 import { Location } from '@angular/common';
 import { SocketService } from '../../../socket/socket.service';
 import { Goal } from '../goal';
+import { AnalyticsService } from 'src/app/analytics.service';
 
 @Component({
   selector: 'app-sign-in',
@@ -15,10 +16,12 @@ export class SignInComponent implements OnInit, Goal {
   location: Location;
   ngForm: NgForm;
   socketService: SocketService;
+  analyticsService: AnalyticsService;
 
-  constructor(location: Location, socketService: SocketService) {
+  constructor(location: Location, socketService: SocketService, analyticsService: AnalyticsService) {
     this.location = location;
     this.socketService = socketService;
+    this.analyticsService = analyticsService;
   }
 
   ngOnInit(): void {
@@ -38,6 +41,7 @@ export class SignInComponent implements OnInit, Goal {
     if (msg["type"] == "sign_in") {
       if (msg["password_correct"]) {
         if (msg["password_correct"] == true && !this.location.path().includes('/j/')) {
+          this.analyticsService.trackEvent("4PAAIGLG");
           document.location.href = "/home";
         }
       }

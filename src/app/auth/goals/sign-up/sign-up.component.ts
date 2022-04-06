@@ -3,6 +3,7 @@ import { NgForm, FormsModule } from '@angular/forms';
 import { Location } from '@angular/common';
 import { Goal } from '../goal';
 import { SocketService } from '../../../socket/socket.service';
+import { AnalyticsService } from 'src/app/analytics.service';
 
 
 @Component({
@@ -16,10 +17,12 @@ export class SignUpComponent implements OnInit, Goal {
   location: Location;
   ngForm: NgForm;
   socketService: SocketService;
+  analyticsService: AnalyticsService;
 
-  constructor(location: Location, socketService: SocketService) {
+  constructor(location: Location, socketService: SocketService, analyticsService: AnalyticsService) {
     this.location = location;
     this.socketService = socketService;
+    this.analyticsService = analyticsService;
   }
 
   ngOnInit(): void {
@@ -39,6 +42,7 @@ export class SignUpComponent implements OnInit, Goal {
     if (msg["type"] == "sign_up") {
       if (msg["password_correct"] || msg["account_creation_success"]) {
         if (msg["password_correct"] == true || msg["account_creation_success"] == true) {
+          this.analyticsService.trackEvent("0OUYE01D");
           document.location.href = "/home";
         }
       }

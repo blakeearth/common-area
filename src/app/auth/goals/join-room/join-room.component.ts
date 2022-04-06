@@ -4,6 +4,7 @@ import { SocketService } from '../../../socket/socket.service';
 import { ActivatedRoute } from '@angular/router';
 import { faUsers } from '@fortawesome/free-solid-svg-icons';
 import { Goal } from '../goal';
+import { AnalyticsService } from 'src/app/analytics.service';
 
 @Component({
   selector: 'app-join-room',
@@ -23,6 +24,9 @@ export class JoinRoomComponent implements OnInit, Goal {
   roomValid: boolean = true;
 
   socketService: SocketService;
+  
+  analyticsService: AnalyticsService;
+
   route: ActivatedRoute;
 
   location: Location;
@@ -32,8 +36,9 @@ export class JoinRoomComponent implements OnInit, Goal {
   // account for lost messages
   requestInterval: number;
 
-  constructor(socketService: SocketService, route: ActivatedRoute, location: Location) {
+  constructor(socketService: SocketService, analyticsService: AnalyticsService, route: ActivatedRoute, location: Location) {
     this.socketService = socketService;
+    this.analyticsService = analyticsService;
     this.route = route;
     this.location = location;
   }
@@ -78,6 +83,9 @@ export class JoinRoomComponent implements OnInit, Goal {
   joinRoom() {
     sessionStorage.setItem("joinRoomId", this.roomId);
     sessionStorage.setItem("joinRoomTitle", this.roomTitle);
+
+    this.analyticsService.trackEvent("19JVCXY6");
+    
     if (!this.signedIn) this.navigate('/auth/sign-up');
     else window.location.href = '/home';
   }
