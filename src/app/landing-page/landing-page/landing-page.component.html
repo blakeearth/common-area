@@ -4,7 +4,7 @@
         <div class="statement">
             <h2>Gamified, virtual coworking to help you get things done</h2>
             <div class="links">
-                <a class="cta-link" href="/auth/sign-up"><button class="cta">Sign up</button></a>
+                <a (click)="analyticsService.trackEvent('WYFDE8LJ')" (keydown.enter)="analyticsService.trackEvent('WYFDE8LJ')" class="cta-link" href="/auth/sign-up"><button class="cta">Sign up</button></a>
                 <a href="/auth/sign-in">Sign in</a>
             </div>
         </div>

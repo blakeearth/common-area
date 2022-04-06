@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { AnalyticsService } from 'src/app/analytics.service';
 
 @Component({
   selector: 'app-landing-page',
@@ -6,7 +7,12 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./landing-page.component.css']
 })
 export class LandingPageComponent implements OnInit {
-  constructor() { }
+
+  analyticsService: AnalyticsService;
+
+  constructor(analyticsService: AnalyticsService) {
+    this.analyticsService = analyticsService;
+  }
 
   ngOnInit(): void { }
 
