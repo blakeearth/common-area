@@ -112,6 +112,41 @@ a:hover:not(.selected), a:focus {
     box-shadow: inset 0px 0px 50px 10px #4597DD;
 }
 
+.move-button {
+    position: absolute;
+}
+
+#game-log {
+    position: absolute;
+    bottom: 0;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+}
+
+#up {
+    left: 50%;
+}
+
+#down {
+    left: 50%;
+    bottom: 0;
+}
+
+#left {
+    top: 50%;
+    left: 24px;
+    writing-mode: vertical-rl;
+    text-orientation: sideways;
+}
+
+#right {
+    top: 50%;
+    right: 0;
+    writing-mode: vertical-rl;
+    text-orientation: sideways;
+}
+
 @media only screen and (min-width: 600px) {
     canvas {
         border-radius: 2rem 0 0 0;

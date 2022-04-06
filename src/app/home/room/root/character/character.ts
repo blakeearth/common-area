@@ -59,18 +59,19 @@ export class Character extends PersistObject {
     }
 
     update(): void {
-        let distance: number = this.target.distance(Vector(this.x, this.y));
+        let distance: number = this.target.distance(this.position);
         // also cancel movement upon collision! maybe upon collision, set target to position?
-        if (distance > 4) {
-            this.velocity = Vector(this.direction.x * this.speed, this.direction.y * this.speed);
+        if (distance > 0 && (this.lastDistance == undefined || distance < this.lastDistance)) {
+            this.dx = this.direction.x * this.speed;
+            this.dy = this.direction.y * this.speed;
+            this.lastDistance = distance;
         }
-        else if (!this.playingAnimation.includes('idle')) {
+        else if (this.target.subtract(this.position).length() != 0) {
             this.playingAnimation = this.playingAnimation.replace('walk', 'idle');
             this.playAnimation(this.playingAnimation);
             this.reportLocation();
-            this.position = Vector(this.x, this.y);
             this.target = this.position;
-            this.velocity = Vector(0, 0);
+            this.direction = Vector(0, 0);
             this.dx = 0;
             this.dy = 0;
         }
@@ -106,7 +107,7 @@ export class Character extends PersistObject {
     reportLocation(): void {
         let log: HTMLElement = document.getElementById("game-log");
         let message: HTMLParagraphElement = document.createElement("p");
-        message.innerHTML = this.displayName + " is now at " + Math.round(this.x) + " on the x-axis and " + Math.round(this.y) + " on the y-axis.";
+        message.innerHTML = this.displayName + " the " + this.type + " moved to " + Math.round(this.x) + " on the x-axis and " + Math.round(this.y) + " on the y-axis.";
         log.appendChild(message);
     }
 

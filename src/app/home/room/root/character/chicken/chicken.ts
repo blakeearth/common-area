@@ -66,6 +66,7 @@ export class Chicken extends Character {
         this.id = id;
         this.sceneId = sceneId;
         this.ownerAccountId = ownerAccountId;
+        this.type = "chicken";
 
         this.target = Vector(this.x, this.y);
         this.direction = Vector(1, 1).normalize();

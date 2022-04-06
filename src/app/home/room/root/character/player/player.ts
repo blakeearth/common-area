@@ -110,14 +110,14 @@ export class Player extends SpriteClass {
     }
 
     update(): void {
-        let distance: number = this.target.distance(Vector(this.x, this.y));
+        let distance: number = this.target.distance(this.position);
         // also cancel movement upon collision! maybe upon collision, set target to position?
         if (distance > 0 && (this.lastDistance == undefined || distance < this.lastDistance)) {
             this.dx = this.direction.x * speed;
             this.dy = this.direction.y * speed;
             this.lastDistance = distance;
         }
-        else if (this.target != this.position) {
+        else if (this.target.subtract(this.position).length() != 0) {
             this.playingAnimation = this.playingAnimation.replace('walk', 'idle');
             this.playAnimation(this.playingAnimation);
             this.reportLocation();
@@ -223,7 +223,7 @@ export class Player extends SpriteClass {
     reportLocation(): void {
         let log: HTMLElement = document.getElementById("game-log");
         let message: HTMLParagraphElement = document.createElement("p");
-        message.innerHTML = this.displayName + " is now at " + Math.round(this.x) + " on the x-axis and " + Math.round(this.y) + " on the y-axis.";
+        message.innerHTML = this.displayName + " moved to " + Math.round(this.x) + " on the x-axis and " + Math.round(this.y) + " on the y-axis.";
         log.appendChild(message);
     }
 }

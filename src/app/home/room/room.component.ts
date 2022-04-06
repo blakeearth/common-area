@@ -21,7 +21,7 @@ import { Checkpoint } from './root/checkpoint/checkpoint';
 import { EditItemTooltipDirective } from './root/edit-item-tooltip.directive';
 import { EditItemTooltipComponent } from './root/edit-item-tooltip/edit-item-tooltip.component';
 import { PersistObject } from './root/persist-object';
-import { TileMap } from './root/tile-map';
+import { InteractionHandler } from './root/interaction-handler';
 import { Tile } from './root/tile/tile';
 import { VendorPopupDirective } from './vendor-popup.directive';
 import { VendorPopupComponent } from './vendor-popup/vendor-popup.component';
@@ -140,10 +140,6 @@ export class RoomComponent extends Handler implements OnInit {
 
     let sort = function(obj1, obj2) {
       [obj1, obj2] = [obj1, obj2].map(getWorldRect);
-      if (obj2 instanceof Tile) {
-        console.log("champ");
-        return -10000;
-      }
       return (obj1.y + obj1.height / 2) - (obj2.y + obj2.height / 2);
     }
 
@@ -304,12 +300,6 @@ export class RoomComponent extends Handler implements OnInit {
 
     let sort = function(obj1, obj2) {
       [obj1, obj2] = [obj1, obj2].map(getWorldRect);
-      if (obj2.hasOwnProperty("renderModifier")) {
-        return obj2.renderModifier;
-      }
-      else if (obj2.hasOwnProperty("renderModifier")) {
-        return obj2.renderModifier;
-      }
       return (obj1.y + obj1.height / 2) - (obj2.y + obj2.height / 2);
     }
 
@@ -413,12 +403,12 @@ export class RoomComponent extends Handler implements OnInit {
   }
 
   setActiveItem(itemId: number): void {
-    let tileMap: TileMap = this.objects.get("root");
+    let tileMap: InteractionHandler = this.objects.get("root");
     tileMap.setActiveItem(itemId);
   }
 
   setPreview(object: PersistObject): void {
-    let tileMap: TileMap = this.objects.get("root");
+    let tileMap: InteractionHandler = this.objects.get("root");
     tileMap.setPreview(object);
   }
 
@@ -481,6 +471,14 @@ export class RoomComponent extends Handler implements OnInit {
 
   onItemRotate(): void {
     this.socketService.sendMessage({"channel": "room", "type": "rotate_persist_object", "id": this.editingObject.id, "rotation": this.editingObject.variant + 1});
+  }
+
+  onMove(x: number, y: number): void {
+    console.log(x, y);
+    let worldPlayer: any = Vector(this.me.position.x, this.me.position.y + this.me.height / 2);
+    console.log(worldPlayer.x, worldPlayer.y);
+    console.log(Math.floor(worldPlayer.x + x), Math.floor(worldPlayer.y + y));
+    this.socketService.sendMessage({channel: "room", type: "set_target", position_x: Math.floor(worldPlayer.x + x), position_y: Math.floor(worldPlayer.y + y)});
   }
 
   getPointerPosition(): Vector {
