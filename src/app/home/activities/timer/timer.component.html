@@ -6,9 +6,9 @@
     <p id="participants"><span id="participants" *ngFor="let participant of participants; let isLast=last" [ngStyle]="{ 'display': this.participantsDisplay }"><a class="participant" tabindex="0" (click)="openTooltip(participant.display_name, participant.account_id)" (keyboard.down)="openTooltip(participant.display_name, participant.account_id)">{{ participant.display_name }}</a>{{ isLast ? '' : ', ' }}</span></p>
     <div tabindex="0" class="tooltip-parent">
         <h2>Task:</h2>
-        <span>As you work with a timer, your time will be logged to the task below. Select it to change it out!</span>
+        <span role="tooltip">As you work with a timer, your time will be logged to the task below. Select it to change it out!</span>
     </div>
-    <app-task [data]="this.activeTaskData" [onClick]="this.changeActiveTask.bind(this)"></app-task>
+    <app-task [data]="this.activeTaskData" [onClick]="this.changeActiveTask.bind(this)" aria-haspopup="menu"></app-task>
     <div id="join" [ngStyle]="{ 'display': this.joinDisplay}">
         <h2>Join a session</h2>
         <table>
@@ -25,9 +25,9 @@
     </div>
     <div id="host">
         <div id="time">
-            <a tabindex="0" id="left-arrow" class="arrow" [ngStyle]="{ 'visibility': this.leftVisibility }" (click)="addTime($event, -5)" (keydown.enter)="addTime($event, -5)"><</a>
+            <a title="Reduce time by 5 minutes" tabindex="0" id="left-arrow" class="arrow" [ngStyle]="{ 'visibility': this.leftVisibility }" (click)="addTime($event, -5)" (keydown.enter)="addTime($event, -5)"><</a>
             <div id="time-display">{{ this.timeRemaining | date:'mm:ss'}}</div>
-            <a tabindex="0" id="right-arrow" class="arrow" [ngStyle]="{ 'visibility': this.rightVisibility }" (click)="addTime($event, 5)" (keydown.enter)="addTime($event, 5)">></a>
+            <a title="Increase time by 5 minutes" tabindex="0" id="right-arrow" class="arrow" [ngStyle]="{ 'visibility': this.rightVisibility }" (click)="addTime($event, 5)" (keydown.enter)="addTime($event, 5)">></a>
         </div>
         <div id="start">
             <button id="start-button" [ngStyle]="{ 'display': this.startButtonDisplay }" (click)="start()">{{ activeTask ? "Start" : "Pick a task" }}</button>

@@ -1,5 +1,5 @@
 <div id="checkpoint-list">
-    <div class="header" tabindex="0" (click)="toggleCheckpoints()" (keydown.enter)="toggleCheckpoints()">
+    <div class="header" tabindex="0" (click)="toggleCheckpoints()" (keydown.enter)="toggleCheckpoints()" aria-haspopup="menu">
         <h3>{{ roomTitle || "Room" }}</h3>
         <a [style.display]="checkpointsList.length > 0 ? 'inherit' : 'none'">
             <i id="checkpoints-down-arrow" class="bi bi-caret-down"></i>

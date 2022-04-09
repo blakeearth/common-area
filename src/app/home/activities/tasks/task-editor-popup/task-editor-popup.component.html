@@ -1,5 +1,5 @@
 <div class="modal" (click)="onClose($event)">
-    <div id="editor" class="modal-content" tabindex="0" [ngClass]="{'complete' : this.data.complete}">
+    <div id="editor" class="modal-content" tabindex="0" [ngClass]="{'complete' : this.data.complete}" tabindex="0" role="menu">
         <div class="task-header">
             <textarea id="task-title-field" (focus)="editTitle()" (keydown.enter)="saveTitle()" (blur)="saveTitle()"
                 [(ngModel)]="enteredTitle" [disabled]="!this.data.can_edit_title">{{ data.title }}</textarea>
@@ -10,7 +10,7 @@
                 <form (submit)="onClose($event)">
                     <div tabindex="0" class="tooltip-parent" [style.display]="data.has_listing ? 'inherit' : 'none'">
                         <h3>Listing</h3>
-                        <span>A listing is your personal copy of a task. Shared versions of the task will not have this
+                        <span role="tooltip">A listing is your personal copy of a task. Shared versions of the task will not have this
                             information.</span>
                     </div>
                     <div class="tags" [style.display]="data.has_listing ? 'inherit' : 'none'">
@@ -33,7 +33,7 @@
                 <div [ngClass]="this.data.can_edit_settings ? 'settings' : 'hidden-settings'">
                     <h6 class="task-actions">Task Settings</h6>
                     <div class="toggle">
-                        <span tabindex="0" class="tooltip-parent">Public<span>Set a task to public if you want it to be
+                        <span tabindex="0" class="tooltip-parent">Public<span role="tooltip">Set a task to public if you want it to be
                                 visible to others.</span></span>
                         <label class="switch">
                             <input type="checkbox" id="public" (change)="changePublic()" [checked]="this.data.public">
