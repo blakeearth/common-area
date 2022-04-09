@@ -39,6 +39,8 @@ export class MenuComponent extends Handler implements OnInit{
   updateNotesDisplay: string = "none";
   updateNotesData: string[] = [];
 
+  currentTabIndex: number = 0;
+
   componentFactoryResolver: ComponentFactoryResolver;
 
   audio: HTMLAudioElement;
@@ -113,9 +115,22 @@ export class MenuComponent extends Handler implements OnInit{
     for (let i: number = 0; i < selectedElements.length; i++) {
       let selectedElement: Element = selectedElements[i];
       selectedElement.classList.remove("selected");
+      selectedElement.setAttribute('tabindex', "-1");
+      selectedElement.setAttribute('aria-selected', 'false');
     }
     let newVisibleActivity: Element = document.getElementById(activity + "-nav");
     newVisibleActivity.classList.add("selected");
+
+    newVisibleActivity.setAttribute('tabindex', "0");
+    newVisibleActivity.setAttribute('aria-selected', 'true');
+    (newVisibleActivity as HTMLElement).focus();
+
+    let children: HTMLCollectionOf<Element> = (document.getElementsByClassName("nav-tab") as HTMLCollectionOf<Element>);
+    for (let i: number = 0; i < children.length; i++) {
+      if (children.item(i) == newVisibleActivity) {
+        this.currentTabIndex = i;
+      }
+    }
 
     this.clearNotificationsForActivity(activity);
   }
