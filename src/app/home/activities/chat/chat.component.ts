@@ -48,9 +48,8 @@ export class ChatComponent implements OnInit, Activity {
   @HostListener('document:keypress', ['$event'])
   handleKeyboardEvent(event: KeyboardEvent) {
     let chatField: HTMLTextAreaElement = document.getElementById("chat-field") as HTMLTextAreaElement;
-    console.log(document.activeElement.tagName);
-    if (!(document.activeElement.tagName == "TEXTAREA") && (document.getElementById("chat").classList.contains("visible")) ) {
-      chatField.value += String.fromCharCode(event.which);
+    if (!(document.activeElement.tagName == "TEXTAREA") && (document.getElementById("chat").classList.contains("visible")) && event.key != "Enter") {
+      chatField.value += event.key;
       chatField.focus();
     }
   }
