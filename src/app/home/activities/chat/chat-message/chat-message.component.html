@@ -1,4 +1,4 @@
-<div class="chat-message" [ngClass]="{'editable': canEdit, 'editing': editing}">
+<div tabindex="0" class="chat-message" [ngClass]="{'editable': canEdit, 'editing': editing}">
     <div class="item">
         <div class="top">
             <div class="meta">
@@ -18,7 +18,7 @@
             {{ data.contents }} <span class="edited" [style.display]="data.edited ? 'inline' : 'none'">(edited)</span>
         </p>
         <form novalidate [style.display]="editing ? 'flex' : 'none'">
-            <textarea class="editing-contents" tabindex="0" (keydown.enter)="sendEdits()" [(ngModel)]="newContents" [ngModelOptions]="{standalone: true}">{{ data.contents }}</textarea>
+            <textarea id="edit-field-{{data.chat_id}}" (blur)="this.editing = false;" class="editing-contents" tabindex="0" (keydown.enter)="sendEdits()" [(ngModel)]="newContents" [ngModelOptions]="{standalone: true}">{{ data.contents }}</textarea>
         </form>
     </div>
 </div>

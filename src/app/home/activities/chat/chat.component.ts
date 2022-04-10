@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ComponentFactoryResolver, ViewRef } from '@angular/core';
+import { Component, OnInit, ViewChild, ComponentFactoryResolver, ViewRef, HostListener } from '@angular/core';
 import { Activity } from '../activity';
 import { ChatMessageDirective } from './chat-message.directive';
 import { RoomChangeService } from '../../room-change.service';
@@ -43,6 +43,16 @@ export class ChatComponent implements OnInit, Activity {
     this.membersService = membersService;
     this.chatService = chatService;
     this.componentFactoryResolver = componentFactoryResolver;
+  }
+
+  @HostListener('document:keypress', ['$event'])
+  handleKeyboardEvent(event: KeyboardEvent) {
+    let chatField: HTMLTextAreaElement = document.getElementById("chat-field") as HTMLTextAreaElement;
+    console.log(document.activeElement.tagName);
+    if (!(document.activeElement.tagName == "TEXTAREA") && (document.getElementById("chat").classList.contains("visible")) ) {
+      chatField.value += String.fromCharCode(event.which);
+      chatField.focus();
+    }
   }
 
   ngOnInit(): void {

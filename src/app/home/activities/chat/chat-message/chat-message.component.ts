@@ -34,6 +34,10 @@ export class ChatMessageComponent implements OnInit {
   edit(): void {
     this.editing = true;
     this.newContents = this.data.contents;
+    let editField: HTMLTextAreaElement = document.getElementById("edit-field-" + this.data.chat_id) as HTMLTextAreaElement;
+    window.setTimeout(function() {
+      editField.focus();
+    }, 100);
   }
 
   sendEdits(): void {

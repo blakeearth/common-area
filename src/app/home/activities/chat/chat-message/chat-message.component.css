@@ -1,4 +1,4 @@
-.chat-message:hover {
+.chat-message:hover, .chat-message:focus, .chat-message:focus-within {
     background-color: #dfdfdf;
 }
 
@@ -41,7 +41,7 @@
     color: black;
 }
 
-.editable:hover .tools {
+.editable:hover .tools, .editable:focus .tools, .editable:focus-within .tools {
     visibility: visible;
 }
 
