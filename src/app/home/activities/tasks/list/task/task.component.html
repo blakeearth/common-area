@@ -1,4 +1,4 @@
-<div draggable="false" (click)="openTask($event)" (keydown.enter)="openTask($event)" tabindex="0"
+<div draggable="false" (click)="openTask($event)" (keydown.enter)="openTask($event)" tabindex="0" aria-haspopup="menu"
   [ngClass]="isListing ? 'listing' : 'task'" [class.active]="this.data.active && isListing" [class.complete]="this.data.complete" [cdkDragDisabled]="!isListing" id="{{ data.task_id }}" (cdkDragStarted)="startDragging($event)" cdkDrag vsDragScroll [cdkDragStartDelay]="mobile ? 300 : 0">
     <div class="center">
       <div class="tags">
