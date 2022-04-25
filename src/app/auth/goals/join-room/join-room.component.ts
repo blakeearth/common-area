@@ -84,7 +84,7 @@ export class JoinRoomComponent implements OnInit, Goal {
     sessionStorage.setItem("joinRoomId", this.roomId);
     sessionStorage.setItem("joinRoomTitle", this.roomTitle);
 
-    this.analyticsService.trackEvent("19JVCXY6");
+    this.analyticsService.trackEvent("Enter room before signup", {props: {"Room title": this.roomTitle, "Room id": this.roomId}});
     
     if (!this.signedIn) this.navigate('/auth/sign-up');
     else window.location.href = '/home';

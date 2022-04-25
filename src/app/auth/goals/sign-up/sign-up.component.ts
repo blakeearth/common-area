@@ -42,7 +42,7 @@ export class SignUpComponent implements OnInit, Goal {
     if (msg["type"] == "sign_up") {
       if (msg["password_correct"] || msg["account_creation_success"]) {
         if (msg["password_correct"] == true || msg["account_creation_success"] == true) {
-          this.analyticsService.trackEvent("0OUYE01D");
+          this.analyticsService.trackEvent("Signup");
           document.location.href = "/home";
         }
       }
