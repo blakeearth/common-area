@@ -3,7 +3,7 @@
 // variant on factory pattern. May result in duplicate code; beware!
 
 import { Player } from './root/character/player/player';
-import { TileMap } from './root/tile-map'
+import { InteractionHandler } from './root/interaction-handler'
 import { SocketService } from 'src/app/socket/socket.service';
 import { GameObject, Vector } from 'kontra';
 import { RoomComponent } from './room.component';
@@ -12,7 +12,6 @@ import { Chicken } from './root/character/chicken/chicken';
 import { Shrub } from './root/shrub/shrub';
 import { Checkpoint } from './root/checkpoint/checkpoint';
 import { BrickWall } from './root/brick-wall/brick-wall';
-import { WoodTile } from './root/tile/wood-tile/wood-tile';
 
 export class ObjectFactory {
     socketService: SocketService;
@@ -31,8 +30,7 @@ export class ObjectFactory {
         switch(sceneId) { 
             case 0: { 
                 // tile map
-                object = new TileMap(data["width"],
-                    data["height"], data["layers"], this.socketService, this.room);
+                object = new InteractionHandler(data["layers"], this.socketService, this.room);
                 break;
             } 
             case 1: { 
@@ -75,10 +73,6 @@ export class ObjectFactory {
             }
             case 6: {
                 object = new BrickWall(data["id"], data["scene_id"], data["owner_account_id"], Vector(data["position_x"], data["position_y"]), data["rotation"], this.onItemDown, data["display_name"]);
-                break;
-            }
-            case 7: {
-                object = new WoodTile(data["id"], data["scene_id"], data["owner_account_id"], Vector(data["position_x"], data["position_y"]), data["rotation"], this.onItemDown, data["display_name"]);
                 break;
             }
         }

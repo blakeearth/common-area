@@ -19,6 +19,6 @@ export class ProService {
   constructor() { }
 
   setPro(pro: boolean): void {
-    this.proSource.next(pro);
+    this.proSource.next(true);
   }
 }

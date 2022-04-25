@@ -3,10 +3,10 @@
     <app-member-list [room]="this"></app-member-list>
     <canvas id="game" (click)="requestSetTarget()" [ngClass]="{'editing': editMode}">
     </canvas>
-    <button style="display: none;" class="move-button" id="up" (click)="onMove(0, -160)" (keydown.enter)="onMove(0, -160)">Move North</button>
-    <button style="display: none;" class="move-button" id="down" (click)="onMove(0, 160)" (keydown.enter)="onMove(0, 160)">Move South</button>
-    <button style="display: none;" class="move-button" id="left" (click)="onMove(-160, 0)" (keydown.enter)="onMove(-160, 0)">Move West</button>
-    <button style="display: none;" class="move-button" id="right" (click)="onMove(160, 0)" (keydown.enter)="onMove(160, 0)">Move East</button>
+    <button class="move-button" id="up" (click)="onMove(0, -160)" (keydown.enter)="onMove(0, -160)">Move North</button>
+    <button class="move-button" id="down" (click)="onMove(0, 160)" (keydown.enter)="onMove(0, 160)">Move South</button>
+    <button class="move-button" id="left" (click)="onMove(-160, 0)" (keydown.enter)="onMove(-160, 0)">Move West</button>
+    <button class="move-button" id="right" (click)="onMove(160, 0)" (keydown.enter)="onMove(160, 0)">Move East</button>
     <div id="game-log" role="log">
         
     </div>

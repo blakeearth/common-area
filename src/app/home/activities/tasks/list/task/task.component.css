@@ -35,16 +35,16 @@ a.listing, a.task {
   background-color: #bbbbbb;
 }
 
-.listing:focus {
+.listing:focus, .listing:focus-within {
   background-color: ghostwhite;
 }
 
-.task:focus {
+.task:focus, .task:focus-within {
   cursor: pointer;
   background-color: ghostwhite;
 }
 
-.active:focus {
+.active:focus, .active:focus-within {
   background-color: #bbbbbb;
 }
 
