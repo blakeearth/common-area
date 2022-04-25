@@ -7,6 +7,7 @@ import { ListsService } from '../lists.service';
 import { FilterPopupComponent } from './filter-popup/filter-popup.component';
 import { FilterPopupDirective } from './filter-popup.directive';
 import { TasksService } from '../../tasks.service';
+import { AnalyticsService } from 'src/app/analytics.service';
 
 @Component({
   selector: 'app-list',
@@ -38,12 +39,14 @@ export class ListComponent implements OnInit {
   listsService: ListsService;
   tasksService: TasksService;
   componentFactoryResolver: ComponentFactoryResolver;
+  analyticsService: AnalyticsService;
 
-  constructor(socketService: SocketService, listsService: ListsService, tasksService: TasksService, componentFactoryResolver: ComponentFactoryResolver) {
+  constructor(socketService: SocketService, listsService: ListsService, tasksService: TasksService, analyticsService: AnalyticsService, componentFactoryResolver: ComponentFactoryResolver) {
     this.socketService = socketService;
     this.listsService = listsService;
     this.tasksService = tasksService;
     this.tasksService.register();
+    this.analyticsService = analyticsService;
     this.componentFactoryResolver = componentFactoryResolver;
   }
 
@@ -203,6 +206,7 @@ export class ListComponent implements OnInit {
     let title: string = newTaskTitleField.value;
     let active: boolean = false;
     if (this.tasks.size == 0) active = true;
+    this.analyticsService.trackEvent("Add new task");
     this.socketService.sendMessage({channel: "tasks", type: "add_task", public: true, active: active, title: title, contents: "", list_id: this.data.list_id, index: 0});
     newTaskTitleField.value = "";
   }

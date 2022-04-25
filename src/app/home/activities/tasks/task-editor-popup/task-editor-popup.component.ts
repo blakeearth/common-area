@@ -1,5 +1,6 @@
 import { Component, ComponentFactoryResolver, ComponentRef, OnInit, ViewChild, ViewRef } from '@angular/core';
 import { Subscription } from 'rxjs';
+import { AnalyticsService } from 'src/app/analytics.service';
 import { SocketService } from 'src/app/socket/socket.service';
 import { StatsService } from '../../stats.service';
 import { TagDirective } from '../list/filter-popup/tag.directive';
@@ -41,10 +42,12 @@ export class TaskEditorPopupComponent implements OnInit {
   socketSubscription: Subscription;
 
   minutes: number;
+  analyticsService: AnalyticsService;
 
-  constructor(socketService: SocketService, statsService: StatsService, componentFactoryResolver: ComponentFactoryResolver) {
+  constructor(socketService: SocketService, statsService: StatsService, componentFactoryResolver: ComponentFactoryResolver, analyticsService: AnalyticsService) {
     this.socketService = socketService;
     this.statsService = statsService;
+    this.analyticsService = analyticsService;
     this.componentFactoryResolver = componentFactoryResolver;
   }
 
@@ -57,6 +60,8 @@ export class TaskEditorPopupComponent implements OnInit {
     }
     modalContent.focus();
     this.socketSubscription = this.socketService.channelReply.get("tasks").subscribe(msg => this.onResponseReceived(msg));
+
+    this.analyticsService.trackEvent("Open task editor popup");
 
     if (this.statsService.hasListing(this.data.listing_id)) {
       let seconds: number = this.statsService.getMillisecondsForListing(this.data.listing_id) / 1000;

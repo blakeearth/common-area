@@ -22,7 +22,7 @@ export class ProBadgeComponent implements OnInit {
 
   goToSubscription(event: Event): void {
     event.preventDefault();
-    this.analyticsService.trackEvent("TXV9LFY6");
+    this.analyticsService.trackEvent("Select Pro badge");
     this.location.replaceState("/home/settings/subscribe");
   }
 

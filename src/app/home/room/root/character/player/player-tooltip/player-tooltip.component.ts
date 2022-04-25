@@ -1,6 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Vector } from 'kontra';
 import { Subscription } from 'rxjs';
+import { AnalyticsService } from 'src/app/analytics.service';
 import { Handler } from 'src/app/handler';
 import { SocketService } from 'src/app/socket/socket.service';
 import { Player } from '../player';
@@ -24,12 +25,14 @@ export class PlayerTooltipComponent extends Handler implements OnInit, OnDestroy
   onClose: Function;
 
   socketService: SocketService;
+  analyticsService: AnalyticsService;
 
   subscription: Subscription;
 
-  constructor(socketService: SocketService) {
+  constructor(socketService: SocketService, analyticsService: AnalyticsService) {
     super();
     this.socketService = socketService;
+    this.analyticsService = analyticsService;
   }
 
   ngOnInit(): void {
@@ -46,6 +49,7 @@ export class PlayerTooltipComponent extends Handler implements OnInit, OnDestroy
     this.y = (this.position.y - height - marginBottom).toString() + "px";
 
     this.socketService.sendMessage({ channel: "tasks", type: "request_player_information", "persist_object_id": this.id });
+    this.analyticsService.trackEvent("Open player tooltip");
   }
 
   requestPlayerInformation(msg: any): void {
