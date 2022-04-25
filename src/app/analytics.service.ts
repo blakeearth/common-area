@@ -1,6 +1,12 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
+declare global {
+  interface Window {
+      plausible: any;
+  }
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -10,14 +16,9 @@ export class AnalyticsService {
   
   constructor(httpClient: HttpClient) {
     this.httpClient = httpClient;
-    this.initialize();
   }
 
-  initialize(): void {
-
-  }
-
-  trackEvent(eventDefinitionId: string) {
-
+  trackEvent(eventName: string, options?: any) {
+    window.plausible(eventName, options);
   }
 }
