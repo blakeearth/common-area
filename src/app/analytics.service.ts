@@ -1,26 +1,23 @@
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-
-declare global {
-  interface Window {
-      fathom: any;
-  }
-}
 
 @Injectable({
   providedIn: 'root'
 })
 export class AnalyticsService {
 
-  constructor() { }
+  httpClient: HttpClient;
+  
+  constructor(httpClient: HttpClient) {
+    this.httpClient = httpClient;
+    this.initialize();
+  }
 
-  trackEvent(eventId: string, value?: number) {
-    if (window.fathom) {
-      if (value) {
-        window.fathom.trackGoal(eventId, value);
-      }
-      else {
-        window.fathom.trackGoal(eventId, 0);
-      }
-    }
+  initialize(): void {
+
+  }
+
+  trackEvent(eventDefinitionId: string) {
+
   }
 }

@@ -1,5 +1,6 @@
 import { Component, Input, OnInit, SimpleChanges } from '@angular/core';
 import { Vector } from 'kontra';
+import { AnalyticsService } from 'src/app/analytics.service';
 import { MembersService } from '../../members.service';
 import { RoomComponent } from '../room.component';
 import { Player } from '../root/character/player/player';
@@ -20,9 +21,11 @@ export class MemberListComponent implements OnInit {
   @Input() room: RoomComponent;
 
   membersService: MembersService;
+  analyticsService: AnalyticsService;
 
-  constructor(membersService: MembersService) {
+  constructor(membersService: MembersService, analyticsService: AnalyticsService) {
     this.membersService = membersService;
+    this.analyticsService = analyticsService;
   }
 
   ngOnInit(): void {
@@ -51,6 +54,7 @@ export class MemberListComponent implements OnInit {
   toggleMembers(): void {
     let dropArea: HTMLElement = document.getElementById("members") as HTMLElement;
     if (dropArea.style.display == 'none') {
+      this.analyticsService.trackEvent("d943f769-1eab-4d75-9e3d-d7d2f7e75c04");
       dropArea.style.display = 'inherit';
       document.getElementById("members-up-arrow").style.display = "inherit";
       document.getElementById("members-down-arrow").style.display = "none";
