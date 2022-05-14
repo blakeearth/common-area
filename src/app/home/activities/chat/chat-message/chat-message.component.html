@@ -19,6 +19,7 @@
         </p>
         <form novalidate [style.display]="editing ? 'flex' : 'none'">
             <textarea id="edit-field-{{data.chat_id}}" (blur)="this.editing = false;" class="editing-contents" tabindex="0" (keydown.enter)="sendEdits()" [(ngModel)]="newContents" [ngModelOptions]="{standalone: true}">{{ data.contents }}</textarea>
+            <p>{{ newContents }}</p>
         </form>
     </div>
 </div>

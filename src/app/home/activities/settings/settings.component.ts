@@ -10,8 +10,6 @@ import { RoomInvitationDirective } from "./room-invitation.directive";
 import { RoomInvitationComponent } from "./room-invitation/room-invitation.component";
 import { MenuComponent } from "../../menu/menu.component";
 
-import { client, dataCollector } from "braintree-web";
-import * as braintreeDropIn from "braintree-web-drop-in";
 import { ProService } from "../../pro.service";
 
 @Component({
@@ -85,40 +83,7 @@ export class SettingsComponent implements OnInit, Activity {
   onResponseReceived(msg: any): void {
     if (msg["channel"] == "settings") {
       if (msg["type"] == "request_payment_client_token") {
-        client.create({
-          authorization: msg["token"]
-        },
-          function (err, clientInstance) {
-            braintreeDropIn.create({
-              // Insert your tokenization key here
-              authorization: msg["token"],
-              container: "#dropin-container"
-            }, function (createErr, instance) {
-
-              this.dropinInstance = instance;
-
-              dataCollector.create({
-                client: clientInstance,
-              }, function (err, dataCollectorInstance) {
-                if (err) {
-                  // Handle error in creation of data collector
-                  return;
-                }
-                // At this point, you should access the dataCollectorInstance.deviceData value and provide it
-                // to your server, e.g. by injecting it into your form as a hidden input.
-                this.paymentDeviceData = dataCollectorInstance.deviceData;
-              }.bind(this));
-
-              let button = document.getElementById("submit-button");
-              button.addEventListener("click", function () {
-                instance.requestPaymentMethod(function (requestPaymentMethodErr, payload) {
-                  // When the user clicks on the "Submit payment" button this code will send the
-                  // encrypted payment information in a variable called a payment method nonce
-                  this.socketService.sendMessage({ channel: "settings", type: "checkout", payment_nonce: payload.nonce, device_data: this.paymentDeviceData });
-                }.bind(this));
-              }.bind(this));
-            }.bind(this));
-          }.bind(this));
+        // braintree removed for now
       }
       if (msg["type"] == "checkout") {
         if (msg["success"]) {
